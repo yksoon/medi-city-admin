@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <script src="js/nav.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="header_content">
+                <h1 class="logo"><a href="index.html"><img src="img/common/logo.png" alt=""></a></h1>
+                <div class="flex">
+                    <div class="login" id="header_login_wrap">
+                        <div id="header_login">
+                            <div class="flex">
+                                <input type="email" placeholder="ID" class="login" autofocus>
+                                <input type="password" placeholder="PASSWORD" class="login">
+                                <a href="javascript:void(0)" class="login" onclick="login();">LOGIN</a>
+                                <a href="sign.html" class="login">SIGN UP</a>
+                            </div>
+                            <a href="id_find_step1.html" class="font-12">로그인에 문제가 발생하였나요?</a>
+                        </div>
+                        <div id="header_profile">
+                            <div class="flex profile">
+                                <div>
+                                    <h5>환영합니다 홍길동님</h5>
+                                    <a href="javascript:void(0)" class="font-12" id="header_logout">로그아웃</a>
+                                     <a href="mypage_modify_step1.html" class="font-12">회원정보수정</a>
+                                </div>
+                                <a href="mypage.html" class="profile_img_wrap">
+                                    <span class="profile_img"><img src="img/common/profile01.png" alt=""></span>
+                                    <div id="gradeLabel" class="grade" name="gold"><img src="img/common/grade_gold.png" alt="" id="gradeLabelImg"/></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav id="menu" onclick="menu_show();">
+                        <div class="menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </nav>
+                    <div id="sitemap">
+                        <div>
+                            <div>
+                                <h3 class="font-38">SERVICE</h3>
+                                <ul>
+                                    <li>
+                                        <a href="sitemap.html">
+                                            <span><img src="img/main/quick09.png" alt=""></span>
+                                            <p>전체 서비스</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick03.png" alt=""></span>
+                                            <p>호텔 특가</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick04.png" alt=""></span>
+                                            <p>MEDI ART</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick05.png" alt=""></span>
+                                            <p>세무/회계 컨설팅</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick06.png" alt=""></span>
+                                            <p>MICE/PCO</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex">
+                                <div>
+                                    <h3 class="font-38">COMMUNITY</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick10.png" alt=""></span>
+                                                <p>학회소식</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick11.png" alt=""></span>
+                                                <p>EVENT</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-38">MEMBERSHIP</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick02.png" alt=""></span>
+                                                <p>MEDI POINT</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick07.png" alt=""></span>
+                                                <p>K-MEDI CREATOR</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick08.png" alt=""></span>
+                                                <p>MYPAGE</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/" class="home"><img src="img/common/header_home.png" alt=""></a>
+                </div>
+            </div>
+        </header>
+        
+        <div id="mainvisual">
+            <div class="mainvisual">
+				<div class="mainvisual01"><a href=""></a></div>
+				<div class="mainvisual02"><a href=""></a></div>
+			</div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('.mainvisual').bxSlider({
+                    auto: true,
+                    speed: 2000,
+                    pause: 5000,
+                    pager: false,
+                    autoControls: false,
+                    controls: false,
+                    touchEnabled: true,
+                    randomStart: true,
+                });
+            });
+        </script>
+        <div class="content">
+            <div class="quick">
+                <div class="title">
+                    <h3>메디씨티에서 다양한 혜택을 제공합니다!</h3>
+                </div>
+                <ul>
+                    <li>
+                        <a href="sitemap.html">
+                            <span><img src="img/main/quick01.png" alt=""></span>
+                            <p>전체</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick02.png" alt=""></span>
+                            <p>MEDI POINT</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick03.png" alt=""></span>
+                            <p>호텔 특가</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick04.png" alt=""></span>
+                            <p>MEDI ART</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick05.png" alt=""></span>
+                            <p>세무/회계 컨설팅</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick06.png" alt=""></span>
+                            <p>MICE/PCO</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick07.png" alt=""></span>
+                            <p>K-MEDI CREATOR</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span><img src="img/main/quick08.png" alt=""></span>
+                            <p>MYPAGE</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="main_hotel">
+                <div class="title">
+                    <h3>메디씨티와 함께하는 시원한 여름나기 호캉스!</h3>
+                    <p>추천 HOTEL</p>
+                </div>
+                <ul class="hotel_slider"> 
+                    <li class="event">
+                        <a href="">
+                            <span class="hotel_thumb"><img src="img/main/hotel01.png" alt=""></span>
+                            <h4 class="font-24">세인트존스호텔 강릉</h4>
+                            <p class="font-21 gray-8">St.JOHN’S HOTEL</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="hotel_thumb"><img src="img/main/hotel02.png" alt=""></span>
+                            <h4 class="font-24">킨텍스 바이 케이트리 호텔</h4>
+                            <p class="font-21 gray-8">KINTEX by K-TREE</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="hotel_thumb"><img src="img/main/hotel03.png" alt=""></span>
+                            <h4 class="font-24">호텔 뮬리아 자카르타</h4>
+                            <p class="font-21 gray-8">HOTEL MULIA & THE SUIT ...</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="hotel_thumb"><img src="img/main/hotel04.png" alt=""></span>
+                            <h4 class="font-24">웨스틴호텔 자카르타</h4>
+                            <p class="font-21 gray-8">The Westin Jakarta</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="hotel_thumb"><img src="img/main/hotel05.png" alt=""></span>
+                            <h4 class="font-24">노보텔  보고 골프 리조트 & 컨벤션 센터 자카르타</h4>
+                            <p class="font-21 gray-8">NOVOTEL BOGOR GOLF RESORT & CONVENTION CENTER</p>
+                        </a>
+                    </li>
+                </ul>
+                <script>
+                    $(function(){
+                      $('.hotel_slider').slick({
+                          infinite : true,
+                          slidesToShow : 4,
+                          slidesToScroll : 1,
+                          arrows : false,
+                          dots : true,
+                          autoplay : true,
+                          autoplaySpeed : 10000, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+                          pauseOnHover : false,
+                          draggable : true, 	//드래그 가능 여부 
+                          responsive: [ // 반응형 웹 구현 옵션
+                              {  
+                                  breakpoint: 960, //화면 사이즈 960px
+                                  settings: {
+                                      //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+                                      slidesToShow:3 
+                                  } 
+                              },
+                              { 
+                                  breakpoint: 768, //화면 사이즈 768px
+                                  settings: {	
+                                      //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+                                      slidesToShow:2 
+                                  } 
+                              }
+                          ]
+                      });
+                      var slick_length = $('.slick-dots li').length;
+                      $('.slick-dots button').text('');
+                      $('.slick-dots li').css('width','calc(100% /' + slick_length + ' )');
+                    })
+              </script>
+            </div>
+            <div class="main_banner">
+                <div class="banner01"><a href=""><img src="img/main/banner01_icon.png" alt=""></a></div>
+                <div class="banner02"><a href=""><img src="img/main/banner02_icon.png" alt=""></a></div>
+            </div>
+            <div class="main_news">
+                <div class="title">
+                    <h3>학회소식</h3>
+                    <p>의료관련 학회소식</p>
+                </div>
+                <ul class="block_3">
+                    <li class="comming">
+                        <a href="">
+                            <h4 class="font-24">IANR 2023</h4>
+                            <p class="font-18 gray-6">2023. 11. 03 ~ 04</p>
+                            <p class="font-18 gray-6">세종컨벤션</p>
+                        </a>
+                        <a href="https://ianr2023korea.org/" target="_blank" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">한국원자력협의회 심포지움</h4>
+                            <p class="font-18 gray-6">2023. 08. 17 ~ 18</p>
+                            <p class="font-18 gray-6">강릉세인트존스호텔</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">Conference</h4>
+                            <p class="font-18 gray-6">2000.00.00 ~ 00.00</p>
+                            <p class="font-18 gray-6">Venue</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                </ul>
+                <ul class="block_4">
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">Conference</h4>
+                            <p class="font-18 gray-6">2000.00.00 ~ 00.00</p>
+                            <p class="font-18 gray-6">Venue</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">Conference</h4>
+                            <p class="font-18 gray-6">2000.00.00 ~ 00.00</p>
+                            <p class="font-18 gray-6">Venue</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">Conference</h4>
+                            <p class="font-18 gray-6">2000.00.00 ~ 00.00</p>
+                            <p class="font-18 gray-6">Venue</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <h4 class="font-24">Conference</h4>
+                            <p class="font-18 gray-6">2000.00.00 ~ 00.00</p>
+                            <p class="font-18 gray-6">Venue</p>
+                        </a>
+                        <a href="" class="home_btn"><img src="img/common/home.png" alt=""></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="main_board">
+                <div class="flex">
+                    <div class="main_faq">
+                        <div class="title">
+                            <h3>FAQ</h3>
+                            <p>자주묻는질문</p>
+                        </div>
+                        <ul>
+                            <li><a href=""><h4 class="font-21">Q. 메디씨티 포인트는 어디에서 확인 가능한가요?</h4></a></li>
+                            <li><a href=""><h4 class="font-21">Q. 메디씨티 포인트는 어디에서 확인 가능한가요?</h4></a></li>
+                            <li><a href=""><h4 class="font-21">Q. 메디씨티 포인트는 어디에서 확인 가능한가요?</h4></a></li>
+                            <li><a href=""><h4 class="font-21">Q. 메디씨티 포인트는 어디에서 확인 가능한가요?</h4></a></li>
+                        </ul>
+                    </div>
+                    <div class="main_notice">
+                        <div class="title">
+                            <h3>NOTICE</h3>
+                            <p>공지사항</p>
+                        </div>
+                        <ul>
+                            <li><a href=""><h4 class="font-21">NOTICE TITLE</h4><p class="font-21 gray-6">2023. 05. 25</p></a></li>
+                            <li><a href=""><h4 class="font-21">NOTICE TITLE</h4><p class="font-21 gray-6">2023. 05. 25</p></a></li>
+                            <li><a href=""><h4 class="font-21">NOTICE TITLE</h4><p class="font-21 gray-6">2023. 05. 25</p></a></li>
+                            <li><a href=""><h4 class="font-21">NOTICE TITLE</h4><p class="font-21 gray-6">2023. 05. 25</p></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+</body>
+</html>
+
+
+<script src="js/login.js"></script>
+<script src="js/sign.js"></script>
+
+<script>
+    //footer
+    const footer = document.querySelector('footer');
+    fetch('include/footer.html')
+    .then(res => res.text())
+    .then(data => footer.innerHTML = data);
+</script>
