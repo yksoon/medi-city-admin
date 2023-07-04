@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="//cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="//cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+     <!-- <script src="js/login.js"></script>
+     <script src="js/nav.js"></script>
+     <script src="js/sign.js"></script> -->
+     <script src="js/nav.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="header_content">
+                <h1 class="logo"><a href="index.html"><img src="img/common/logo.png" alt=""></a></h1>
+                <div class="flex">
+                    <div class="login" id="header_login_wrap">
+                        <div id="header_login">
+                            <div class="flex">
+                                <input type="email" placeholder="ID" class="login" autofocus>
+                                <input type="password" placeholder="PASSWORD" class="login">
+                                <a href="javascript:void(0)" class="login" onclick="login();">LOGIN</a>
+                                <a href="sign.html" class="login">SIGN UP</a>
+                            </div>
+                            <a href="id_find_step1.html" class="font-12">로그인에 문제가 발생하였나요?</a>
+                        </div>
+                        <div id="header_profile">
+                            <div class="flex profile">
+                                <div>
+                                    <h5>환영합니다 홍길동님</h5>
+                                    <a href="javascript:void(0)" class="font-12" id="header_logout">로그아웃</a>
+                                     <a href="mypage_modify_step1.html" class="font-12">회원정보수정</a>
+                                </div>
+                                <a href="mypage.html" class="profile_img_wrap">
+                                    <span class="profile_img"><img src="img/common/profile01.png" alt=""></span>
+                                    <div id="gradeLabel" class="grade" name="gold"><img src="img/common/grade_gold.png" alt="" id="gradeLabelImg"/></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav id="menu" onclick="menu_show();">
+                        <div class="menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </nav>
+                    <div id="sitemap">
+                        <div>
+                            <div>
+                                <h3 class="font-38">SERVICE</h3>
+                                <ul>
+                                    <li>
+                                        <a href="sitemap.html">
+                                            <span><img src="img/main/quick09.png" alt=""></span>
+                                            <p>전체 서비스</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick03.png" alt=""></span>
+                                            <p>호텔 특가</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick04.png" alt=""></span>
+                                            <p>MEDI ART</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick05.png" alt=""></span>
+                                            <p>세무/회계 컨설팅</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span><img src="img/main/quick06.png" alt=""></span>
+                                            <p>MICE/PCO</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex">
+                                <div>
+                                    <h3 class="font-38">COMMUNITY</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick10.png" alt=""></span>
+                                                <p>학회소식</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick11.png" alt=""></span>
+                                                <p>EVENT</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-38">MEMBERSHIP</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick02.png" alt=""></span>
+                                                <p>MEDI POINT</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick07.png" alt=""></span>
+                                                <p>K-MEDI CREATOR</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span><img src="img/main/quick08.png" alt=""></span>
+                                                <p>MYPAGE</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/" class="home"><img src="img/common/header_home.png" alt=""></a>
+                </div>
+            </div>
+        </header>
+        </div>
+</body>
+</html>
+
+
+<script src="js/login.js"></script>
+<script src="js/sign.js"></script>
+
+<script>
+    //footer
+    const footer = document.querySelector('footer');
+    fetch('include/footer.html')
+    .then(res => res.text())
+    .then(data => footer.innerHTML = data);
+</script>

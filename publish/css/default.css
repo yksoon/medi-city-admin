@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+/*@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+@import url('https://webfontworld.github.io/gmarket/GmarketSans.css'); 
+@import url('https://webfontworld.github.io/sunn/SUIT.css');*/
+
+
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Thin.ttf) format(truetype);
+	font-weight:100;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Light.ttf) format(truetype);
+	font-weight:300;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Regular.ttf) format(truetype);
+	font-weight:400;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Medium.ttf) format(truetype);
+	font-weight:500;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-SemiBold.ttf) format(truetype);
+	font-weight:600;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Bold.ttf) format(truetype);
+	font-weight:700;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-ExtraBold.ttf) format(truetype);
+	font-weight:800;
+}
+@font-face{
+    font-family:SUIT;
+    src:local(※), url(/font/SUIT-Heavy.ttf) format(truetype);
+	font-weight:900;
+}
+
+/* */
+BODY {font-size:18px; color:#111; font-family: 'SUIT' , 'Noto Sans KR', "돋움", Verdana, Arial, sans-serif;}
+* {letter-spacing:-0.01em;box-sizing:border-box;}
+header {margin:0; padding:0;}
+
+/* CSS reset Start*/
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+	margin:0;
+	padding:0;
+}
+
+html {
+	margin:0;
+	padding:0;
+	overflow-y: scroll; 
+	
+	width:100%;
+	height:100%;
+
+}
+
+body {
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+}
+
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+fieldset,img { 
+	border:0;
+}
+
+address,caption,cite,code,dfn,th,var {
+	font-style:normal;
+	font-weight:normal;
+}
+ol,ul {
+	list-style:none;
+}
+a {
+text-decoration:none;
+}
+caption,th {
+	text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%;
+	font-weight:normal;
+}
+q:before,q:after {
+	content:'';
+}
+abbr,acronym { border:0;
+}
+/* CSS reset End*/
+
+
+/*LOW VER. IE SUPPORT HTML5*/
+article, aside, hgroup, header, footer, figure, figcaption, section,time, mark, canvas, video, audio, details, summary {display:block;}
+
+
+th {
+	text-align:center;
+	font-weight:bold;
+}
+
+A {color: inherit;}
+A:link {color: inherit; text-decoration:none}
+A:visited {color: inherit; text-decoration:none}
+A:active {color: inherit; text-decoration:none}
+A:hover {color: inherit; text-decoration:none}
+
+.tl {text-align:left;}
+.tc {text-align:center;}
+.tr {text-align:right;}
+
+#wrap {width:100%;}
+#default_size {width:100%; text-align:center;}
