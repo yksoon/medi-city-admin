@@ -134,7 +134,7 @@ h3.title {font-size: 38px;font-weight: 700;}
 .login_wrap h5 {margin:0 0 5px;}
 .login > div {margin:0 0 10px;}
 .login .login_btn {margin:20px 0 0;}
-.login input[type="text"],.login input[type="password"] {background:none;border-radius: 0;color: #fff;width: 240px;height: 38px;}
+.login input[type="email"], .login input[type="password"] {background:none;border-radius: 0;color: #fff;width: 240px;height: 38px;}
 .login input::placeholder {color: #a8a8a8;}
 .adm_search {margin:0 0 40px;border-bottom: 1px solid #eee;padding:0 0 20px;display:flex;justify-content: space-between;}
 
