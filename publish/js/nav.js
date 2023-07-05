@@ -13,7 +13,7 @@ $(function(){
 		$(this).toggleClass('on');
 	});
 	$('#all_gnb').click(function(){
-		$('.sub_2depth').slideToggle();
+		$('.sub_2depth').slideToggle(); 
 		$('.sub_3depth').slideToggle();
 	});
 });
