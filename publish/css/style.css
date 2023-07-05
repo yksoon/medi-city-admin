@@ -115,7 +115,7 @@ h3.title {font-size: 38px;font-weight: 700;}
 .gnb{ -ms-overflow-style: none; } .gnb::-webkit-scrollbar{ display:none; }
 .gnb h1 {text-align: center;padding:20px 0;}
 .gnb h1 img {width:140px;}
-.gnb #all_gnb {display:block;height:36px;line-height:36px;color: #fff;padding:0 20px;display:block;background: #616161;}
+.gnb #all_gnb {display:block;height:36px;line-height:36px;color: #fff;padding:0 20px;display:block;background: #616161;cursor:pointer;}
 .gnb > ul > li > a {display:block;height:36px;line-height:36px;color: #fff;padding:0 20px;display:block;}
 .gnb > ul > li > a.on {background: #0047A0;}
 .gnb ul li a img {width: 10px;margin:0 0 4px 5px;}
