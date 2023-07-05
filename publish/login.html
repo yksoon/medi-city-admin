@@ -23,17 +23,25 @@
 <body>
     <div class="wrap">
         <header>
-            <div class="gnb login_wrap" >
-                <div class="adm_profile">
+            <div class="login_wrap" >
+                <div>
                     <p>로그인을 해주세요</p>
                     <div class="login">
                         <div>
+                            <h5>아이디</h5>
                             <input type="email" class="input w180" placeholder="ID" autofocus>
                         </div>
                         <div>
+                            <h5>비밀번호</h5>
                             <input type="password" class="input w180" placeholder="PW" >
                         </div>
-                        <div class="login_btn"><a href="index.html" class="subbtn on">로그인</a></div>
+                        <div class="flex end">
+                            <div>
+                                <input type="checkbox" id="id_remember">
+                                <label for="id_remember">아이디 저장</label>
+                            </div>
+                            <div class="login_btn"><a href="index.html" class="subbtn on">로그인</a></div>
+                        </div>
                     </div>
                 </div>
                 
