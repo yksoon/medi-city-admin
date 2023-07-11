@@ -29,6 +29,10 @@ function navList (listName) {
 			location.href = "member_list.html"
 			break;
     
+		case "hotelList" :
+			location.href = "hotel_list.html"
+			break;
+    
         default:
             break;
     }

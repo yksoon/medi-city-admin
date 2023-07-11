@@ -98,9 +98,9 @@ h3.title {font-size: 38px;font-weight: 700;}
 /* 공통 //E */
 
 /* 모달 //S */
-.mo_title {font-size: 21px;font-weight: 700;margin:0 0 10px;padding: 0 0 10px;border-bottom: 1px solid #ddd;;}
+.mo_title {font-size: 21px;font-weight: 700;margin:0 0 20px;padding: 0 0 10px;border-bottom: 1px solid #ddd;;}
 .modal_wrap {display:none;position:fixed;top:0;left:0;width:100%;height:100vh;overflow:hidden;background: rgba(0,0,0,0.4);z-index:999;}
-.modal_wrap .modal {position:absolute;top:50%;left:50%;transform:translate(-50%, -50%); box-shadow: 5px 5px 15px rgba(0,0,0,0.1);background:#fff;padding:40px;max-height:840px;overflow-y:scroll;z-index:999;}
+.modal_wrap .modal {position:absolute;top:50%;left:50%;transform:translate(-50%, -50%); box-shadow: 5px 5px 15px rgba(0,0,0,0.1);background:#fff;padding:40px;max-height:840px;overflow-y:scroll;z-index:999;border-radius: 5px;}
 .modal{ -ms-overflow-style: none; } .modal::-webkit-scrollbar{ display:none; }
 .modal_wrap .modal .modal_close {position:absolute;top:42px;right:50px;cursor:pointer;}
 .modal_wrap .modal .modal_close img {width: 16px;}
@@ -122,6 +122,7 @@ h3.title {font-size: 38px;font-weight: 700;}
 .gnb .sub_2depth {display:none;background: #111;}
 .gnb .sub_2depth > li > a {display:block;height:38px;line-height:38px;color: #efefef;font-size: 14px;padding:0 20px;display:block;}
 .gnb .sub_2depth > li > a:hover, .sub_header .sub_2depth > li > a.on{background: #111;}
+.sub_header .sub_2depth > li > a.on{background: #01244f;}
 .gnb .sub_3depth {display:none;background: #222;}
 .gnb .sub_3depth > li > a {color: #9e9e9e;height:30px;line-height:30px;font-size: 14px;display:block;padding:0 30px;}
 .gnb .sub_3depth > li > a:hover, .sub_header .sub_3depth > li > a.on {color: #fff;}
@@ -139,14 +140,30 @@ h3.title {font-size: 38px;font-weight: 700;}
 .login input::placeholder {color: #a8a8a8;}
 .adm_search {margin:0 0 40px;border-bottom: 1px solid #eee;padding:0 0 20px;display:flex;justify-content: space-between;}
 
-.adm_table .table_a {border-top: 1px solid #a8a8a8;}
-.adm_table .table_a thead th {font-size: 16px;background: #efefef;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;}
-.adm_table .table_a thead th:last-child {border-right: none;}
-.adm_table .table_a tbody td:last-child {border-right: none;}
-.adm_table .table_a tbody td {font-size: 16px;padding:5px;text-align: center;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;}
+.table_a {border-top: 1px solid #a8a8a8;}
+.table_a thead th {font-size: 16px;background: #efefef;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;}
+.table_a thead th:last-child {border-right: none;}
+.table_a tbody td:last-child {border-right: none;}
+.table_a tbody td {font-size: 16px;padding:5px;text-align: center;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;}
+
+.table_b {border-top: 1px solid #ddd;}
+.table_b tbody th {font-size: 16px;background: #efefef;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: center;}
+.table_b tbody td:last-child {border-right: none;}
+.table_b tbody td {font-size: 16px;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: left;}
+.inner_table tbody th {font-size:14px;padding:2px;}
+.inner_table tbody td {font-size:14px;padding:2px;}
 
 /* 회원등록 */
 .sign {display:flex;    justify-content: center;}
 .sign .input_wrap {margin:0 0 20px;}
 .sign .flex > div {margin:0 10px 0 0;}
 .sign h5 {margin: 0 0 5px;}
+
+/* 호텔리스트 */
+.person_btn img {width:14px;margin: 0 0 -5px;cursor:pointer;}
+.person_td {position: relative;}
+.person_box {display:none;position: absolute;left:50%;transform:translate(-50%, 0);text-align: left;padding:10px;background: #fff;box-shadow: 0 0 5px rgba(0,0,0,0.1);border:2px solid #eee;width:260px}
+.person_box.on {display:block;}
+.person_box p {font-size: 14px;}
+
+.hotel_thumb_td img{max-width:100px;}

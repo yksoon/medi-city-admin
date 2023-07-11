@@ -111,5 +111,7 @@ A:hover {color: inherit; text-decoration:none}
 .tc {text-align:center;}
 .tr {text-align:right;}
 
+button {background:none;border:none;}
+
 #wrap {width:100%;}
 #default_size {width:100%; text-align:center;}

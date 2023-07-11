@@ -40,7 +40,13 @@
                                 </ul>
                             </li>
                             <li><a onclick="navList('homePop')">팝업 관리</a></li>
-                            <li><a onclick="navList('homeTerms')">이용약관 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li><a href="javascript:void(0)">회원 관리</a>
@@ -68,6 +74,7 @@
                             <li><a onclick="navList('boardFaq')">FAQ</a></li>
                         </ul>
                     </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
                 </ul>
             </div>
         </header>

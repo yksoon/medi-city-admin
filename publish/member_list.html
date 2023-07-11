@@ -31,7 +31,7 @@
                 </div>
                 <ul class="sub_gnb">
                     <li id="all_gnb">전체 메뉴 보기</li>
-                    <li><a onclick="navList('dash')" class="on">대시보드</a></li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
                     <li><a>홈페이지 관리</a>
                         <ul class="sub_2depth">
                             <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
@@ -41,10 +41,16 @@
                                 </ul>
                             </li>
                             <li><a onclick="navList('homePop')">팝업 관리</a></li>
-                            <li><a onclick="navList('homeTerms')">이용약관 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
-                    <li><a href="javascript:void(0)">회원 관리</a>
+                    <li><a href="javascript:void(0)" class="on">회원 관리</a>
                         <ul class="sub_2depth">
                             <li><a onclick="navList('memberList')">회원 리스트</a></li>
                             <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
@@ -69,6 +75,7 @@
                             <li><a onclick="navList('boardFaq')">FAQ</a></li>
                         </ul>
                     </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
                 </ul>
             </div>
         </header>
@@ -98,6 +105,7 @@
                         <colgroup>
                             <col width="5%">
                             <col width="5%">
+                            <col width="5%">
                             <col width="10%">
                             <col width="10%">
                             <col width="10%">
@@ -110,6 +118,7 @@
                             <tr>
                                 <th><input type="checkbox"></th>
                                 <th>고유번호</th>
+                                <th>구분</th>
                                 <th>아이디</th>
                                 <th>이름</th>
                                 <th>연락처</th>
@@ -125,6 +134,7 @@
                                     <input type="checkbox">
                                 </td>
                                 <td>1</td>
+                                <td>관리자</td>
                                 <td>ej.lim@hicomp.net</td>
                                 <td>임은지</td>
                                 <td>010-0000-0000</td>
@@ -150,6 +160,13 @@
             <div class="form sign" id="sign">
                 <div>
                     <h4 class="mo_title">회원등록</h4>
+                    <div class="input_wrap">
+                        <h5>구분 <span class="red">*</span></h5>
+                        <select name="" id="" class="w180">
+                            <option value="">일반</option>
+                            <option value="">관리자</option>
+                        </select>
+                    </div>
                     <div class="input_wrap">
                         <h5>아이디 <span class="red">*</span></h5>
                         <input type="email" class="input w180" autofocus>
@@ -177,7 +194,7 @@
                         </div>
                     </div>
                     <div class="input_wrap">
-                        <h5 class="m0">휴대전화 <span class="red">*</span></h5>
+                        <h5>휴대전화 <span class="red">*</span></h5>
                         <div class="flex">
                             <div id="phone_num" class="m0">
                                 <input type="tel" class="input w120" id="phone_num1" value="010" readonly>

@@ -43,7 +43,13 @@
                                 </ul>
                             </li>
                             <li><a onclick="navList('homePop')">팝업 관리</a></li>
-                            <li><a onclick="navList('homeTerms')">이용약관 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li><a href="javascript:void(0)">회원 관리</a>
@@ -71,6 +77,7 @@
                             <li><a onclick="navList('boardFaq')">FAQ</a></li>
                         </ul>
                     </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
                 </ul>
             </div>
         </header>
@@ -80,13 +87,21 @@
                 <h3>회원 등록</h3>
             </div>
             <div class="con_area">
-                <div class="form sign" id="sign_form">
+                <div class="form sign" id="sign">
                     <div>
-                        <div>
+                        <h4 class="mo_title">회원등록</h4>
+                        <div class="input_wrap">
+                            <h5>구분 <span class="red">*</span></h5>
+                            <select name="" id="" class="w180">
+                                <option value="">일반</option>
+                                <option value="">관리자</option>
+                            </select>
+                        </div>
+                        <div class="input_wrap">
                             <h5>아이디 <span class="red">*</span></h5>
                             <input type="email" class="input w180" autofocus>
                         </div>
-                        <div class="flex">
+                        <div class="flex input_wrap">
                             <div>
                                 <h5>비밀번호 <span class="red">*</span></h5>
                                 <input type="password" class="input w180">
@@ -96,7 +111,7 @@
                                 <input type="password" class="input w180">
                             </div>
                         </div>
-                        <div class="flex">
+                        <div class="flex input_wrap">
                             <div>
                                 <h5>성명 (국문) <span class="red">*</span></h5>
                                 <input type="name" class="input w120" placeholder="성">
@@ -108,23 +123,21 @@
                                 <input type="name" class="input w120" placeholder="Last name">
                             </div>
                         </div>
-                        <div class="flex end">
-                            <div>
-                                <h5 class="m0">휴대전화 <span class="red">*</span></h5>
-                                <div class="flex">
-                                    <div id="phone_num" class="m0">
-                                        <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
-                                        <input type="tel" class="input w120" id="phone_num2">
-                                        <input type="tel" class="input w120" id="phone_num3">
-                                    </div>
+                        <div class="input_wrap">
+                            <h5>휴대전화 <span class="red">*</span></h5>
+                            <div class="flex">
+                                <div id="phone_num" class="m0">
+                                    <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
+                                    <input type="tel" class="input w120" id="phone_num2">
+                                    <input type="tel" class="input w120" id="phone_num3">
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div class="input_wrap">
                             <h5>면허번호</h5>
                             <input type="text" class="input w180">
                         </div>
-                        <div class="flex">
+                        <div class="flex input_wrap">
                             <div>
                                 <h5>소속 기관</h5>
                                 <input type="text" class="input w180">
@@ -137,6 +150,10 @@
                                 <h5>전공분야</h5>
                                 <input type="text" class="input w180">
                             </div>
+                        </div>
+                        <div class="btn_box">
+                            <a href="" class="mainbtn btn01">등록</a>
+                            <a href="" class="mainbtn btn02">취소</a>
                         </div>
                     </div>
                 </div>
