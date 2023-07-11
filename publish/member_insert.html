@@ -94,79 +94,81 @@
                 <h3>회원 등록</h3>
             </div>
             <div class="con_area">
-                <div class="form sign" id="sign">
-                    <div>
-                        <h4 class="mo_title">회원등록</h4>
-                        <div class="input_wrap">
-                            <h5>구분 <span class="red">*</span></h5>
-                            <select name="" id="" class="w180">
-                                <option value="">일반</option>
-                                <option value="">관리자</option>
-                            </select>
-                        </div>
-                        <div class="input_wrap">
-                            <h5>아이디 <span class="red">*</span></h5>
-                            <input type="email" class="input w180" autofocus>
-                        </div>
-                        <div class="flex input_wrap">
-                            <div>
-                                <h5>비밀번호 <span class="red">*</span></h5>
-                                <input type="password" class="input w180">
-                            </div>
-                            <div>
-                                <h5>비밀번호 확인 <span class="red">*</span></h5>
-                                <input type="password" class="input w180">
-                            </div>
-                        </div>
-                        <div class="flex input_wrap">
-                            <div>
-                                <h5>성명 (국문) <span class="red">*</span></h5>
-                                <input type="name" class="input w120" placeholder="성">
-                                <input type="name" class="input w120" placeholder="이름">
-                            </div>
-                            <div>
-                                <h5>성명 (영문) <span class="red">*</span></h5>
-                                <input type="name" class="input w120" placeholder="First name">
-                                <input type="name" class="input w120" placeholder="Last name">
-                            </div>
-                        </div>
-                        <div class="input_wrap">
-                            <h5>휴대전화 <span class="red">*</span></h5>
-                            <div class="flex">
-                                <div id="phone_num" class="m0">
-                                    <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
-                                    <input type="tel" class="input w120" id="phone_num2">
-                                    <input type="tel" class="input w120" id="phone_num3">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input_wrap">
-                            <h5>면허번호</h5>
-                            <input type="text" class="input w180">
-                        </div>
-                        <div class="flex input_wrap">
-                            <div>
-                                <h5>소속 기관</h5>
-                                <input type="text" class="input w180">
-                            </div>
-                            <div>
-                                <h5>전공과</h5>
-                                <input type="text" class="input w180">
-                            </div>
-                            <div>
-                                <h5>전공분야</h5>
-                                <input type="text" class="input w180">
-                            </div>
-                        </div>
-                        <div class="btn_box">
-                            <a href="" class="mainbtn btn01">등록</a>
-                            <a href="" class="mainbtn btn02">취소</a>
-                        </div>
+                <div class="form" id="sign">
+                    <h4 class="mo_title">회원등록</h4>
+                    <table class="table_b inner_table">
+                        <colgroup>
+                            <col width="20%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>구분</th>
+                                <td>
+                                    <select name="" id="" class="w180">
+                                        <option value="">일반</option>
+                                        <option value="">관리자</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>아이디 <span class="red">*</span></th>
+                                <td><input type="email" class="input w180" autofocus></td>
+                            </tr>
+                            <tr>
+                                <th>비밀번호 <span class="red">*</span></th>
+                                <td><input type="password" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>비밀번호 확인 <span class="red">*</span></th>
+                                <td><input type="password" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>성명 (국문) <span class="red">*</span></th>
+                                <td>
+                                    <input type="name" class="input w120" placeholder="성">
+                                    <input type="name" class="input w120" placeholder="이름">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>성명 (영문) <span class="red">*</span></th>
+                                <td>
+                                    <input type="name" class="input w120" placeholder="First name">
+                                    <input type="name" class="input w120" placeholder="Last name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>휴대전화 <span class="red">*</span></th>
+                                <td>
+                                    <div id="phone_num" class="m0">
+                                        <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
+                                        <input type="tel" class="input w120" id="phone_num2">
+                                        <input type="tel" class="input w120" id="phone_num3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>면허번호</th>
+                                <td><input type="text" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>소속 기관</th>
+                                <td><input type="text" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>전공과</th>
+                                <td><input type="text" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>전공분야</th>
+                                <td><input type="text" class="input w180"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btn_box">
+                        <a href="" class="mainbtn btn01">등록</a>
+                        <a href="" class="mainbtn btn02">취소</a>
                     </div>
-                </div>
-                <div class="btn_box">
-                    <a href="" class="mainbtn btn01">등록</a>
-                    <a href="" class="mainbtn btn02">취소</a>
                 </div>
             </div>
         </div>
