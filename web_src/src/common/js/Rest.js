@@ -12,6 +12,10 @@ const RestServer = (method, url, data) => {
 
         case "put":
             return Instance.put(url, data);
+
+        case "delete":
+            return Instance.delete(url, data);
+
         default:
             break;
     }

@@ -1,66 +1,48 @@
-import { RestServer } from "common/js/Rest";
-import React, { useState } from "react";
-import { apiPath } from "webPath";
+import DashBoardMain from "components/dashboard/DashBoardMain";
+import SideNav from "components/nav/SideNav";
+import UserList from "components/user/userList/UserList";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { routerPath } from "webPath";
 
 const Main = () => {
-    const [userId, setUserId] = useState("");
-    const [userPw, setUserPw] = useState("");
-    const [adminYn, setAdminYn] = useState("Y");
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const navigate = useNavigate();
+    let userInfo = useSelector((state) => state.userInfo.userInfo);
 
-    const inputHandler = (ref, e) => {
-        switch (ref) {
-            case "user_id":
-                setUserId(e.currentTarget.value);
-                break;
+    const [openPage, setOpenPage] = useState("dashboard");
 
-            case "user_pw":
-                setUserPw(e.currentTarget.value);
-                break;
+    // (() => {
+    //     userInfo = useSelector((state) => state.userInfo.userInfo);
+    // })();
 
-            default:
-                break;
+    useEffect(() => {
+        if (!userInfo) {
+            navigate(routerPath.login_url);
         }
+    }, []);
+
+    const switchPage = (page) => {
+        setOpenPage(page);
     };
 
-    const sendSignin = () => {
-        // console.log(userId, userPw);
-        let url = apiPath.api_login;
-        let data = {
-            signup_type: "000",
-            user_id: userId,
-            user_pwd: userPw,
-            admin_yn: adminYn,
-        };
+    const renderPage = (openPage) => {
+        switch (openPage) {
+            case "dashboard":
+                return <DashBoardMain />;
 
-        RestServer("post", url, data)
-            .then((response) => {
-                console.log(response);
-                setLoginSuccess(true);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            case "userList":
+                return <UserList />;
+
+            default:
+                return <DashBoardMain />;
+        }
     };
     return (
         <>
-            {loginSuccess ? (
-                <div>로그인 성공</div>
-            ) : (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="아이디"
-                        onChange={(e) => inputHandler("user_id", e)}
-                    />
-                    <input
-                        type="password"
-                        placeholder="비밀번호"
-                        onChange={(e) => inputHandler("user_pw", e)}
-                    />
-                    <button onClick={sendSignin}>로그인</button>
-                </div>
-            )}
+            <SideNav userInfo={userInfo} switchPage={switchPage} />
+
+            {renderPage(openPage)}
         </>
     );
 };

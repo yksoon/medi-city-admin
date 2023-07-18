@@ -36,22 +36,8 @@ const routerPath = {
     // 메인
     main_url: `${base_url}`,
 
-    // 마이페이지
-    myPage_url: `${base_url}mypage${slash}`,
-
-    // 회원가입
-    signup_url: `${base_url}signup${slash}`,
-    signup_ok_url: `${base_url}signupok${slash}`,
-
-    // 약관
-    terms_url: `${base_url}terms${slash}`,
-    privacy_url: `${base_url}privacy${slash}`,
-
-    // 아이디찾기
-    findId_url: `${base_url}find_id${slash}`,
-
-    // 비번찾기
-    findPw_url: `${base_url}find_pw${slash}`,
+    // 로그인
+    login_url: `${base_url}login${slash}`,
 };
 
 // api
@@ -114,10 +100,19 @@ const apiPath = {
         base_api_url + slash + account + slash + version + slash
     }user/_cert`,
 
+    // 인증결과조회 GET
+    api_user_cert_result: `${
+        base_api_url + slash + account + slash + version + slash
+    }user/_cert`,
+
     // 사용자 목록 POST
     api_users: `${
         base_api_url + slash + account + slash + version + slash
     }users`,
+
+    api_user_check: `${
+        base_api_url + slash + account + slash + version + slash
+    }user/_check`,
 
     // 사용자 확인 POST
     api_user_licenses: `${
@@ -138,6 +133,11 @@ const apiPath = {
     api_user_reset_pw: `${
         base_api_url + slash + account + slash + version + slash
     }user/find/_pwd`,
+
+    // 약관 목록 POST
+    api_terms_list: `${
+        base_api_url + slash + account + slash + version + slash
+    }_policies`,
 };
 
 export { routerPath, apiPath };
