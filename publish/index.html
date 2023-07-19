@@ -13,235 +13,181 @@
         <link rel="stylesheet" type="text/css" href="css/slick.css" />
         <link rel="stylesheet" type="text/css" href="css/slick-theme.css" />
         <script type="text/javascript" src="js/slick.min.js"></script>
-
-        <script src="js/nav.js"></script>
-
         <link rel="stylesheet" href="css/default.css" />
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
         <div class="wrap">
             <header>
-                <div class="header_content">
-                    <h1 class="logo">
-                        <a href="index.html"
-                            ><img src="img/common/logo.png" alt=""
-                        /></a>
-                    </h1>
-                    <div class="flex">
-                        <div class="login" id="header_login_wrap">
-                            <div id="header_login">
-                                <div class="flex">
-                                    <input
-                                        type="email"
-                                        placeholder="ID"
-                                        class="login"
-                                        autofocus
-                                    />
-                                    <input
-                                        type="password"
-                                        placeholder="PASSWORD"
-                                        class="login"
-                                    />
-                                    <a
-                                        href="javascript:void(0)"
-                                        class="login"
-                                        onclick="login();"
-                                        >LOGIN</a
-                                    >
-                                    <a href="sign.html" class="login"
-                                        >SIGN UP</a
-                                    >
-                                </div>
-                                <a href="id_find_step1.html" class="font-12"
-                                    >로그인에 문제가 발생하였나요?</a
-                                >
-                            </div>
-                            <div id="header_profile">
-                                <div class="flex profile">
-                                    <div>
-                                        <h5>환영합니다 홍길동님</h5>
-                                        <a
-                                            href="javascript:void(0)"
-                                            class="font-12"
-                                            id="header_logout"
-                                            >로그아웃</a
-                                        >
-                                        <a
-                                            href="mypage_modify_step1.html"
-                                            class="font-12"
-                                            >회원정보수정</a
-                                        >
-                                    </div>
-                                    <a
-                                        href="mypage.html"
-                                        class="profile_img_wrap"
-                                    >
-                                        <span class="profile_img"
-                                            ><img
-                                                src="img/common/profile01.png"
-                                                alt=""
-                                        /></span>
-                                        <div
-                                            id="gradeLabel"
-                                            class="grade"
-                                            name="gold"
-                                        >
-                                            <img
-                                                src="img/common/grade_gold.png"
-                                                alt=""
-                                                id="gradeLabelImg"
-                                            />
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                <div class="gnb">
+                    <div class="adm_profile">
+                        <p>관리자 (admin)</p>
+                        <div>
+                            <a href="login.html" class="font-12">로그아웃</a>
+                            <a
+                                href="http://dev-web.medi-city.co.kr/publish/index.html"
+                                target="_blank"
+                                class="font-12"
+                                >HOMEPAGE</a
+                            >
                         </div>
-                        <nav id="menu" onclick="menu_show();">
-                            <div class="menu">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </nav>
-                        <div id="sitemap">
-                            <div>
-                                <div>
-                                    <h3 class="font-38">SERVICE</h3>
-                                    <ul>
+                    </div>
+                    <ul class="sub_gnb">
+                        <li id="all_gnb">전체 메뉴 보기</li>
+                        <li>
+                            <a onclick="navList('dash')" class="on">대시보드</a>
+                        </li>
+                        <li>
+                            <a>홈페이지 관리</a>
+                            <ul class="sub_2depth">
+                                <li>
+                                    <a
+                                        >메인노출관리
+                                        <img
+                                            src="img/common/arrow_drop.png"
+                                            alt=""
+                                    /></a>
+                                    <ul class="sub_3depth">
                                         <li>
-                                            <a href="sitemap.html">
-                                                <span
-                                                    ><img
-                                                        src="img/main/quick09.png"
-                                                        alt=""
-                                                /></span>
-                                                <p>전체 서비스</p>
-                                            </a>
+                                            <a onclick="navList('homeVisual')"
+                                                >메인비주얼 관리</a
+                                            >
                                         </li>
                                         <li>
-                                            <a href="">
-                                                <span
-                                                    ><img
-                                                        src="img/main/quick03.png"
-                                                        alt=""
-                                                /></span>
-                                                <p>호텔 특가</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="">
-                                                <span
-                                                    ><img
-                                                        src="img/main/quick04.png"
-                                                        alt=""
-                                                /></span>
-                                                <p>MEDI ART</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="">
-                                                <span
-                                                    ><img
-                                                        src="img/main/quick05.png"
-                                                        alt=""
-                                                /></span>
-                                                <p>세무/회계 컨설팅</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="">
-                                                <span
-                                                    ><img
-                                                        src="img/main/quick06.png"
-                                                        alt=""
-                                                /></span>
-                                                <p>MICE/PCO</p>
-                                            </a>
+                                            <a onclick="navList('homeBanner')"
+                                                >배너 관리</a
+                                            >
                                         </li>
                                     </ul>
-                                </div>
-                                <div class="flex">
-                                    <div>
-                                        <h3 class="font-38">COMMUNITY</h3>
-                                        <ul>
-                                            <li>
-                                                <a href="">
-                                                    <span
-                                                        ><img
-                                                            src="img/main/quick10.png"
-                                                            alt=""
-                                                    /></span>
-                                                    <p>학회소식</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <span
-                                                        ><img
-                                                            src="img/main/quick11.png"
-                                                            alt=""
-                                                    /></span>
-                                                    <p>EVENT</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-38">MEMBERSHIP</h3>
-                                        <ul>
-                                            <li>
-                                                <a href="">
-                                                    <span
-                                                        ><img
-                                                            src="img/main/quick02.png"
-                                                            alt=""
-                                                    /></span>
-                                                    <p>MEDI POINT</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <span
-                                                        ><img
-                                                            src="img/main/quick07.png"
-                                                            alt=""
-                                                    /></span>
-                                                    <p>K-MEDI CREATOR</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <span
-                                                        ><img
-                                                            src="img/main/quick08.png"
-                                                            alt=""
-                                                    /></span>
-                                                    <p>MYPAGE</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="/" class="home"
-                            ><img src="img/common/header_home.png" alt=""
-                        /></a>
-                    </div>
+                                </li>
+                                <li>
+                                    <a onclick="navList('homePop')"
+                                        >팝업 관리</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        >이용약관 관리
+                                        <img
+                                            src="img/common/arrow_drop.png"
+                                            alt=""
+                                    /></a>
+                                    <ul class="sub_3depth">
+                                        <li>
+                                            <a onclick="navList('homeTermsCon')"
+                                                >이용약관</a
+                                            >
+                                        </li>
+                                        <li>
+                                            <a onclick="navList('homeTermsPri')"
+                                                >개인정보처리방침</a
+                                            >
+                                        </li>
+                                        <li>
+                                            <a onclick="navList('homeTermsMar')"
+                                                >마케팅 수신 동의</a
+                                            >
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">회원 관리</a>
+                            <ul class="sub_2depth">
+                                <li>
+                                    <a onclick="navList('memberList')"
+                                        >회원 리스트</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('memberMail')"
+                                        >단체 메일 발송</a
+                                    >
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>호텔 관리</a>
+                            <ul class="sub_2depth">
+                                <li>
+                                    <a onclick="navList('hotelList')"
+                                        >호텔 리스트</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('hotelRoom')"
+                                        >객실 관리</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('hotelReservation')"
+                                        >예약 관리</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('hotelFacilities')"
+                                        >전체 부대시설 관리</a
+                                    >
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                        <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                        <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                        <li>
+                            <a>K-MEDI</a>
+                            <ul class="sub_2depth">
+                                <li>
+                                    <a onclick="navList('kMediMember')"
+                                        >회원 관리</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('kMediContent')"
+                                        >컨텐츠 관리</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('kMediPoint')"
+                                        >포인트 관리</a
+                                    >
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>게시판 관리</a>
+                            <ul class="sub_2depth">
+                                <li>
+                                    <a onclick="navList('boardConf')"
+                                        >학회소식</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('boardNotice')"
+                                        >공지사항</a
+                                    >
+                                </li>
+                                <li>
+                                    <a onclick="navList('boardEvent')">EVENT</a>
+                                </li>
+                                <li>
+                                    <a onclick="navList('boardFaq')">FAQ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a onclick="navList('menu')">메뉴관리</a></li>
+                    </ul>
                 </div>
             </header>
+
+            <div class="content">
+                <div class="title">
+                    <h3>메디씨티</h3>
+                </div>
+            </div>
         </div>
     </body>
 </html>
-
-<script src="js/login.js"></script>
-<script src="js/sign.js"></script>
-
-<script>
-    //footer
-    const footer = document.querySelector("footer");
-    fetch("include/footer.html")
-        .then((res) => res.text())
-        .then((data) => (footer.innerHTML = data));
-</script>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
