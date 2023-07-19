@@ -116,7 +116,7 @@ modules.xml
 /phpunit.xml
 
 # Build data
-/build/
+# /build/
 
 ### VisualStudioCode ###
 .vscode/*
