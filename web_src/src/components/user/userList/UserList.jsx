@@ -208,7 +208,7 @@ const UserList = () => {
                                             <td>
                                                 <input type="checkbox" />
                                             </td>
-                                            <td>{item.mod_user_idx}</td>
+                                            <td>{item.user_idx}</td>
                                             <td>{item.user_type}</td>
                                             <td>{item.user_id}</td>
                                             <td>{item.user_name_ko}</td>
