@@ -1,5 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { CommonConsole, CommonModal } from "common/js/Common";
+import { RestServer } from "common/js/Rest";
+import { apiPath } from "webPath";
+import { useDispatch } from "react-redux";
+import { set_alert, set_spinner } from "redux/actions/commonAction";
+import RegUserModal from "./RegUserModal";
 
 const testData = [
     {
@@ -40,6 +46,107 @@ const testData = [
     },
 ];
 const UserList = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalContent, setModalContent] = useState([]);
+    const [userList, setUserList] = useState([]);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        reqUserList();
+    }, []);
+
+    const handleModalClose = () => {
+        setIsOpen(false);
+    };
+
+    const regUser = () => {
+        setIsOpen(true);
+        setModalTitle("회원등록");
+        setModalContent([]);
+    };
+
+    // 유저 리스트
+    const reqUserList = () => {
+        dispatch(
+            set_spinner({
+                isLoading: true,
+            })
+        );
+
+        // account/v1/user/infos
+        // POST
+        let url = apiPath.api_user_list;
+        let data = {
+            page_num: 1,
+            page_size: 10,
+        };
+
+        RestServer("post", url, data)
+            .then((response) => {
+                let res = response;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
+
+                if (result_code === "0000") {
+                    setUserList(result_info);
+
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+                } else {
+                    // 에러
+                    CommonConsole("log", response);
+
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+                }
+            })
+            .catch((error) => {
+                // 오류발생시 실행
+                CommonConsole("log", error);
+
+                if (
+                    error.response.status === 500 ||
+                    error.response.status === 503
+                ) {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "잠시 후 다시 시도해주세요",
+                            alertContent: "",
+                        })
+                    );
+                } else {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "조회 실패",
+                            alertContent: "",
+                        })
+                    );
+                }
+            });
+    };
+
     return (
         <>
             <div className="content">
@@ -58,10 +165,7 @@ const UserList = () => {
                             <Link className="subbtn off">검색</Link>
                         </div>
                         <div>
-                            <Link
-                                className="subbtn on"
-                                onClick="modal_open(sign);"
-                            >
+                            <Link className="subbtn on" onClick={regUser}>
                                 회원등록
                             </Link>{" "}
                             <Link className="subbtn on">엑셀 다운로드</Link>
@@ -98,8 +202,8 @@ const UserList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {testData &&
-                                    testData.map((item, idx) => (
+                                {userList &&
+                                    userList.map((item, idx) => (
                                         <tr key={`list_${idx}`}>
                                             <td>
                                                 <input type="checkbox" />
@@ -107,7 +211,7 @@ const UserList = () => {
                                             <td>{item.mod_user_idx}</td>
                                             <td>{item.user_type}</td>
                                             <td>{item.user_id}</td>
-                                            <td>{item.mod_user_name_ko}</td>
+                                            <td>{item.user_name_ko}</td>
                                             <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
                                             <td>{item.organization_name_ko}</td>
                                             <td>{item.department_name_ko}</td>
@@ -125,6 +229,11 @@ const UserList = () => {
                     <div className="pagenation"></div>
                 </div>
             </div>
+            <RegUserModal
+                isOpen={isOpen}
+                title={modalTitle}
+                handleModalClose={handleModalClose}
+            />
         </>
     );
 };

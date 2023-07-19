@@ -13,7 +13,9 @@ const Main = () => {
     const [openPage, setOpenPage] = useState("dashboard");
 
     // (() => {
-    //     userInfo = useSelector((state) => state.userInfo.userInfo);
+    //     if (!userInfo) {
+    //         navigate(routerPath.login_url);
+    //     }
     // })();
 
     useEffect(() => {
@@ -40,7 +42,9 @@ const Main = () => {
     };
     return (
         <>
-            <SideNav userInfo={userInfo} switchPage={switchPage} />
+            {userInfo && (
+                <SideNav userInfo={userInfo} switchPage={switchPage} />
+            )}
 
             {renderPage(openPage)}
         </>

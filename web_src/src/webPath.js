@@ -110,6 +110,11 @@ const apiPath = {
         base_api_url + slash + account + slash + version + slash
     }users`,
 
+    // 사용자 목록 POST
+    api_user_list: `${
+        base_api_url + slash + account + slash + version + slash
+    }user/infos`,
+
     api_user_check: `${
         base_api_url + slash + account + slash + version + slash
     }user/_check`,

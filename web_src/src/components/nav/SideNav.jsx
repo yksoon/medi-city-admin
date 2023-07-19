@@ -113,8 +113,10 @@ const SideNav = (props) => {
                 <div className="gnb">
                     <div className="adm_profile">
                         <p>
-                            {userInfo && userInfo.mod_user_name_ko} (
-                            {userInfo && userInfo.user_id})
+                            {userInfo && userInfo.mod_user_name_ko
+                                ? userInfo.mod_user_name_ko
+                                : userInfo.reg_user_name_ko}{" "}
+                            ({userInfo && userInfo.user_id})
                         </p>
                         <div>
                             <Link onClick={signOut} className="font-12">

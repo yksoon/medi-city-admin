@@ -120,19 +120,38 @@ const LoginMain = () => {
                 // 오류발생시 실행
                 CommonConsole("log", error);
 
-                dispatch(
-                    set_spinner({
-                        isLoading: false,
-                    })
-                );
+                if (
+                    error.response.status === 500 ||
+                    error.response.status === 503
+                ) {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
 
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "로그인 실패",
-                        alertContent: "",
-                    })
-                );
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "잠시 후 다시 시도해주세요",
+                            alertContent: "",
+                        })
+                    );
+                } else {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "로그인 실패",
+                            alertContent: "",
+                        })
+                    );
+                }
             });
     };
 
