@@ -22,6 +22,7 @@ a.font-12 {font-size: 12px; font-weight: 500; color: #818181; text-decoration: u
 .gray-f {color: #f8f8f8;}
 .white {color: #fff;}
 
+.w80 {width:80px;}
 .w100 {width:100px;}
 .w120 {width:120px;}
 .w140 {width:140px;}
@@ -43,6 +44,7 @@ a.font-12 {font-size: 12px; font-weight: 500; color: #818181; text-decoration: u
 .m0 {margin:0 !important;}
 
 .hide {display:none;}
+.block {display:block !important;}
 
 .bd10 {border-radius: 10px !important;}
 .bd20 {border-radius: 20px !important;}
@@ -55,6 +57,7 @@ a.font-12 {font-size: 12px; font-weight: 500; color: #818181; text-decoration: u
 /* btn */
 a.login {display:inline-block;width: 104px;height: 36px;line-height: 36px;background: #0047A0;color: #fff;font-size: 12px;font-weight: 500;text-align: center;border-radius: 50px;}
 .btn_box {margin:0 auto;text-align:center;margin:60px 0 0;}
+.subbtn_box {margin:10px auto 0;text-align: right;}
 a.mainbtn {display:inline-block;width: 140px;height: 38px;line-height: 36px;font-size: 16px;font-weight: 500;text-align: center;border-radius: 50px;margin: 0 10px 0 0 ;transition:all 0.3s;}
 a.mainbtn:last-child {margin: 0;}
 a.mainbtn.btn01 {background: #0047A0;color: #fff;}
@@ -73,6 +76,8 @@ a.hotel_btn {display:inline-block;width: 220px;height: 53px;line-height: 53px;fo
 .file {display:none;}
 .file_btn {display:inline-block;width:auto;min-width:146px;padding: 0 38px;height: 48px;text-align: center;line-height: 48px;border: 1px solid #ddd;color: #818181;cursor: pointer;}
 a.tablebtn {display:inline-block;width:auto;padding: 0 10px;height: 26px;text-align: center;line-height: 26px;border-radius: 5px;font-size: 14px;background: #525252;color:#fff;transition:all 0.3s;}
+.plusbtn_wrap{display:flex;justify-content: space-between;}
+.plusbtn_wrap a {padding:0 8px;border: 1px solid #ddd;display: inline-block;border-radius: 5px;line-height: 21px;;}
 
 select {border: 1px solid #ddd;height:28px;line-height:28px;font-size: 14px;color: #333;padding: 0 10px;cursor:pointer;border-radius: 5px;}
 input::placeholder {color: #a6a6a6;}
@@ -98,12 +103,16 @@ h3.title {font-size: 38px;font-weight: 700;}
 /* 공통 //E */
 
 /* 모달 //S */
-.mo_title {font-size: 21px;font-weight: 700;margin:0 0 20px;padding: 0 0 10px;border-bottom: 1px solid #ddd;;}
+h4.mo_title {font-size: 24px;font-weight: 700;margin:0 0 20px;padding: 0 0 10px;border-bottom: 1px solid #ddd;;}
+div.mo_title {font-size: 24px;font-weight: 700;margin:0 0 20px;padding: 0 0 10px;border-bottom: 1px solid #ddd;display:flex;justify-content: space-between;}
+div.mo_title > h4{font-size: 24px;font-weight: 700;}
+.mo_subtitle {font-size:18px;font-weight: 700;margin:0 0 20px;}
 .modal_wrap {display:none;position:fixed;top:0;left:0;width:100%;height:100vh;overflow:hidden;background: rgba(0,0,0,0.4);z-index:999;}
 .modal_wrap .modal {position:absolute;top:50%;left:50%;transform:translate(-50%, -50%); box-shadow: 5px 5px 15px rgba(0,0,0,0.1);background:#fff;padding:40px;max-height:840px;overflow-y:scroll;z-index:999;border-radius: 5px;}
 .modal{ -ms-overflow-style: none; } .modal::-webkit-scrollbar{ display:none; }
 .modal_wrap .modal .modal_close {position:absolute;top:42px;right:50px;cursor:pointer;}
 .modal_wrap .modal .modal_close img {width: 16px;}
+.modal_content {display:none;}
 /* 모달 //E */
 
 
@@ -150,6 +159,13 @@ h3.title {font-size: 38px;font-weight: 700;}
 .table_b tbody th {font-size: 16px;background: #efefef;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: center;}
 .table_b tbody td:last-child {border-right: none;}
 .table_b tbody td {font-size: 16px;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: left;}
+
+.table_bb {border-top: 1px solid #ddd;}
+.table_bb tbody th {font-size: 14px;background: #efefef;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: center;}
+.table_bb tbody td:last-child {border-right: none;}
+.table_bb tbody td {font-size: 14px;padding:5px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;text-align: left;}
+.table_bb select, .table_bb input {font-size: 14px;font-family:'Pretendard';}
+
 .inner_table tbody th {font-size:14px;padding:2px;}
 .inner_table tbody td {font-size:14px;padding:2px;}
 
@@ -167,3 +183,31 @@ h3.title {font-size: 38px;font-weight: 700;}
 .person_box p {font-size: 14px;}
 
 .hotel_thumb_td img{max-width:100px;}
+
+
+/* 호텔등록 */
+.hotel_box {margin:0 0 10px;}
+.hotel_thumb {display:inline-block;width:150px;height:90px;overflow:hidden;background-color:#efefef;margin:0 0 6px;}
+.hotel_thumb img {width: 100%;}
+.hotel_img {display:inline-block;width:150px;height:90px;overflow:hidden;background-color:#efefef;margin:0 0 6px;}
+.hotel_img img {width: 100%;}
+.hotel_radio_box {display: inline-block;margin:0 10px 0 0;}
+.hotel_radio_box label {cursor:pointer;}
+.hotel_star_wrap {display:flex;width:20px;cursor:pointer;}
+.hotel_star_wrap span.star {display:inline-block;width:20px;cursor:pointer;}
+.hotel_star_wrap span.star.on svg {fill: #ffc107 !important;}
+.hotel_add_wrap > div {margin:0 0 6px;}
+.hotel_info {width:100%;height:120px;font-size:14px;font-family: inherit;resize:none;border:1px solid #ddd;padding:5px;line-height: 20px;}
+
+.hotel_service th label {display:block;width:100%;height:100%;cursor:pointer;}
+.hotel_service input[type="checkbox"] {vertical-align: middle;margin:0 0 2px;}
+
+.hotel_service_radio {display: inline-block;}
+.hotel_pay_box {display: inline-block;}
+.hotel_service_radio label {padding:2px 15px;background:#ddd;border-radius: 5px;cursor:pointer;margin:0 5px 0 0;}
+.hotel_service_radio input[type="radio"]:checked + label {background: #0047a0; color:#fff;}
+
+/* 스피너 */
+.spinner {position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(255,255,255,0.4);z-index:999;}
+.spinner span {position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);width:40px !important; height:40px !important;padding:0 !important;color:#0047A0;}
+.spinner span.error {color:#1976d2;}
