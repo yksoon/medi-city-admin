@@ -1,114 +1,84 @@
 $(function () {
-    $("#nav").hide();
-    $(".all_menu").click(function () {
-        $("#nav").slideToggle();
+    // !! 페이지 이동시 gnb 그대로 열려있어야함
+    $(".sub_2depth").hide();
+    $(".sub_3depth").hide();
+    $(".sub_gnb > li > a").click(function () {
+        $(".sub_2depth").slideUp();
+        $(".sub_gnb > li > a").removeClass("on");
+        $(this).siblings(".sub_2depth").slideToggle();
+        $(this).toggleClass("on");
+    });
+    $(".sub_2depth > li > a").click(function () {
+        $(this).siblings(".sub_3depth").slideToggle();
+        $(this).toggleClass("on");
+    });
+    $("#all_gnb").click(function () {
+        $(".sub_2depth").slideToggle();
+        $(".sub_3depth").slideToggle();
     });
 });
 
-// 햄버거메뉴 on/off
-function menu_show() {
-    const nav = document.getElementById("menu");
-    const sitemap = document.getElementById("sitemap");
-    if (nav.classList.contains("nav_on")) {
-        sitemap.style.left = "-200vh";
-        nav.classList.remove("nav_on");
-    } else {
-        sitemap.style.left = 0;
-        nav.classList.add("nav_on");
+//퍼블 할때마다 페이지 추가
+function navList(listName) {
+    switch (listName) {
+        case "dash":
+            location.href = "index.html";
+            break;
+
+        case "memberList":
+            location.href = "member_list.html";
+            break;
+
+        case "hotelList":
+            location.href = "hotel_list.html";
+            break;
+
+        default:
+            break;
     }
 }
-$(function () {
-    $("#nav1_s").hide();
-    $("#nav1").click(function () {
-        $("#all_sitemap").slideToggle();
 
-        $("#all_contecus").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav6_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
+// document.addEventListener("DOMContentLoaded", function() {
+// 	var sub2depthElements = document.querySelectorAll('.sub_2depth');
+// 	var sub3depthElements = document.querySelectorAll('.sub_3depth');
+// 	var subGnbLinks = document.querySelectorAll('.sub_gnb > li > a');
+// 	var sub2depthLinks = document.querySelectorAll('.sub_2depth > li > a');
+// 	var allGnbButton = document.getElementById('all_gnb');
 
-$(function () {
-    $("#nav2_s").hide();
-    $("#nav2").click(function () {
-        $("#nav2_s").slideToggle();
+// 	sub2depthElements.forEach(function(element) {
+// 		element.style.display = 'none';
+// 	});
 
-        $("#nav1_s").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav6_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
-$(function () {
-    $("#nav3_s").hide();
-    $("#nav3").click(function () {
-        $("#nav3_s").slideToggle();
+// 	sub3depthElements.forEach(function(element) {
+// 		element.style.display = 'none';
+// 	});
 
-        $("#nav1_s").slideUp();
-        $("#nav2_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav6_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
-$(function () {
-    $("#nav4_s").hide();
-    $("#nav4").click(function () {
-        $("#nav4_s").slideToggle();
+// 	subGnbLinks.forEach(function(link) {
+// 		link.addEventListener('click', function() {
+// 			sub2depthElements.forEach(function(element) {
+// 				element.style.display = 'none';
+// 			});
+// 			subGnbLinks.forEach(function(link) {
+// 				link.classList.remove('on');
+// 			});
+// 			this.nextElementSibling.style.display = 'block';
+// 			this.classList.toggle('on');
+// 		});
+// 	});
 
-        $("#nav1_s").slideUp();
-        $("#nav2_s").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav6_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
+// 	sub2depthLinks.forEach(function(link) {
+// 		link.addEventListener('click', function() {
+// 			this.nextElementSibling.style.display = 'block';
+// 			this.classList.toggle('on');
+// 		});
+// 	});
 
-$(function () {
-    $("#nav5_s").hide();
-    $("#nav5").click(function () {
-        $("#nav5_s").slideToggle();
-
-        $("#nav1_s").slideUp();
-        $("#nav2_s").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav6_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
-
-$(function () {
-    $("#nav6_s").hide();
-    $("#nav6").click(function () {
-        $("#nav6_s").slideToggle();
-
-        $("#nav1_s").slideUp();
-        $("#nav2_s").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav7_s").slideUp();
-    });
-});
-
-$(function () {
-    $("#nav7_s").hide();
-    $("#nav7").click(function () {
-        $("#nav7_s").slideToggle();
-
-        $("#nav1_s").slideUp();
-        $("#nav2_s").slideUp();
-        $("#nav3_s").slideUp();
-        $("#nav4_s").slideUp();
-        $("#nav5_s").slideUp();
-        $("#nav6_s").slideUp();
-    });
-});
+// 	allGnbButton.addEventListener('click', function() {
+// 		sub2depthElements.forEach(function(element) {
+// 			element.style.display = 'block';
+// 		});
+// 		sub3depthElements.forEach(function(element) {
+// 			element.style.display = 'block';
+// 		});
+// 	});
+// });
