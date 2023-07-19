@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const RegUserModal = (props) => {
     // { isOpen, title, content, btn, handleModalClose }
-    let option = {
+    let modalOption = {
         isOpen: props.isOpen,
         title: props.title,
         content: props.content,
@@ -14,22 +14,15 @@ const RegUserModal = (props) => {
     return (
         <>
             <Modal
-                open={option.isOpen}
-                onClose={option.handleModalClose}
+                open={modalOption.isOpen}
+                onClose={modalOption.handleModalClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <div className="modal_wrap" id="modal_wrap">
                     <div className="modal w600" id="modal">
-                        {/* <div
-                            className="modal_close"
-                            onClick={option.handleModalClose}
-                        >
-                            <img src="/img/common/modal_close.png" alt="" />
-                        </div> */}
-
                         <div class="title">
-                            <h3>{option.title}</h3>
+                            <h3>{modalOption.title}</h3>
                         </div>
 
                         <table className="table_b inner_table">
@@ -190,7 +183,7 @@ const RegUserModal = (props) => {
                             <Link className="mainbtn btn01">등록</Link>
                             <Link
                                 className="mainbtn btn02"
-                                onClick={option.handleModalClose}
+                                onClick={modalOption.handleModalClose}
                             >
                                 취소
                             </Link>
