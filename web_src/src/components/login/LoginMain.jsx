@@ -56,7 +56,7 @@ const LoginMain = () => {
     const login = () => {
         // auth/v1/signin
         // POST
-        let url = apiPath.api_login;
+        let url = apiPath.api_auth_login;
         let data = {
             signup_type: "000",
             user_id: inputID.current.value,
@@ -76,7 +76,6 @@ const LoginMain = () => {
                         "md_licenses_number",
                         "signin_policy",
                         "signin_policy_cd",
-                        "user_idx",
                         "user_pwd",
                         "user_role",
                         "user_role_cd",
@@ -89,6 +88,22 @@ const LoginMain = () => {
 
                     dispatch(set_user_info(JSON.stringify(user_info)));
 
+                    // dispatch(
+                    //     set_spinner({
+                    //         isLoading: false,
+                    //     })
+                    // );
+
+                    // dispatch(
+                    //     set_alert({
+                    //         isAlertOpen: true,
+                    //         alertTitle: "로그인 성공",
+                    //         alertContent: "",
+                    //     })
+                    // );
+
+                    navigate(routerPath.main_url);
+                } else {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -98,17 +113,7 @@ const LoginMain = () => {
                     dispatch(
                         set_alert({
                             isAlertOpen: true,
-                            alertTitle: "로그인 성공",
-                            alertContent: "",
-                        })
-                    );
-
-                    navigate(routerPath.main_url);
-                } else {
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "로그인 실패",
+                            alertTitle: res.headers.result_message_ko,
                             alertContent: "",
                         })
                     );

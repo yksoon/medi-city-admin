@@ -15,12 +15,20 @@ import { set_alert } from "redux/actions/commonAction";
 import { useNavigate } from "react-router";
 
 function App() {
-    const navigate = useNavigate();
+    let ipInfo = useSelector((state) => state.ipInfo.ipInfo);
 
     useEffect(() => {
         // localStorage.clear();
 
-        getIpInfo();
+        const ipCallback = (ip) => {
+            if (ip) {
+                dispatch(set_ip_info(ip));
+            }
+        };
+        if (!ipInfo) {
+            getIpInfo(ipCallback);
+        }
+
         getResultCode();
         getCodes();
         getCountryBank();
@@ -49,24 +57,26 @@ function App() {
     let spinnerOption = useSelector((state) => state.common.spinner);
 
     // IP
-    const getIpInfo = () => {
+    const getIpInfo = async (callback) => {
         let ip;
 
-        axios
+        await axios
             .get("https://geolocation-db.com/json/")
             .then((res) => {
                 ip = res.data.IPv4;
-                dispatch(set_ip_info(ip));
+                callback(ip);
+                // dispatch(set_ip_info(ip));
             })
             .catch((error) => {
                 ip = "";
-                dispatch(set_ip_info(ip));
+                callback(ip);
+                // dispatch(set_ip_info(ip));
             });
     };
 
     // result code
     const getResultCode = () => {
-        RestServer("get", apiPath.api_result, {})
+        RestServer("get", apiPath.api_mng_result, {})
             .then((response) => {
                 console.log("result_code", response);
 
@@ -82,7 +92,7 @@ function App() {
 
     // codes
     const getCodes = () => {
-        RestServer("post", apiPath.api_codes, {
+        RestServer("post", apiPath.api_mng_codes, {
             code_types: [],
             exclude_code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
         })
@@ -99,7 +109,7 @@ function App() {
 
     // codes
     const getCountryBank = () => {
-        RestServer("post", apiPath.api_codes, {
+        RestServer("post", apiPath.api_mng_codes, {
             code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
             exclude_code_types: [],
         })

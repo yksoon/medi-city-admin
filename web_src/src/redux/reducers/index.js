@@ -12,13 +12,13 @@ import common from "./reducers/common";
 const persistConfig = {
     key: "root",
     storage: storageSession,
-    whitelist: ["userInfo"],
+    whitelist: ["userInfo", "ipInfo"],
 };
 
 const rootReducer = combineReducers({
     codes,
     userInfo: persistReducer(persistConfig, userInfo),
-    ipInfo,
+    ipInfo: persistReducer(persistConfig, ipInfo),
     certInfo,
     common,
 });
