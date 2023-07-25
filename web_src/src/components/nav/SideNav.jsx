@@ -7,9 +7,9 @@ import { set_alert, set_spinner } from "redux/actions/commonAction";
 import { set_user_info } from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
 
-import { navItems } from "./navItems";
 import $ from "jquery";
 import RegUserModal from "components/user/userList/RegUserModal";
+import { set_page } from "redux/actions/pageActios";
 
 const SideNav = (props) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -162,6 +162,11 @@ const SideNav = (props) => {
                         })
                     );
 
+                    dispatch(
+                        set_page({
+                            page: "dashboard",
+                        })
+                    );
                     window.location.replace(routerPath.login_url);
                 }
             })
@@ -185,7 +190,14 @@ const SideNav = (props) => {
                     })
                 );
 
+                dispatch(
+                    set_page({
+                        page: "dashboard",
+                    })
+                );
                 dispatch(set_user_info(null));
+
+                window.location.replace(routerPath.login_url);
             });
     };
 

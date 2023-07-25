@@ -99,8 +99,8 @@ const UserList = () => {
                 }
                 // 비정상접근 or 비정상토큰
                 else if (
-                    error.response.result_code === "9995" ||
-                    error.response.result_code === "2003"
+                    error.response.headers.result_code === "9995" ||
+                    error.response.headers.result_code === "2003"
                 ) {
                     tokenExpire(dispatch);
                 }
@@ -252,10 +252,11 @@ const UserList = () => {
                                 <col width="10%" />
                                 <col width="10%" />
                                 <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
+                                <col width="9%" />
+                                <col width="9%" />
+                                <col width="9%" />
+                                <col width="6%" />
+                                <col width="6%" />
                             </colgroup>
                             <thead>
                                 <tr>
@@ -270,6 +271,7 @@ const UserList = () => {
                                     <th>소속</th>
                                     <th>전공과</th>
                                     <th>전공분야</th>
+                                    <th>가입일</th>
                                     <th>정보수정</th>
                                 </tr>
                             </thead>
@@ -288,6 +290,9 @@ const UserList = () => {
                                             <td>{item.organization_name_ko}</td>
                                             <td>{item.department_name_ko}</td>
                                             <td>{item.specialized_name_ko}</td>
+                                            <td>
+                                                {item.reg_dttm.split(" ")[0]}
+                                            </td>
                                             <td>
                                                 <Link
                                                     className="tablebtn"

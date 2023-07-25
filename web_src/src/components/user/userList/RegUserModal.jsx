@@ -9,6 +9,7 @@ import { pwPattern } from "common/js/Pattern";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import { apiPath } from "webPath";
 import { RestServer } from "common/js/Rest";
+import { set_page } from "redux/actions/pageActios";
 
 const RegUserModal = (props) => {
     // { isOpen, title, content, btn, handleModalClose }
@@ -228,11 +229,22 @@ const RegUserModal = (props) => {
 
                     console.log(res);
 
-                    // if (res.headers.result_code === "0000") {
-                    //     setIdStatus(true);
-                    // } else if (res.headers.result_code === "1000") {
-                    //     setIdStatus(false);
-                    // }
+                    if (res.headers.result_code === "0000") {
+                        dispatch(
+                            set_spinner({
+                                isLoading: false,
+                            })
+                        );
+
+                        dispatch(
+                            set_alert({
+                                isAlertOpen: true,
+                                alertTitle: res.headers.result_message_ko,
+                            })
+                        );
+
+                        window.location.reload();
+                    }
                 })
                 .catch((error) => {
                     CommonConsole("log", error);

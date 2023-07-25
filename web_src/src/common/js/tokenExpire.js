@@ -1,8 +1,10 @@
 import { RestServer } from "./Rest";
-import { set_user_info } from "redux/actions/userInfoAction";
+import { init_user_info, set_user_info } from "redux/actions/userInfoAction";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import { apiPath, routerPath } from "webPath";
 import { CommonConsole } from "./Common";
+import { useSelector } from "react-redux";
+import store from "redux/store/store";
 
 const tokenExpire = (dispatch) => {
     dispatch(
@@ -18,6 +20,8 @@ const tokenExpire = (dispatch) => {
         })
     );
 
+    let userInfo = store.getState().userInfo.userInfo;
+
     // signout
     // url : /v1/signout
     // method : POST
@@ -31,7 +35,8 @@ const tokenExpire = (dispatch) => {
 
             if (result_code === "0000") {
                 // localStorage.removeItem("userInfo");
-                dispatch(set_user_info(null));
+                // dispatch(set_user_info(null));
+                dispatch(init_user_info);
 
                 dispatch(
                     set_spinner({
@@ -62,7 +67,8 @@ const tokenExpire = (dispatch) => {
                 })
             );
 
-            dispatch(set_user_info(null));
+            // dispatch(set_user_info(null));
+            dispatch(init_user_info);
         });
 };
 

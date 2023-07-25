@@ -1,20 +1,23 @@
 import { CommonConsole } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
+import tokenExpire from "common/js/tokenExpire";
 import DashBoardMain from "components/dashboard/DashBoardMain";
 import SideNav from "components/nav/SideNav";
 import UserList from "components/user/userList/UserList";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { set_spinner } from "redux/actions/commonAction";
+import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_page } from "redux/actions/pageActios";
 import { apiPath, routerPath } from "webPath";
 
 const Main = () => {
     const navigate = useNavigate();
     let userInfo = useSelector((state) => state.userInfo.userInfo);
+    let userToken = useSelector((state) => state.userInfo.userToken);
+    let page = useSelector((state) => state.page.page);
     const dispatch = useDispatch();
 
-    const [openPage, setOpenPage] = useState("dashboard");
     const [menuList, setMenuList] = useState([]);
 
     // (() => {
@@ -24,11 +27,11 @@ const Main = () => {
     // })();
 
     useEffect(() => {
-        if (!userInfo) {
+        if (!userToken) {
             navigate(routerPath.login_url);
+        } else {
+            requestMenu();
         }
-
-        requestMenu();
     }, []);
 
     const requestMenu = () => {
@@ -45,18 +48,60 @@ const Main = () => {
 
                 if (result_code === "0000") {
                     resData = res.data.result_info;
-                    // createMenuList(resData);
 
-                    // 테스트
-                    createMenuList2(resData);
+                    createMenuList(resData);
                 }
             })
             .catch((error) => {
                 // 오류발생시 실행
                 CommonConsole("log", error);
+                // 서버 배포중이거나 지연
+                if (
+                    error.response.status === 500 ||
+                    error.response.status === 503
+                ) {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "잠시 후 다시 시도해주세요",
+                            alertContent: "",
+                        })
+                    );
+                }
+                // 비정상접근 or 비정상토큰
+                else if (
+                    error.response.headers.result_code === "9995" ||
+                    error.response.headers.result_code === "2003"
+                ) {
+                    tokenExpire(dispatch);
+                }
+                // 에러
+                else {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle:
+                                error.response.headers.result_message_ko,
+                            alertContent: "",
+                        })
+                    );
+                }
             });
     };
 
+    /*
     const createMenuList = (menuData) => {
         let menuArr = [];
         let depth1 = [];
@@ -170,8 +215,9 @@ const Main = () => {
             })
         );
     };
+    */
 
-    const createMenuList2 = (menuData) => {
+    const createMenuList = (menuData) => {
         let menuArr = [];
         let depth1 = [];
         let depth2 = [];
@@ -194,6 +240,7 @@ const Main = () => {
             } else {
                 depth3.push(menuOnce);
             }
+            return item;
         });
 
         depth2.map((item2) => {
@@ -206,7 +253,11 @@ const Main = () => {
                         .find((e) => e.menu_code === item2.menu_code)
                         .child.push(item3);
                 }
+
+                return item3;
             });
+
+            return item2;
         });
 
         depth1.map((item1) => {
@@ -219,7 +270,11 @@ const Main = () => {
                         .find((e) => e.menu_code === item1.menu_code)
                         .child.push(item2);
                 }
+
+                return item2;
             });
+
+            return item1;
         });
 
         menuArr = depth1;
@@ -233,11 +288,11 @@ const Main = () => {
     };
 
     const switchPage = (page) => {
-        setOpenPage(page);
+        dispatch(set_page(page));
     };
 
-    const renderPage = (openPage) => {
-        switch (openPage) {
+    const renderPage = (page) => {
+        switch (page) {
             case "dashboard":
                 return <DashBoardMain />;
 
@@ -258,7 +313,7 @@ const Main = () => {
                 />
             )}
 
-            {renderPage(openPage)}
+            {renderPage(page)}
         </>
     );
 };

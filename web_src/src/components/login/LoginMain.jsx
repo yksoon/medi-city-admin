@@ -1,13 +1,19 @@
 import { CommonConsole } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { set_user_info } from "redux/actions/userInfoAction";
+import { set_page } from "redux/actions/pageActios";
+import {
+    init_user_info,
+    set_user_info,
+    set_user_token,
+} from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
 
 const LoginMain = () => {
+    const userToken = useSelector((state) => state.userInfo.userToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -15,9 +21,13 @@ const LoginMain = () => {
     const inputPW = useRef(null);
 
     useEffect(() => {
-        dispatch(set_user_info(null));
-
-        inputID.current.focus();
+        if (userToken) {
+            window.location.href(routerPath.main_url);
+        } else {
+            dispatch(set_page("dashboard"));
+            dispatch(init_user_info);
+            inputID.current.focus();
+        }
     }, []);
 
     const clickLogin = () => {
@@ -86,21 +96,15 @@ const LoginMain = () => {
                         delete user_info[deleteKey[i]];
                     }
 
+                    dispatch(init_user_info);
+
+                    sessionStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(user_info)
+                    );
                     dispatch(set_user_info(JSON.stringify(user_info)));
 
-                    // dispatch(
-                    //     set_spinner({
-                    //         isLoading: false,
-                    //     })
-                    // );
-
-                    // dispatch(
-                    //     set_alert({
-                    //         isAlertOpen: true,
-                    //         alertTitle: "로그인 성공",
-                    //         alertContent: "",
-                    //     })
-                    // );
+                    dispatch(set_user_token(JSON.stringify(user_info)));
 
                     navigate(routerPath.main_url);
                 } else {
@@ -125,10 +129,27 @@ const LoginMain = () => {
                 // 오류발생시 실행
                 CommonConsole("log", error);
 
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
+                if (error.response) {
+                    if (
+                        error.response.status === 500 ||
+                        error.response.status === 503
+                    ) {
+                        dispatch(
+                            set_spinner({
+                                isLoading: false,
+                            })
+                        );
+
+                        dispatch(
+                            set_alert({
+                                isAlertOpen: true,
+                                alertTitle: "잠시 후 다시 시도해주세요",
+                                alertContent: "",
+                            })
+                        );
+                    }
+                }
+                if (error.message === "timeout of 5000ms exceeded") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -182,6 +203,7 @@ const LoginMain = () => {
                             placeholder="ID"
                             ref={inputID}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
+                            defaultValue="ksyong3@naver.com"
                         />
                     </div>
                     <div>
@@ -192,6 +214,7 @@ const LoginMain = () => {
                             placeholder="PW"
                             ref={inputPW}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
+                            defaultValue="123qwe123!@#"
                         />
                     </div>
                     <div className="flex login_btn">

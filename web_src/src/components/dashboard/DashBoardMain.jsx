@@ -1,4 +1,3 @@
-import { navItems } from "components/nav/navItems";
 import React from "react";
 
 const DashBoardMain = () => {
@@ -8,7 +7,9 @@ const DashBoardMain = () => {
                 <div className="title">
                     <h3>메디씨티</h3>
                 </div>
-                <div>{JSON.stringify(navItems)}</div>
+                <div>
+                    <h3>대쉬보드입니다</h3>
+                </div>
             </div>
         </>
     );

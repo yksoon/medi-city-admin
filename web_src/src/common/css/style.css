@@ -221,3 +221,9 @@ div.select:focus-visible {outline:-webkit-focus-ring-color auto 1px;    border: 
 div.select input:focus-visible {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
 div.select:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
 div.select input:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
+
+/* 404 */
+.error_page {padding:120px 0 0;text-align:center;height:100vh;background:#f2f2f2;}
+.error_page > img {width:180px;}
+.error_page a.backbtn {background:#fff;}
+.error_page h3 {font-size: 32px;font-weight: 700;margin: 32px 0 15px;}

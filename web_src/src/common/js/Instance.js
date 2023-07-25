@@ -1,10 +1,8 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import store from "redux/store/store";
 
 let ip;
-let userInfo;
+let token;
 
 // axios.get("https://geolocation-db.com/json/").then((res) => {
 //     ip = res.data.IPv4;
@@ -22,14 +20,13 @@ const Instance = axios.create({
     timeout: 5000,
 });
 
-// const userInfo;
 Instance.interceptors.request.use(
     (config) => {
-        userInfo = store.getState().userInfo.userInfo;
         ip = store.getState().ipInfo.ipInfo;
+        token = store.getState().userInfo.userToken;
 
         config.headers["Medicity-Src"] = ip ? ip : "";
-        config.headers["Medicity-Token"] = userInfo ? userInfo.token : "";
+        config.headers["Medicity-Token"] = token ? token : "";
         return config;
     },
     (err) => {
