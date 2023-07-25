@@ -59,7 +59,7 @@
                     <li><a class="on">호텔 관리</a>
                         <ul class="sub_2depth">
                             <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
-                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelRoom')" class="on">객실 관리</a></li>
                             <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
                             <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
                         </ul>
@@ -89,7 +89,7 @@
 
         <div class="content">
             <div class="title">
-                <h3>호텔 리스트</h3>
+                <h3>객실 리스트</h3>
             </div>
             <div class="con_area">
                 <div>
@@ -488,10 +488,15 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a></div>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
                 </div>
                 <div class="hotel_box">
-                    <h4 class="mo_subtitle">담당자 정보 </h4>
+                    <div class="plusbtn_wrap">
+                        <h4 class="mo_subtitle">담당자 정보 </h4>
+                        <div class="plusbtn">
+                            <a href="">+</a> <a href="">-</a>
+                        </div>
+                    </div>
                     <table class="table_bb">
                         <colgroup>
                             <col width="20%">
@@ -518,11 +523,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="subbtn_box">
-                        <a href="" class="subbtn off">담당자 추가</a>
-                        <a href="" class="subbtn del">삭제</a>
-                        <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
-                    </div>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
                 </div>
                 <div class="hotel_box hotel_service">
                     <h4 class="mo_subtitle">부대시설 설정</h4>

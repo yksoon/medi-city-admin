@@ -14,6 +14,8 @@
      <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
      <script type="text/javascript" src="js/slick.min.js"></script>
 
+     <script src="js/nav.js"></script>
+
      <link rel="stylesheet" href="css/default.css">
      <link rel="stylesheet" href="css/style.css">
  
@@ -56,10 +58,10 @@
                             <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
                         </ul>
                     </li>
-                    <li><a class="on">호텔 관리</a>
+                    <li><a>호텔 관리</a>
                         <ul class="sub_2depth">
                             <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
-                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelRoom')" class="on">객실 관리</a></li>
                             <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
                             <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
                         </ul>
@@ -89,110 +91,11 @@
 
         <div class="content">
             <div class="title">
-                <h3>호텔 리스트</h3>
+                <h3>호텔 신규 등록</h3>
             </div>
             <div class="con_area">
-                <div>
-                    <div class="adm_search">
-                        <div>
-                            <select name="" id="">
-                                <option value="">구분</option>
-                                <option value="">이름</option>
-                                <option value="">소속</option>
-                            </select>
-                            <input type="text" class="input">
-                            <a href="" class="subbtn off">검색</a>
-                        </div>
-                        <div>
-                            <a href="javascript:void(0)" class="modal_btn subbtn on" title="#hotelInsert" onclick="modal_open(hotelInsert);">호텔신규등록</a>
-                            <a href="" class="subbtn on">엑셀 다운로드</a>
-                            <a href="" class="subbtn on">일괄 업로드</a>
-                        </div>
-                    </div>
-                    <div class="adm_table">
-                        <table class="table_a">
-                            <colgroup>
-                                <col width="3%">
-                                <col width="8%">
-                                <col width="5%">
-                                <col width="5%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="16%">
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="10%">
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox"></th>
-                                    <th>대표이미지</th>
-                                    <th>고유번호</th>
-                                    <th>구분</th>
-                                    <th colspan="2">호텔명</th>
-                                    <th>주소</th>
-                                    <th>연락처</th>
-                                    <th>담당자</th>
-                                    <th>상세보기</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <td class="hotel_thumb_td"> 
-                                        <img src="img/hotel/hotel01.png" alt="">
-                                    </td>
-                                    <td>STGN</td>
-                                    <td>국내</td>
-                                    <td>강릉세인트존스호텔</td>
-                                    <td>St.JOHN’S HOTEL</td>
-                                    <td>강원도 강릉 창해로 307(강문동 1-1번지)</td>
-                                    <td>033-660-9000</td>
-                                    <td class="person_td">
-                                        임은지 <button class="person_btn"><img src="img/common/user_icon.png" alt=""></button>
-                                        <div class="person_box">
-                                            <table class="table_b inner_table">
-                                                <colgroup>
-                                                    <col width="20%">
-                                                    <col width="*">
-                                                </colgroup>
-                                                <tbody>
-                                                    <tr>
-                                                        <th>연락처</th>
-                                                        <td>010-0000-0000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>이메일</th>
-                                                        <td>ej.lim@hicomp.net</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>메모</th>
-                                                        <td>담당자 메모를 작성하면 여기에 보여집니다. 해당 내용은 당사 담당자만 확인이 가능합니다.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="" class="tablebtn">상세보기</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-    <div class="modal_wrap" id="modal_wrap">
-        <div class="modal w1400">
-            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
-            <!-- modal content - 호텔신규등록 //S -->
-            <div class="modal_content form hotel" id="hotelInsert">
+                <!-- modal content - 호텔신규등록 //S -->
+            <div class="form hotel" id="hotelInsert">
                 <div class="mo_title">
                     <h4>호텔 신규 등록</h4>
                 </div>
@@ -488,10 +391,15 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a></div>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
                 </div>
                 <div class="hotel_box">
-                    <h4 class="mo_subtitle">담당자 정보 </h4>
+                    <div class="plusbtn_wrap">
+                        <h4 class="mo_subtitle">담당자 정보 </h4>
+                        <div class="plusbtn">
+                            <a href="">+</a> <a href="">-</a>
+                        </div>
+                    </div>
                     <table class="table_bb">
                         <colgroup>
                             <col width="20%">
@@ -518,11 +426,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="subbtn_box">
-                        <a href="" class="subbtn off">담당자 추가</a>
-                        <a href="" class="subbtn del">삭제</a>
-                        <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
-                    </div>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
                 </div>
                 <div class="hotel_box hotel_service">
                     <h4 class="mo_subtitle">부대시설 설정</h4>
@@ -671,28 +575,10 @@
                 </div>
             </div>
             <!-- modal Content - 호텔신규등록 //E -->
-            <!-- modal content - 호텔미리보기 //S -->
-            <div class="modal_content hotel" id="hotelPreview">
-                <div class="mo_title">
-                    <h4>호텔 미리보기</h4>
-                </div>
-                <div class="hotel_preview_wrap">
-                    <span class="hotel_preview_thumb"><img src="" alt=""></span>
-                </div>
-                <div class="subbtn_box">
-                    <a href="javascript:void(0);" class="subbtn off">미리보기 닫기</a>
-                    <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
-                </div>
             </div>
-            <!-- modal Content - 호텔미리보기 //E -->
-            
         </div>
+      
     </div>
-
-   
 </body>
 </html>
-<script src="js/nav.js"></script>
-<script src="js/basic.js"></script>
 <script src="js/hotel.js"></script>
-
