@@ -7,6 +7,9 @@ const DashBoardMain = () => {
                 <div className="title">
                     <h3>메디씨티</h3>
                 </div>
+                <div>
+                    <h3>대쉬보드입니다</h3>
+                </div>
             </div>
         </>
     );

@@ -45,15 +45,17 @@ const apiPath = {
     // http://dev-api.medi-city.co.kr:60000/auth/v1/signin
     // ------------------ Auth ------------------
     // Refresh POST
-    api_refresh: `${
+    api_auth_refresh: `${
         base_api_url + slash + auth + slash + version + slash
     }refresh`,
 
     // 로그인 POST
-    api_login: `${base_api_url + slash + auth + slash + version + slash}signin`,
+    api_auth_login: `${
+        base_api_url + slash + auth + slash + version + slash
+    }signin`,
 
     // 로그아웃 POST
-    api_signout: `${
+    api_auth_signout: `${
         base_api_url + slash + auth + slash + version + slash
     }signout`,
 
@@ -70,12 +72,19 @@ const apiPath = {
     }board${slash}`,
 
     // 공통 결과코드
-    api_result: `${
+    api_mng_result: `${
         base_api_url + slash + mng + slash + version + slash
     }info/result`,
 
     // 공통 결과코드
-    api_codes: `${base_api_url + slash + mng + slash + version + slash}_codes`,
+    api_mng_codes: `${
+        base_api_url + slash + mng + slash + version + slash
+    }_codes`,
+
+    // 메뉴 POST
+    api_mng_menus: `${
+        base_api_url + slash + mng + slash + version + slash
+    }menus`,
 
     // ------------------ Account Service ------------------
     // 사용자 상세 GET
@@ -87,6 +96,7 @@ const apiPath = {
 
     // 사용자 정보 조회 POST
     // 사용자 정보 수정 PUT
+    // 사용자 정보 상세 GET  + /{user_idx}
     api_user_info: `${
         base_api_url + slash + account + slash + version + slash
     }user/info`,
@@ -143,6 +153,11 @@ const apiPath = {
     api_terms_list: `${
         base_api_url + slash + account + slash + version + slash
     }_policies`,
+
+    // 사용자 수정 (관리자) PUT
+    api_admin_user_mod: `${
+        base_api_url + slash + account + slash + version + slash
+    }user`,
 };
 
 export { routerPath, apiPath };

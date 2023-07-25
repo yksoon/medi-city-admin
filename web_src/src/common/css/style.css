@@ -32,6 +32,7 @@ a.font-12 {font-size: 12px; font-weight: 500; color: #818181; text-decoration: u
 .w370 {width:370px;}
 .w460 {width:460px;}
 .w600 {width:600px;}
+.w800 {width:800px;}
 .w1000 {width:1000px;}
 .w1400 {width:1400px;}
 .w1600 {width:1600px;}
@@ -65,7 +66,8 @@ a.mainbtn.btn01:hover {background: #003679;}
 a.mainbtn.btn02 {background: #EFEFEF;color: #A6A6A6;}
 a.mainbtn.btn02:hover {background: #ddd;}
 
-a.subbtn {display:inline-block;width:auto;padding: 0 20px;height: 28px;text-align: center;line-height: 26px;border-radius: 5px;font-size: 14px;}
+a.subbtn {display:inline-block;width:auto;padding: 0 20px;height: 28px;text-align: center;line-height: 26px;border-radius: 5px;font-size: 14px;margin:0 5px 0 0;}
+a.subbtn:last-child {margin:0;}
 a.subbtn.on {background: #0047a0;color:#fff;transition:all 0.3s;}
 a.subbtn.off {background:#a8a8a8;color:#fff;}
 a.subbtn.hold {border: 1px solid #efefef;background: #efefef;color: #bdbdbd;}
@@ -79,7 +81,8 @@ a.tablebtn {display:inline-block;width:auto;padding: 0 10px;height: 26px;text-al
 .plusbtn_wrap{display:flex;justify-content: space-between;}
 .plusbtn_wrap a {padding:0 8px;border: 1px solid #ddd;display: inline-block;border-radius: 5px;line-height: 21px;;}
 
-select {border: 1px solid #ddd;height:28px;line-height:28px;font-size: 14px;color: #333;padding: 0 10px;cursor:pointer;border-radius: 5px;}
+select {border: 1px solid #ddd;height:28px;line-height:28px;font-size: 14px;color: #333;padding: 0 10px;cursor:pointer;border-radius: 5px;-webkit-appearance:none; /* 크롬 화살표 없애기 */
+    -moz-appearance:none; appearance:none; background:url('/public/img/common/arrow_btm.png') right 10px center no-repeat;}
 input::placeholder {color: #a6a6a6;}
 input.input {border: 1px solid #ddd;height:28px;line-height:28px;font-size: 14px;color: #333;padding: 0 10px;display:inline-block;min-width:80px;border-radius: 5px;}
 input.input.hold {background: #efefef;color: #bdbdbd;}
@@ -109,7 +112,7 @@ div.mo_title > h4{font-size: 24px;font-weight: 700;}
 .mo_subtitle {font-size:18px;font-weight: 700;margin:0 0 20px;}
 /* .modal_wrap {display:none;position:fixed;top:0;left:0;width:100%;height:100vh;overflow:hidden;background: rgba(0,0,0,0.4);z-index:999;} */
 .modal_wrap {display:block;position:fixed;top:0;left:0;width:100%;height:100vh;overflow:hidden;background: rgba(0,0,0,0.4);z-index:999;}
-.modal_wrap .modal {position:absolute;top:50%;left:50%;transform:translate(-50%, -50%); box-shadow: 5px 5px 15px rgba(0,0,0,0.1);background:#fff;padding:40px;max-height:840px;overflow-y:scroll;z-index:999;border-radius: 5px;}
+.modal_wrap .modal {position:absolute;top:50%;left:50%;transform:translate(-50%, -50%); box-shadow: 5px 5px 15px rgba(0,0,0,0.1);background:#fff;padding:40px;max-height:90%;overflow-y:scroll;z-index:999;border-radius: 5px;}
 .modal{ -ms-overflow-style: none; } .modal::-webkit-scrollbar{ display:none; }
 .modal_wrap .modal .modal_close {position:absolute;top:42px;right:50px;cursor:pointer;}
 .modal_wrap .modal .modal_close img {width: 16px;}
@@ -209,6 +212,18 @@ div.mo_title > h4{font-size: 24px;font-weight: 700;}
 .hotel_service_radio input[type="radio"]:checked + label {background: #0047a0; color:#fff;}
 
 /* 스피너 */
-.spinner {position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(255,255,255,0.4);z-index:999;}
+.spinner {position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(255,255,255,0.4);z-index:9999;}
 .spinner span {position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);width:40px !important; height:40px !important;padding:0 !important;color:#0047A0;}
 .spinner span.error {color:#1976d2;}
+
+div.select {border: 1px solid #ddd;height: 28px; line-height: 28px; font-size: 14px; color: #333; padding: 0 10px; cursor: pointer; border-radius: 5px;background:url('/public/img/common/arrow_btm.png') right 10px center no-repeat;}
+div.select:focus-visible {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
+div.select input:focus-visible {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
+div.select:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
+div.select input:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1px solid #000;}
+
+/* 404 */
+.error_page {padding:120px 0 0;text-align:center;height:100vh;background:#f2f2f2;}
+.error_page > img {width:180px;}
+.error_page a.backbtn {background:#fff;}
+.error_page h3 {font-size: 32px;font-weight: 700;margin: 32px 0 15px;}
