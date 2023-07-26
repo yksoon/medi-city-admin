@@ -43,7 +43,7 @@ const tokenExpire = (dispatch) => {
     //         if (result_code === "0000") {
     //             // localStorage.removeItem("userInfo");
     //             // dispatch(set_user_info(null));
-    //             dispatch(init_user_info);
+    //             dispatch(init_user_info(null));
 
     //             dispatch(
     //                 set_spinner({
@@ -75,7 +75,7 @@ const tokenExpire = (dispatch) => {
     //         );
 
     //         // dispatch(set_user_info(null));
-    //         dispatch(init_user_info);
+    //         dispatch(init_user_info(null));
     //     });
 };
 

@@ -19,6 +19,9 @@ export const set_user_token = (data) => {
     };
 };
 
-export const init_user_info = () => ({
-    type: INIT_USER_INFO,
-});
+export const init_user_info = (data) => {
+    return {
+        type: INIT_USER_INFO,
+        payload: data,
+    };
+};

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { set_user_info } from "redux/actions/userInfoAction";
+import { init_user_info, set_user_info } from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
 
 import $ from "jquery";
@@ -15,6 +15,7 @@ const SideNav = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modUserData, setModUserData] = useState(null);
+    const navigate = useNavigate();
 
     let userInfo;
     const switchPage = props.switchPage;
@@ -119,7 +120,7 @@ const SideNav = (props) => {
 
                 if (result_code === "0000") {
                     // localStorage.removeItem("userInfo");
-                    dispatch(set_user_info(null));
+                    dispatch(init_user_info(null));
 
                     dispatch(
                         set_spinner({
@@ -127,12 +128,12 @@ const SideNav = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_page({
-                            page: "dashboard",
-                        })
-                    );
-                    window.location.replace(routerPath.login_url);
+                    // dispatch(
+                    //     set_page({
+                    //         page: "dashboard",
+                    //     })
+                    // );
+                    navigate(routerPath.login_url);
                 }
             })
             .catch(function (error) {
@@ -155,14 +156,15 @@ const SideNav = (props) => {
                     })
                 );
 
-                dispatch(
-                    set_page({
-                        page: "dashboard",
-                    })
-                );
-                dispatch(set_user_info(null));
+                // dispatch(
+                //     set_page({
+                //         page: "dashboard",
+                //     })
+                // );
+                // dispatch(set_user_info(null));
+                dispatch(init_user_info);
 
-                window.location.replace(routerPath.login_url);
+                navigate(routerPath.login_url);
             });
     };
 
