@@ -7,6 +7,7 @@ import {
 // 초기값 설정
 const initialState = {
     userInfo: null,
+    userToken: null,
 };
 
 // user_info Reducer
@@ -25,7 +26,10 @@ export default function userInfo(state = initialState, action) {
             };
 
         case INIT_USER_INFO:
-            return initialState;
+            return {
+                userInfo: null,
+                userToken: null,
+            };
 
         default:
             return state;

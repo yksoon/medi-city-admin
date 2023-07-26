@@ -170,8 +170,8 @@ const LoginMain = () => {
                     </div>
                     <div className="flex login_btn">
                         <div>
-                            <input type="checkbox" id="id_remember" />{" "}
-                            <label htmlFor="id_remember">아이디 저장</label>
+                            {/* <input type="checkbox" id="id_remember" />{" "}
+                            <label htmlFor="id_remember">아이디 저장</label> */}
                         </div>
                         <div>
                             <Link className="subbtn on" onClick={clickLogin}>
