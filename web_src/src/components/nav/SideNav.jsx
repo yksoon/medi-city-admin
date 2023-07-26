@@ -1,7 +1,7 @@
-import { CommonConsole } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import { set_user_info } from "redux/actions/userInfoAction";
@@ -26,6 +26,9 @@ const SideNav = (props) => {
     })();
 
     const navList = props.menuList;
+
+    let page = useSelector((state) => state.page.page);
+    console.log($(`#${page}`).parents());
 
     useEffect(() => {
         $(".depth1").first().addClass("on");
@@ -91,45 +94,7 @@ const SideNav = (props) => {
                 }
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-
-                // 서버 배포중이거나 지연
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                }
-                // 에러
-                else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle:
-                                error.response.headers.result_message_ko,
-                            alertContent: "",
-                        })
-                    );
-                }
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -202,6 +167,7 @@ const SideNav = (props) => {
     };
 
     const depth1click = (e) => {
+        console.log(e.target);
         $(".sub_2depth").hide();
         $(".sub_3depth").hide();
 
@@ -257,6 +223,7 @@ const SideNav = (props) => {
                                         item1.page !== "" &&
                                             switchPage(item1.page);
                                     }}
+                                    id={item1.page ? item1.page : ""}
                                 >
                                     {item1.title}
                                 </Link>
@@ -272,6 +239,11 @@ const SideNav = (props) => {
                                                                 item2.page
                                                             );
                                                     }}
+                                                    id={
+                                                        item2.page
+                                                            ? item2.page
+                                                            : ""
+                                                    }
                                                 >
                                                     {item2.title}{" "}
                                                     {item2.child.length !==
@@ -298,6 +270,11 @@ const SideNav = (props) => {
                                                                             switchPage(
                                                                                 item3.page
                                                                             )
+                                                                        }
+                                                                        id={
+                                                                            item3.page
+                                                                                ? item3.page
+                                                                                : ""
                                                                         }
                                                                     >
                                                                         {

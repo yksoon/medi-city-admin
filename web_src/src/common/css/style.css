@@ -117,6 +117,14 @@ div.mo_title > h4{font-size: 24px;font-weight: 700;}
 .modal_wrap .modal .modal_close {position:absolute;top:42px;right:50px;cursor:pointer;}
 .modal_wrap .modal .modal_close img {width: 16px;}
 .modal_content {display:none;}
+.modal_wrap .noti_modal {width:600px;max-height:500px;text-align: center;padding:30px;}
+.modal_wrap .noti_modal .btn_box {margin:40px 0 0;}
+.noti_modal.modal_big {width:800px;max-height:800px;text-align: center;}
+.noti_modal h3 {font-size:27px;font-weight: 700;}
+.noti_modal p {font-size:21px;font-weight: 500;margin:12px 0 0;}
+.noti_modal .noti_icon {text-align:center;display: block;margin:0 0 24px;}
+.noti_modal .noti_icon img {width: 80px;}
+.block {display:block;}
 /* 모달 //E */
 
 

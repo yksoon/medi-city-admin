@@ -158,6 +158,11 @@ const apiPath = {
     api_admin_user_mod: `${
         base_api_url + slash + account + slash + version + slash
     }user`,
+
+    // 사용자 등록 (관리자) POST
+    api_admin_user_reg: `${
+        base_api_url + slash + account + slash + version + slash
+    }user`,
 };
 
 export { routerPath, apiPath };

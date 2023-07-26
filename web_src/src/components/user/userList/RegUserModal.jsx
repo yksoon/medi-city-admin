@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "@mui/material";
 import { Link } from "react-router-dom";
-import { CommonConsole } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { pwPattern } from "common/js/Pattern";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { apiPath } from "webPath";
+import { apiPath, routerPath } from "webPath";
 import { RestServer } from "common/js/Rest";
 import { set_page } from "redux/actions/pageActios";
 
@@ -23,6 +23,8 @@ const RegUserModal = (props) => {
     };
 
     let modUserData = props.modUserData ? props.modUserData : null;
+
+    const handleNeedUpdate = props.handleNeedUpdate;
 
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectUserRoleOptions, setSelectUserRoleOptions] = useState([]);
@@ -123,38 +125,19 @@ const RegUserModal = (props) => {
 
     // 회원등록
     const signupUser = () => {
-        // dispatch(
-        //     set_spinner({
-        //         isLoading: true,
-        //     })
-        // );
-
-        let signupData = {
-            signup_type: "000",
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            user_name_first_ko: inputFirstNameKo.current.value,
-            user_name_last_ko: inputLastNameKo.current.value,
-            user_name_first_en: inputFirstNameEn.current.value,
-            user_name_last_en: inputLastNameEn.current.value,
-            inter_phone_number: selectedCountry,
-            mobile1: inputMobile1.current.value,
-            mobile2: inputMobile2.current.value,
-            mobile3: inputMobile2.current.value,
-            md_licenses_number: inputLisenceNum.current.value,
-            organization_name_ko: inputOrganization.current.value,
-            department_name_ko: inputDepartment.current.value,
-            specialized_name_ko: inputSpecialized.current.value,
-            user_role: selectUserRole.current.value,
-        };
-
         if (checkValidation("signup")) {
-            console.log(signupData);
+            idDuplicateCheck();
         }
     };
 
     // 아이디 중복 체크
     const idDuplicateCheck = () => {
+        dispatch(
+            set_spinner({
+                isLoading: true,
+            })
+        );
+
         // /user/_check
         // POST
         const user_chk_url = apiPath.api_user_check;
@@ -171,29 +154,89 @@ const RegUserModal = (props) => {
 
                 if (res.headers.result_code === "0000") {
                     // setIdStatus(true);
+                    console.log(res);
+
+                    regUser();
                 } else if (res.headers.result_code === "1000") {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: res.headers.result_message_ko,
+                        })
+                    );
+
                     // setIdStatus(false);
+                    console.log(res);
                 }
             })
             .catch((error) => {
-                CommonConsole("log", error);
-                CommonConsole("decLog", error);
+                CommonErrorCatch(error, dispatch);
+            });
+    };
 
-                // setIdStatus(false);
+    const regUser = () => {
+        let signupData = {
+            signup_type: "000",
+            user_id: inputID.current.value,
+            user_pwd: inputPW.current.value,
+            user_name_first_ko: inputFirstNameKo.current.value,
+            user_name_last_ko: inputLastNameKo.current.value,
+            user_name_first_en: inputFirstNameEn.current.value,
+            user_name_last_en: inputLastNameEn.current.value,
+            inter_phone_number: selectedCountry,
+            mobile1: inputMobile1.current.value,
+            mobile2: inputMobile2.current.value,
+            mobile3: inputMobile3.current.value,
+            md_licenses_number: inputLisenceNum.current.value,
+            organization_name_ko: inputOrganization.current.value,
+            department_name_ko: inputDepartment.current.value,
+            specialized_name_ko: inputSpecialized.current.value,
+            user_role: selectUserRole.current.value,
+        };
+
+        // 등록
+        // /v1/user
+        // POST
+        const url = apiPath.api_admin_user_reg;
+        const data = signupData;
+
+        RestServer("post", url, data)
+            .then((response) => {
+                let res = response;
+
+                console.log(res);
+
+                if (res.headers.result_code === "0000") {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: res.headers.result_message_ko,
+                        })
+                    );
+
+                    handleNeedUpdate();
+                    modalOption.handleModalClose();
+                }
+            })
+            .catch((error) => {
+                CommonErrorCatch(error, dispatch);
             });
     };
 
     // 회원수정
     const modUser = () => {
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
-
-        CommonConsole("log", modUserData);
-        CommonConsole("log", selectedCountry);
-
         let modData = {
             signup_type: "000",
             user_idx: modUserData.user_idx,
@@ -206,7 +249,7 @@ const RegUserModal = (props) => {
             inter_phone_number: selectedCountry,
             mobile1: inputMobile1.current.value,
             mobile2: inputMobile2.current.value,
-            mobile3: inputMobile2.current.value,
+            mobile3: inputMobile3.current.value,
             md_licenses_number: inputLisenceNum.current.value,
             organization_name_ko: inputOrganization.current.value,
             department_name_ko: inputDepartment.current.value,
@@ -215,7 +258,11 @@ const RegUserModal = (props) => {
         };
 
         if (checkValidation("mod")) {
-            console.log(modData);
+            dispatch(
+                set_spinner({
+                    isLoading: true,
+                })
+            );
 
             // 수정
             // /v1/user
@@ -243,12 +290,12 @@ const RegUserModal = (props) => {
                             })
                         );
 
-                        window.location.reload();
+                        handleNeedUpdate();
+                        modalOption.handleModalClose();
                     }
                 })
                 .catch((error) => {
-                    CommonConsole("log", error);
-                    CommonConsole("decLog", error);
+                    CommonErrorCatch(error, dispatch);
                 });
         }
     };
@@ -320,6 +367,47 @@ const RegUserModal = (props) => {
             }
         }
         // 등록 END
+
+        // 수정
+        if (type === "mod") {
+            // 비밀번호 여부 확인
+            if (inputPW.current.value || inputPWChk.current.value) {
+                // 비밀번호 패턴체크
+                if (
+                    !pwPattern.test(inputPW.current.value) ||
+                    !pwPattern.test(inputPWChk.current.value)
+                ) {
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle:
+                                "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                            alertContent: "",
+                        })
+                    );
+
+                    inputPW.current.focus();
+
+                    return false;
+                }
+
+                // 비밀번호 일치 확인
+                if (inputPW.current.value !== inputPWChk.current.value) {
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: "비밀번호가 일치하지 않습니다",
+                            alertContent: "",
+                        })
+                    );
+
+                    inputPW.current.focus();
+
+                    return false;
+                }
+            }
+        }
+        // 수정 END
 
         // 국적
         if (!selectedCountry) {
@@ -545,16 +633,21 @@ const RegUserModal = (props) => {
                                             className="select"
                                             options={selectCountryOptions}
                                             defaultValue={
-                                                modUserData &&
-                                                selectCountryOptions.find(
-                                                    (e) =>
-                                                        e.value ===
-                                                        modUserData.inter_phone_number
-                                                )
+                                                modUserData
+                                                    ? selectCountryOptions.find(
+                                                          (e) =>
+                                                              e.value ===
+                                                              modUserData.inter_phone_number
+                                                      )
+                                                    : selectCountryOptions.find(
+                                                          (e) =>
+                                                              e.value === "82"
+                                                      )
                                             }
                                             key={
-                                                modUserData &&
-                                                modUserData.inter_phone_number
+                                                modUserData
+                                                    ? modUserData.inter_phone_number
+                                                    : "82"
                                             }
                                             styles={customStyles}
                                             onChange={(e) => {

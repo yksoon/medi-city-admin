@@ -1,7 +1,8 @@
-import { CommonConsole } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import tokenExpire from "common/js/tokenExpire";
 import DashBoardMain from "components/dashboard/DashBoardMain";
+import HotelListMain from "components/hotel/hotelList/HotelListMain";
 import SideNav from "components/nav/SideNav";
 import UserList from "components/user/userList/UserList";
 import React, { useEffect, useState } from "react";
@@ -53,51 +54,7 @@ const Main = () => {
                 }
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-                // 서버 배포중이거나 지연
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                }
-                // 비정상접근 or 비정상토큰
-                else if (
-                    error.response.headers.result_code === "9995" ||
-                    error.response.headers.result_code === "2003"
-                ) {
-                    tokenExpire(dispatch);
-                }
-                // 에러
-                else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle:
-                                error.response.headers.result_message_ko,
-                            alertContent: "",
-                        })
-                    );
-                }
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -291,6 +248,7 @@ const Main = () => {
         dispatch(set_page(page));
     };
 
+    // 렌더링 페이지
     const renderPage = (page) => {
         switch (page) {
             case "dashboard":
@@ -298,6 +256,9 @@ const Main = () => {
 
             case "userList":
                 return <UserList />;
+
+            case "hotelList":
+                return <HotelListMain />;
 
             default:
                 return <DashBoardMain />;

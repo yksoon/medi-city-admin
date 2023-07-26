@@ -1,4 +1,4 @@
-import { CommonConsole } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const LoginMain = () => {
 
     useEffect(() => {
         if (userToken) {
-            window.location.href(routerPath.main_url);
+            navigate(routerPath.main_url);
         } else {
             dispatch(set_page("dashboard"));
             dispatch(init_user_info);
@@ -119,6 +119,8 @@ const LoginMain = () => {
                             isAlertOpen: true,
                             alertTitle: res.headers.result_message_ko,
                             alertContent: "",
+                            alertCallbackType: "router",
+                            alertCallback: routerPath.login_url,
                         })
                     );
                 }
@@ -126,58 +128,7 @@ const LoginMain = () => {
                 CommonConsole("log", response);
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-
-                if (error.response) {
-                    if (
-                        error.response.status === 500 ||
-                        error.response.status === 503
-                    ) {
-                        dispatch(
-                            set_spinner({
-                                isLoading: false,
-                            })
-                        );
-
-                        dispatch(
-                            set_alert({
-                                isAlertOpen: true,
-                                alertTitle: "잠시 후 다시 시도해주세요",
-                                alertContent: "",
-                            })
-                        );
-                    }
-                }
-                if (error.message === "timeout of 5000ms exceeded") {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                } else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "로그인 실패",
-                            alertContent: "",
-                        })
-                    );
-                }
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -203,7 +154,7 @@ const LoginMain = () => {
                             placeholder="ID"
                             ref={inputID}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
-                            defaultValue="ksyong3@naver.com"
+                            // defaultValue="ksyong3@naver.com"
                         />
                     </div>
                     <div>
@@ -214,7 +165,7 @@ const LoginMain = () => {
                             placeholder="PW"
                             ref={inputPW}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
-                            defaultValue="123qwe123!@#"
+                            // defaultValue="123qwe123!@#"
                         />
                     </div>
                     <div className="flex login_btn">

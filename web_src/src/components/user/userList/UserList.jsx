@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CommonConsole, CommonModal } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch, CommonModal } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import { apiPath } from "webPath";
 import { useDispatch } from "react-redux";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import RegUserModal from "./RegUserModal";
-import tokenRefresh from "common/js/tokenRefresh";
-import tokenRefreshCallback from "common/js/tokenRefresh";
-import tokenExpire from "common/js/tokenExpire";
 
 const UserList = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [userList, setUserList] = useState([]);
     const [modUserData, setModUserData] = useState(null);
+    const [isNeedUpdate, setIsNeedUpdate] = useState(false);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         reqUserList();
-    }, []);
+    }, [isNeedUpdate]);
+
+    const handleNeedUpdate = () => {
+        setIsNeedUpdate(!isNeedUpdate);
+    };
 
     const handleModalClose = () => {
         setModUserData(null);
@@ -75,51 +77,7 @@ const UserList = () => {
                 }
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-
-                // 서버 배포중이거나 지연
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                }
-                // 비정상접근 or 비정상토큰
-                else if (
-                    error.response.headers.result_code === "9995" ||
-                    error.response.headers.result_code === "2003"
-                ) {
-                    tokenExpire(dispatch);
-                }
-                // 에러
-                else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "조회 실패",
-                            alertContent: "",
-                        })
-                    );
-                }
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -177,45 +135,7 @@ const UserList = () => {
                 }
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-
-                // 서버 배포중이거나 지연
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                }
-                // 에러
-                else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle:
-                                error.response.headers.result_message_ko,
-                            alertContent: "",
-                        })
-                    );
-                }
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -316,6 +236,7 @@ const UserList = () => {
                 title={modalTitle}
                 handleModalClose={handleModalClose}
                 modUserData={modUserData}
+                handleNeedUpdate={handleNeedUpdate}
             />
         </>
     );

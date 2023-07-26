@@ -1,6 +1,9 @@
 import { React, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { CircularProgress, Dialog, Modal } from "@mui/material";
+import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { routerPath } from "webPath";
+import tokenExpire from "./tokenExpire";
 
 // Alert (props)
 // isOpen = state 상태값
@@ -47,8 +50,10 @@ const CommonAlert = (props) => {
     let isAlertOpen = option.isAlertOpen;
     let title = option.alertTitle;
     let content = option.alertContent;
+    let callbackType = option.alertCallbackType ? option.alertCallbackType : "";
+    let callback = option.alertCallback ? option.alertCallback : "";
 
-    const handleAlertClose = props.handleAlertClose;
+    let handleAlertClose = props.handleAlertClose;
 
     return (
         <>
@@ -67,19 +72,25 @@ const CommonAlert = (props) => {
                             </span>
                             <h3>
                                 {title
-                                    ? decodeURI(title).replace("%20", " ")
+                                    ? decodeURI(title)
+                                          .replaceAll("%20", " ")
+                                          .replaceAll("%40", "@")
                                     : ""}
                             </h3>
                             <p>
                                 {content
-                                    ? decodeURI(content).replace("%20", " ")
+                                    ? decodeURI(content)
+                                          .replaceAll("%20", " ")
+                                          .replaceAll("%40", "@")
                                     : ""}
                             </p>
                         </div>
                         <div className="btn_box">
                             <Link
                                 className="backbtn"
-                                onClick={handleAlertClose}
+                                onClick={(e) =>
+                                    handleAlertClose(callbackType, callback)
+                                }
                             >
                                 확인{" "}
                                 <span>
@@ -171,4 +182,72 @@ const CommonSpinner = (props) => {
     );
 };
 
-export { CommonModal, CommonConsole, CommonSpinner, CommonAlert };
+const CommonErrorCatch = (error, dispatch) => {
+    // 오류발생시 실행
+    CommonConsole("log", error);
+
+    if (error.response) {
+        if (error.response.status === 500 || error.response.status === 503) {
+            dispatch(
+                set_spinner({
+                    isLoading: false,
+                })
+            );
+
+            dispatch(
+                set_alert({
+                    isAlertOpen: true,
+                    alertTitle: "",
+                    alertContent: "잠시 후 다시 시도해주세요",
+                })
+            );
+        }
+        // 비정상접근 or 비정상토큰
+        else if (
+            error.response.headers.result_code === "9995" ||
+            error.response.headers.result_code === "2003"
+        ) {
+            tokenExpire(dispatch);
+        }
+        // 에러
+        else {
+            dispatch(
+                set_spinner({
+                    isLoading: false,
+                })
+            );
+
+            dispatch(
+                set_alert({
+                    isAlertOpen: true,
+                    alertTitle: "",
+                    alertContent: error.response.headers.result_message_ko,
+                })
+            );
+        }
+    }
+    // 타임아웃
+    if (error.message === "timeout of 5000ms exceeded") {
+        dispatch(
+            set_spinner({
+                isLoading: false,
+            })
+        );
+
+        dispatch(
+            set_alert({
+                isAlertOpen: true,
+                alertTitle: "",
+                alertContent: "잠시 후 다시 시도해주세요",
+            })
+        );
+    }
+};
+
+export {
+    CommonModal,
+    CommonConsole,
+    CommonSpinner,
+    CommonAlert,
+    CommonErrorCatch,
+};

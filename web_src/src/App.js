@@ -12,10 +12,12 @@ import {
 } from "redux/actions/codesAction";
 import { set_ip_info } from "redux/actions/ipInfoAction";
 import { set_alert } from "redux/actions/commonAction";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 function App() {
     let ipInfo = useSelector((state) => state.ipInfo.ipInfo);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         // localStorage.clear();
@@ -43,12 +45,18 @@ function App() {
     // Alert
     let alertOption = useSelector((state) => state.common.alert);
 
-    const handleAlertClose = () => {
+    const handleAlertClose = (callbackType, callback) => {
         let alertOption = {
             isAlertOpen: false,
             alertTitle: "",
             alertContent: "",
+            alertCallbackType: "",
+            alertCallback: "",
         };
+
+        if (callbackType === "router") {
+            navigate(callback);
+        }
 
         dispatch(set_alert(alertOption));
     };
