@@ -103,7 +103,7 @@
                         <a href="" class="subbtn off">검색</a>
                     </div>
                     <div>
-                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(sign);">회원등록</a>
+                        <a href="javascript:void(0)" class="subbtn on" title="#memberInsert" onclick="modal_open(memberInsert);">회원등록</a>
                         <a href="" class="subbtn on">엑셀 다운로드</a>
                     </div>
                 </div>
@@ -164,10 +164,10 @@
 
     
     <div class="modal_wrap" id="modal_wrap">
-        <div class="modal w800">
+        <div class="modal w800" id="memberInsert">
             <!-- modal content - 회원등록 //S -->
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
-            <div class="form" id="sign">
+            <div class="form">
                 <h4 class="mo_title">회원등록</h4>
                 <table class="table_bb">
                     <colgroup>
