@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <script src="js/nav.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')" class="on">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a>K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('kMediMember')">회원 관리</a></li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>호텔 미리보기</h3>
+            </div>
+            <div class="con_area">
+               <!-- modal content - 호텔미리보기 //S -->
+            <div class="hotel" id="hotelPreview">
+                <div class="mo_title">
+                    <h4>호텔 미리보기</h4>
+                </div>
+                <div class="hotel_preview_wrap">
+                    <span class="hotel_preview_thumb"><img src="img/hotel/hotel01.png" alt=""></span>
+                    <div class="hotel_">
+
+                    </div>
+
+                </div>
+                <div class="subbtn_box">
+                    <a href="javascript:void(0);" class="subbtn off">미리보기 닫기</a>
+                    <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                </div>
+            </div>
+            <!-- modal Content - 호텔미리보기 //E -->
+            </div>
+        </div>
+      
+    </div>
+</body>
+</html>
+<script src="js/hotel.js"></script>

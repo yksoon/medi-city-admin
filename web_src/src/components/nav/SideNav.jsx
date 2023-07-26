@@ -1,32 +1,102 @@
-import { CommonConsole } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import { set_user_info } from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 
-import { navItems } from "./navItems";
 import $ from "jquery";
+import RegUserModal from "components/user/userList/RegUserModal";
+import { set_page } from "redux/actions/pageActios";
 
 const SideNav = (props) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modUserData, setModUserData] = useState(null);
+
     let userInfo;
     const switchPage = props.switchPage;
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     (() => {
         userInfo = props.userInfo;
     })();
 
-    const navList = navItems;
+    const navList = props.menuList;
+
+    let page = useSelector((state) => state.page.page);
+    console.log($(`#${page}`).parents());
 
     useEffect(() => {
         $(".depth1").first().addClass("on");
     }, []);
+
+    // 모달창 닫기
+    const handleModalClose = () => {
+        setModUserData(null);
+        setIsOpen(false);
+    };
+
+    // 회원 정보 수정
+    const modUser = (user_idx) => {
+        dispatch(
+            set_spinner({
+                isLoading: true,
+            })
+        );
+
+        let userIdx = String(user_idx);
+
+        // account/v1/user/info/{user_idx}
+        // GET
+        const url = apiPath.api_user_info + `/${userIdx}`;
+        const data = {};
+
+        RestServer("get", url, data)
+            .then((response) => {
+                let res = response;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
+
+                // 성공
+                if (result_code === "0000") {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    setModUserData(result_info);
+
+                    setModalTitle("회원수정");
+                    setIsOpen(true);
+                }
+                // 에러
+                else {
+                    CommonConsole("log", response);
+
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    dispatch(
+                        set_alert({
+                            isAlertOpen: true,
+                            alertTitle: response.headers.result_message_ko,
+                            alertContent: "",
+                        })
+                    );
+                }
+            })
+            .catch((error) => {
+                CommonErrorCatch(error, dispatch);
+            });
+    };
 
     // 로그아웃
     const signOut = () => {
@@ -39,7 +109,7 @@ const SideNav = (props) => {
         // signout
         // url : /v1/signout
         // method : POST
-        const url = apiPath.api_signout;
+        const url = apiPath.api_auth_signout;
         let data = {};
 
         RestServer("post", url, data)
@@ -57,6 +127,11 @@ const SideNav = (props) => {
                         })
                     );
 
+                    dispatch(
+                        set_page({
+                            page: "dashboard",
+                        })
+                    );
                     window.location.replace(routerPath.login_url);
                 }
             })
@@ -80,11 +155,19 @@ const SideNav = (props) => {
                     })
                 );
 
+                dispatch(
+                    set_page({
+                        page: "dashboard",
+                    })
+                );
                 dispatch(set_user_info(null));
+
+                window.location.replace(routerPath.login_url);
             });
     };
 
     const depth1click = (e) => {
+        console.log(e.target);
         $(".sub_2depth").hide();
         $(".sub_3depth").hide();
 
@@ -112,19 +195,21 @@ const SideNav = (props) => {
             <header>
                 <div className="gnb">
                     <div className="adm_profile">
-                        <p>
-                            {userInfo && userInfo.mod_user_name_ko
-                                ? userInfo.mod_user_name_ko
-                                : userInfo.reg_user_name_ko}{" "}
-                            ({userInfo && userInfo.user_id})
-                        </p>
+                        <Link onClick={(e) => modUser(userInfo.user_idx)}>
+                            <p>
+                                <span>{userInfo && userInfo.user_name_ko}</span>
+                                <span>({userInfo && userInfo.user_id})</span>
+                            </p>
+                        </Link>
+
                         <div>
                             <Link onClick={signOut} className="font-12">
                                 로그아웃
                             </Link>{" "}
-                            <Link to={routerPath.main_url} className="font-12">
+                            {/* TODO 나중에 할거야 */}
+                            {/* <Link to={routerPath.main_url} className="font-12">
                                 HOMEPAGE
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                     <ul className="sub_gnb">
@@ -138,6 +223,7 @@ const SideNav = (props) => {
                                         item1.page !== "" &&
                                             switchPage(item1.page);
                                     }}
+                                    id={item1.page ? item1.page : ""}
                                 >
                                     {item1.title}
                                 </Link>
@@ -153,6 +239,11 @@ const SideNav = (props) => {
                                                                 item2.page
                                                             );
                                                     }}
+                                                    id={
+                                                        item2.page
+                                                            ? item2.page
+                                                            : ""
+                                                    }
                                                 >
                                                     {item2.title}{" "}
                                                     {item2.child.length !==
@@ -171,12 +262,19 @@ const SideNav = (props) => {
                                                                     key={`depth2_${idx3}`}
                                                                 >
                                                                     <Link
-                                                                        onClick={
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
                                                                             item3.page !==
                                                                                 "" &&
                                                                             switchPage(
                                                                                 item3.page
                                                                             )
+                                                                        }
+                                                                        id={
+                                                                            item3.page
+                                                                                ? item3.page
+                                                                                : ""
                                                                         }
                                                                     >
                                                                         {
@@ -195,6 +293,12 @@ const SideNav = (props) => {
                     </ul>
                 </div>
             </header>
+            <RegUserModal
+                isOpen={isOpen}
+                title={modalTitle}
+                handleModalClose={handleModalClose}
+                modUserData={modUserData}
+            />
         </>
     );
 };

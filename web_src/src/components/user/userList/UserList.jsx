@@ -1,70 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CommonConsole, CommonModal } from "common/js/Common";
+import { CommonConsole, CommonErrorCatch, CommonModal } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import { apiPath } from "webPath";
 import { useDispatch } from "react-redux";
 import { set_alert, set_spinner } from "redux/actions/commonAction";
 import RegUserModal from "./RegUserModal";
 
-const testData = [
-    {
-        mod_user_idx: "7",
-        user_type: "일반사용자",
-        user_id: "ksyong1990@naver.com",
-        mod_user_name_ko: "용 광순",
-        mobile1: "010",
-        mobile2: "5090",
-        mobile3: "7526",
-        organization_name_ko: null,
-        department_name_ko: null,
-        specialized_name_ko: null,
-    },
-    {
-        mod_user_idx: "6",
-        user_type: "일반사용자",
-        user_id: "ksyong1990@naver.com",
-        mod_user_name_ko: "용 광순",
-        mobile1: "010",
-        mobile2: "5090",
-        mobile3: "7526",
-        organization_name_ko: null,
-        department_name_ko: null,
-        specialized_name_ko: null,
-    },
-    {
-        mod_user_idx: "1",
-        user_type: "관리자",
-        user_id: "ej.lim@hicomp.net",
-        mod_user_name_ko: "임은지",
-        mobile1: "010",
-        mobile2: "0000",
-        mobile3: "0000",
-        organization_name_ko: "하이컴프아이엔티",
-        department_name_ko: "디자인",
-        specialized_name_ko: "웹디자인",
-    },
-];
 const UserList = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
-    const [modalContent, setModalContent] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [modUserData, setModUserData] = useState(null);
+    const [isNeedUpdate, setIsNeedUpdate] = useState(false);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         reqUserList();
-    }, []);
+    }, [isNeedUpdate]);
+
+    const handleNeedUpdate = () => {
+        setIsNeedUpdate(!isNeedUpdate);
+    };
 
     const handleModalClose = () => {
+        setModUserData(null);
         setIsOpen(false);
     };
 
     const regUser = () => {
-        setIsOpen(true);
         setModalTitle("회원등록");
-        setModalContent([]);
+        setIsOpen(true);
     };
 
     // 유저 리스트
@@ -89,6 +56,7 @@ const UserList = () => {
                 let result_code = res.headers.result_code;
                 let result_info = res.data.result_info;
 
+                // 성공
                 if (result_code === "0000") {
                     setUserList(result_info);
 
@@ -109,13 +77,48 @@ const UserList = () => {
                 }
             })
             .catch((error) => {
-                // 오류발생시 실행
-                CommonConsole("log", error);
+                CommonErrorCatch(error, dispatch);
+            });
+    };
 
-                if (
-                    error.response.status === 500 ||
-                    error.response.status === 503
-                ) {
+    // 회원 정보 수정
+    const modUser = (user_idx) => {
+        dispatch(
+            set_spinner({
+                isLoading: true,
+            })
+        );
+
+        let userIdx = String(user_idx);
+
+        // account/v1/user/info/{user_idx}
+        // GET
+        const url = apiPath.api_user_info + `/${userIdx}`;
+        const data = {};
+
+        RestServer("get", url, data)
+            .then((response) => {
+                let res = response;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
+
+                // 성공
+                if (result_code === "0000") {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    setModUserData(result_info);
+
+                    setModalTitle("회원수정");
+                    setIsOpen(true);
+                }
+                // 에러
+                else {
+                    CommonConsole("log", response);
+
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -125,25 +128,14 @@ const UserList = () => {
                     dispatch(
                         set_alert({
                             isAlertOpen: true,
-                            alertTitle: "잠시 후 다시 시도해주세요",
-                            alertContent: "",
-                        })
-                    );
-                } else {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "조회 실패",
+                            alertTitle: response.headers.result_message_ko,
                             alertContent: "",
                         })
                     );
                 }
+            })
+            .catch((error) => {
+                CommonErrorCatch(error, dispatch);
             });
     };
 
@@ -174,16 +166,17 @@ const UserList = () => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
+                                <col width="3%" />
                                 <col width="5%" />
-                                <col width="5%" />
-                                <col width="5%" />
+                                <col width="7%" />
                                 <col width="10%" />
                                 <col width="10%" />
                                 <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
+                                <col width="9%" />
+                                <col width="9%" />
+                                <col width="9%" />
+                                <col width="6%" />
+                                <col width="6%" />
                             </colgroup>
                             <thead>
                                 <tr>
@@ -198,6 +191,7 @@ const UserList = () => {
                                     <th>소속</th>
                                     <th>전공과</th>
                                     <th>전공분야</th>
+                                    <th>가입일</th>
                                     <th>정보수정</th>
                                 </tr>
                             </thead>
@@ -208,8 +202,8 @@ const UserList = () => {
                                             <td>
                                                 <input type="checkbox" />
                                             </td>
-                                            <td>{item.user_idx}</td>
-                                            <td>{item.user_type}</td>
+                                            <td>{item.user_key}</td>
+                                            <td>{item.user_role}</td>
                                             <td>{item.user_id}</td>
                                             <td>{item.user_name_ko}</td>
                                             <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
@@ -217,7 +211,15 @@ const UserList = () => {
                                             <td>{item.department_name_ko}</td>
                                             <td>{item.specialized_name_ko}</td>
                                             <td>
-                                                <Link className="tablebtn">
+                                                {item.reg_dttm.split(" ")[0]}
+                                            </td>
+                                            <td>
+                                                <Link
+                                                    className="tablebtn"
+                                                    onClick={(e) => {
+                                                        modUser(item.user_idx);
+                                                    }}
+                                                >
                                                     정보 수정
                                                 </Link>
                                             </td>
@@ -233,6 +235,8 @@ const UserList = () => {
                 isOpen={isOpen}
                 title={modalTitle}
                 handleModalClose={handleModalClose}
+                modUserData={modUserData}
+                handleNeedUpdate={handleNeedUpdate}
             />
         </>
     );

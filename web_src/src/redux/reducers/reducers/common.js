@@ -6,6 +6,8 @@ const initialState = {
         isAlertOpen: false,
         alertTitle: "",
         alertContent: "",
+        alertCallbackType: "",
+        alertCallback: "",
     },
     spinner: {
         isLoading: false,

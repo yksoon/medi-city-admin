@@ -8,19 +8,22 @@ import userInfo from "./reducers/userInfo";
 import ipInfo from "./reducers/ipInfo";
 import certInfo from "./reducers/cert";
 import common from "./reducers/common";
+import page from "./reducers/page";
 
 const persistConfig = {
     key: "root",
     storage: storageSession,
-    whitelist: ["userInfo"],
+    version: 0,
+    whitelist: ["codes", "userInfo", "ipInfo", "page"],
 };
 
 const rootReducer = combineReducers({
     codes,
-    userInfo: persistReducer(persistConfig, userInfo),
+    userInfo,
     ipInfo,
     certInfo,
     common,
+    page,
 });
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);

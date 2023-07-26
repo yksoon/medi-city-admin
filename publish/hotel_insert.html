@@ -94,10 +94,8 @@
                 <h3>호텔 신규 등록</h3>
             </div>
             <div class="con_area">
-                <div class="form hotel" id="sign">
-                    <div class="mo_title">
-                        <h4>호텔 신규 등록</h4>
-                    </div>
+                <!-- modal content - 호텔신규등록 //S -->
+                <div class="form hotel" id="hotelInsert">
                     <div class="hotel_box">
                         <h4 class="mo_subtitle">호텔 필수 정보</h4>
                         <table class="table_bb">
@@ -188,7 +186,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a></div>
                     </div>
                     <div class="hotel_box">
                         <h4 class="mo_subtitle">호텔 기본 정보</h4>
@@ -354,7 +352,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a></div>
                     </div>
                     <div class="hotel_box">
                         <h4 class="mo_subtitle">호텔 기타 정보</h4>
@@ -390,10 +388,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a></div>
                     </div>
                     <div class="hotel_box">
-                        <h4 class="mo_subtitle">담당자 정보 <a href="">+</a> <a href="">-</a></h4>
+                        <h4 class="mo_subtitle">담당자 정보 </h4>
                         <table class="table_bb">
                             <colgroup>
                                 <col width="20%">
@@ -420,10 +418,19 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                        <div class="subbtn_box">
+                            <a href="" class="subbtn sub">담당자 추가</a>
+                            <a href="" class="subbtn del">삭제</a>
+                            <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                        </div>
                     </div>
                     <div class="hotel_box hotel_service">
                         <h4 class="mo_subtitle">부대시설 설정</h4>
+                        <div class="hotel_service_wrap">
+                            <ul class="hotel_service_list">
+                                <li><img src="images/icon/" alt=""></li>
+                            </ul>
+                        </div>
                         <table class="table_bb">
                             <colgroup>
                                 <col width="20%">
@@ -453,120 +460,17 @@
                                             <label for="fitnessPay">유료</label>
                                         </div>
                                     </td>
-                                     <th>
-                                        <label>
-                                            <input type="checkbox" name="fitness">
-                                            피트니스
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
-                                            <label for="fitnessY">있음</label>
-                                        </div>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
-                                            <label for="fitnessN">없음</label>
-                                        </div>
-                                        <div class="hotel_pay_box">
-                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
-                                            <label for="fitnessPay">유료</label>
-                                        </div>
-                                    </td>
                                 </tr>
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" name="fitness">
-                                            피트니스
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
-                                            <label for="fitnessY">있음</label>
-                                        </div>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
-                                            <label for="fitnessN">없음</label>
-                                        </div>
-                                        <div class="hotel_pay_box">
-                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
-                                            <label for="fitnessPay">유료</label>
-                                        </div>
-                                    </td>
-                                     <th>
-                                        <label>
-                                            <input type="checkbox" name="fitness">
-                                            피트니스
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
-                                            <label for="fitnessY">있음</label>
-                                        </div>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
-                                            <label for="fitnessN">없음</label>
-                                        </div>
-                                        <div class="hotel_pay_box">
-                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
-                                            <label for="fitnessPay">유료</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" name="fitness">
-                                            피트니스
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
-                                            <label for="fitnessY">있음</label>
-                                        </div>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
-                                            <label for="fitnessN">없음</label>
-                                        </div>
-                                        <div class="hotel_pay_box">
-                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
-                                            <label for="fitnessPay">유료</label>
-                                        </div>
-                                    </td>
-                                     <th>
-                                        <label>
-                                            <input type="checkbox" name="fitness">
-                                            피트니스
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
-                                            <label for="fitnessY">있음</label>
-                                        </div>
-                                        <div class="hotel_service_radio">
-                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
-                                            <label for="fitnessN">없음</label>
-                                        </div>
-                                        <div class="hotel_pay_box">
-                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
-                                            <label for="fitnessPay">유료</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                               
                             </tbody>
                         </table>
                         <div class="subbtn_box">
-                            <a href="" class="subbtn off">미리보기</a>
+                            <a href="javascript:void(0);" class="modal_btn subbtn off" title="#hotelPreview" onclick="modal_open(hotelPreview);">미리보기</a>
+                            <!-- <a href="javascript:void(0);" class="subbtn off" onclick="console.log(hotelPreview)">미리보기</a> -->
                             <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
                         </div>
                     </div>
                 </div>
+            <!-- modal Content - 호텔신규등록 //E -->
             </div>
         </div>
       
