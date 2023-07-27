@@ -29,7 +29,8 @@ const SideNav = (props) => {
     const navList = props.menuList;
 
     let page = useSelector((state) => state.page.page);
-    console.log($(`#${page}`).parents());
+
+    // console.log($(`#${page}`).parents());
 
     useEffect(() => {
         $(".depth1").first().addClass("on");

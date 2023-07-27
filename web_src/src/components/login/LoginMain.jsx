@@ -88,7 +88,6 @@ const LoginMain = () => {
                         "signin_policy_cd",
                         "user_pwd",
                         "user_role",
-                        "user_role_cd",
                         "user_salt",
                     ];
 

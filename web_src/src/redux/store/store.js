@@ -1,8 +1,6 @@
-import { legacy_createStore } from "redux";
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "redux/reducers/index";
 import { composeWithDevTools } from "redux-devtools-extension";
-import logger from "redux-logger";
 import {
     persistStore,
     persistReducer,

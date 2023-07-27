@@ -28,13 +28,16 @@ const RegUserModal = (props) => {
 
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectUserRoleOptions, setSelectUserRoleOptions] = useState([]);
+    const [selectUserStatusOptions, setSelectUserStatusOptions] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState("");
     const [idStatus, setIdStatus] = useState(false);
 
     const countryBank = useSelector((state) => state.codes.countryBank);
     const codes = useSelector((state) => state.codes.codes);
+    const userInfo = useSelector((state) => state.userInfo.userInfo);
 
     const selectUserRole = useRef(null);
+    const selectUserStatus = useRef(null);
     const inputID = useRef(null);
     const inputPW = useRef(null);
     const inputPWChk = useRef(null);
@@ -51,9 +54,14 @@ const RegUserModal = (props) => {
     const inputSpecialized = useRef(null);
 
     useEffect(() => {
+        // 국가번호
         selectboxCountry();
 
+        // 권한
         selectboxUserRole();
+
+        // 상태
+        selectboxUserStatus();
     }, []);
 
     useEffect(() => {
@@ -90,10 +98,34 @@ const RegUserModal = (props) => {
                 label: userRole[i].code_value,
             };
 
-            options.push(newObj);
+            // 로그인유저가 시스템 관리자가 아닌경우 시스템관리자 빼고 담어
+            if (userInfo.user_role_cd !== "000") {
+                if (newObj.value !== "000") {
+                    options.push(newObj);
+                }
+            } else {
+                options.push(newObj);
+            }
         }
 
         setSelectUserRoleOptions(options);
+    };
+
+    // 유저상태 SELECT 가공
+    const selectboxUserStatus = () => {
+        let options = [];
+        const userStatus = codes.filter((e) => e.code_type === "USER_STATUS");
+
+        for (let i = 0; i < userStatus.length; i++) {
+            let newObj = {
+                value: userStatus[i].code_key,
+                label: userStatus[i].code_value,
+            };
+
+            options.push(newObj);
+        }
+
+        setSelectUserStatusOptions(options);
     };
 
     // 국적 SELECT 스타일
@@ -505,6 +537,33 @@ const RegUserModal = (props) => {
                                                     (item, idx) => (
                                                         <option
                                                             key={`selectUserRole_${idx}`}
+                                                            value={item.value}
+                                                        >
+                                                            {item.label}
+                                                        </option>
+                                                    )
+                                                )}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상태</th>
+                                    <td>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="w180"
+                                            ref={selectUserStatus}
+                                            defaultValue={
+                                                modUserData &&
+                                                modUserData.user_status_cd
+                                            }
+                                        >
+                                            {selectUserStatusOptions &&
+                                                selectUserStatusOptions.map(
+                                                    (item, idx) => (
+                                                        <option
+                                                            key={`selectUserStatus_${idx}`}
                                                             value={item.value}
                                                         >
                                                             {item.label}
