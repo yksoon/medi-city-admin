@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="on">호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>호텔 리스트</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                                    <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a>K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('kMediMember')">회원 관리</a></li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>객실 관리</h3>
+            </div>
+            <div class="con_area">
+                <div>
+                    <div class="adm_search">
+                        <div>
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">이름</option>
+                                <option value="">소속</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                        <div>
+                            <a href="javascript:void(0)" class="modal_btn subbtn on" title="#hotelInsert" onclick="modal_open(hotelInsert);">객실신규등록</a>
+                            <a href="" class="subbtn on">엑셀 다운로드</a>
+                            <a href="" class="subbtn on">일괄 업로드</a>
+                        </div>
+                    </div>
+                    <div class="adm_table">
+                        <table class="table_a">
+                            <colgroup>
+                                <col width="3%">
+                                <col width="12%">
+                                <col width="12%">
+                                <col width="12%">
+                                <col width="10%">
+                                <col width="10%">
+                                <col width="10%">
+                                <col width="10%">
+                                <col width="10%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>호텔명</th>
+                                    <th colspan="2">객실명</th>
+                                    <th>객실크기</th>
+                                    <th>최소/최대인원</th>
+                                    <th>베드타입</th>
+                                    <th>베드개수</th>
+                                    <th>상세보기</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>강릉세인트존스호텔</td>
+                                    <td>슈페리어 더블</td>
+                                    <td>SUPERIOR DOUBLE</td>
+                                    <td>27.44㎡</td>
+                                    <td>2/4</td>
+                                    <td>퀸</td>
+                                    <td>2개</td>
+                                    <td>
+                                        <a href="" class="tablebtn">상세보기</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>라마다 수원 호텔</td>
+                                    <td>패밀리</td>
+                                    <td>Family</td>
+                                    <td>49.44㎡</td>
+                                    <td>4/8</td>
+                                    <td>킹</td>
+                                    <td>2개</td>
+                                    <td>
+                                        <a href="" class="tablebtn">상세보기</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal_wrap" id="modal_wrap">
+        <div class="modal w1400">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <!-- modal content - 호텔신규등록 //S -->
+            <div class="modal_content form hotel" id="hotelInsert">
+                <div class="mo_title">
+                    <h4>객실 신규 등록</h4>
+                </div>
+                <div class="hotel_box">
+                    <h4 class="mo_subtitle">객실 필수 정보</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="20%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>호텔명(국문) <span class="red">*</span></th>
+                                <td><input type="email" class="input w370" autofocus></td>
+                            </tr>
+                            <tr>
+                                <th>호텔명(영문) <span class="red">*</span></th>
+                                <td><input type="password" class="input w370"></td>
+                            </tr>
+                            <tr>
+                                <th>고유번호 <span class="red">*</span></th>
+                                <td><input type="password" class="input w180"></td>
+                            </tr>
+                            <tr>
+                                <th>호텔 이미지 <span class="red">*</span><br>(최대 5개)</th>
+                                <td>
+                                    <div class="hotel_img_wrap">
+                                        <span class="hotel_img"></span>
+                                        <span class="hotel_img"></span>
+                                        <span class="hotel_img"></span>
+                                        <span class="hotel_img"></span>
+                                        <span class="hotel_img"></span>
+                                    </div>
+                                    <input type="file">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>객실크기 <span class="red">*</span></th>
+                                <td class="hotel_add_wrap">
+                                    <input type="text" class="input w120">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>최소/최대인원 <span class="red">*</span></th>
+                                <td class="hotel_add_wrap">
+                                    <input type="text" class="input w120"> 명 / <input type="password" class="input w120"> 명
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>베드타입 <span class="red">*</span></th>
+                                <td>
+                                    <label><input type="checkbox"> 싱글</label>
+                                    <label><input type="checkbox"> 더블</label>
+                                    <label><input type="checkbox"> 트윈</label>
+                                    <label><input type="checkbox"> 온돌</label>
+                                </td>
+                            </tr>
+                            <tr class="room_count">
+                                <th>베드개수 <span class="red">*</span></th>
+                                <td>
+                                    <div>
+                                        싱글 <input type="text" class="input w120"> 개
+                                    </div>
+                                    <div>
+                                        더블 <input type="text" class="input w120"> 개
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                </div>
+                <div class="hotel_box">
+                       <h4 class="mo_subtitle">객실 상세 정보</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="20%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>객실정보 (국문)</th>
+                                <td>
+                                    <textarea name="" id="" class="hotel_info"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>객실정보 (영문)</th>
+                                <td>
+                                    <textarea name="" id="" class="hotel_info"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>이용안내 (국문)</th>
+                                <td>
+                                    <textarea name="" id="" class="hotel_info"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>이용안내 (영문)</th>
+                                <td>
+                                    <textarea name="" id="" class="hotel_info"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="subbtn_box"><a href="javascript:alert('저장되었습니다.');" class="subbtn off">저장</a></div>
+                </div>
+                <div class="hotel_box hotel_service">
+                    <h4 class="mo_subtitle">부대시설 설정</h4>
+                    <div class="hotel_service_wrap">
+                        <ul class="hotel_service_list">
+                            <li><img src="img/icon/ADD_BED.svg" alt="">베드 추가 가능</li>
+                            <li><img src="img/icon/NO_SMOKING.svg" alt="">금연</li>
+                            <li><img src="img/icon/SAUNA.svg" alt="">사우나 있음</li>
+                            <li class="hotel_servie_plus">+</li>
+                        </ul>
+                    </div>
+            
+                    <div class="subbtn_box">
+                        <a href="javascript:void(0);" class="modal_btn subbtn off" title="#hotelPreview" onclick="modal_open(hotelPreview);">미리보기</a>
+                        <!-- <a href="javascript:void(0);" class="subbtn off" onclick="console.log(hotelPreview)">미리보기</a> -->
+                        <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                    </div>
+                </div>
+            </div>
+            <!-- modal Content - 호텔신규등록 //E -->
+            </div>
+                <!-- model 부대시설 //S -->
+                <div class="hotel_service_select_wrap">
+                    <div class="hotel_service_select">
+                        <table class="table_bb">
+                            <colgroup>
+                                <col width="20%">
+                                <col width="30%">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="fitness">
+                                            피트니스
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessY" class="hide" name="FITNESS">
+                                            <label for="fitnessY">있음</label>
+                                        </div>
+                                        <div class="hotel_service_radio">
+                                            <input type="radio" id="fitnessN" class="hide" name="FITNESS">
+                                            <label for="fitnessN">없음</label>
+                                        </div>
+                                        <div class="hotel_pay_box">
+                                            <input type="checkbox" id="fitnessPay" name="FITNESS">
+                                            <label for="fitnessPay">유료</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="subbtn_box">
+                            <a href="javascript:void(0);" class="modal_btn subbtn off" >취소</a>
+                            <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- model 부대시설 //E -->
+        </div>
+
+
+
+   
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
+<script src="js/hotel.js"></script>
+

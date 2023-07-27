@@ -34,7 +34,11 @@ function navList(listName) {
             break;
             
         case "hotelRoom":
-            location.href = "room_list.html";
+            location.href = "room_list_full.html";
+            break;
+
+        case "hotelFacilities":
+            location.href = "hotel_facilities.html";
             break;
 
         default:
