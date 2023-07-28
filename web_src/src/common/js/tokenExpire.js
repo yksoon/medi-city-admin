@@ -1,11 +1,8 @@
 import { RestServer } from "./Rest";
 import { init_user_info, set_user_info } from "redux/actions/userInfoAction";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_spinner } from "redux/actions/commonAction";
 import { apiPath, routerPath } from "webPath";
 import { CommonConsole, CommonNotify } from "./Common";
-import { useSelector } from "react-redux";
-import store from "redux/store/store";
-import useAlert from "common/hook/useAlert";
 
 const tokenExpire = (dispatch, alert) => {
     dispatch(

@@ -12,9 +12,9 @@ import {
 } from "redux/actions/codesAction";
 import { set_ip_info } from "redux/actions/ipInfoAction";
 import { useLocation, useNavigate } from "react-router";
+import { ConfirmContextProvider } from "context/ContextProvider";
+import { AlertContextProvider } from "context/ContextProvider";
 import ConfirmModal from "common/js/ConfirmModal";
-import { ConfirmContextProvider } from "common/context/ContextProvider";
-import { AlertContextProvider } from "common/context/ContextProvider";
 import AlertModal from "common/js/AlertModal";
 
 function App() {

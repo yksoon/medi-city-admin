@@ -1,4 +1,4 @@
-import useAlert from "common/hook/useAlert";
+import useAlert from "hook/useAlert";
 import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import DashBoardMain from "components/dashboard/DashBoardMain";

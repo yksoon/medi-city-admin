@@ -1,5 +1,5 @@
-import useAlert from "common/hook/useAlert";
-import useConfirm from "common/hook/useConfirm";
+import useAlert from "hook/useAlert";
+import useConfirm from "hook/useConfirm";
 import { CommonNotify } from "common/js/Common";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";

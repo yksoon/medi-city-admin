@@ -4,7 +4,6 @@ import { CircularProgress, Dialog, Modal } from "@mui/material";
 import { set_spinner } from "redux/actions/commonAction";
 import { routerPath } from "webPath";
 import tokenExpire from "./tokenExpire";
-import useConfirm from "common/hook/useConfirm";
 
 // Alert (props)
 // isOpen = state 상태값

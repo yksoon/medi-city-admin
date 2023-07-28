@@ -11,8 +11,8 @@ import { useDispatch } from "react-redux";
 import { set_spinner } from "redux/actions/commonAction";
 import RegUserModal from "./RegUserModal";
 import { Pagination } from "@mui/material";
-import useConfirm from "common/hook/useConfirm";
-import useAlert from "common/hook/useAlert";
+import useConfirm from "hook/useConfirm";
+import useAlert from "hook/useAlert";
 
 const UserList = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -153,6 +153,7 @@ const UserList = () => {
 
     // 회원 선택 삭제
     const clickRemove = () => {
+        //선택여부 확인
         checkItems.length === 0
             ? CommonNotify({
                   type: "alert",
@@ -167,6 +168,7 @@ const UserList = () => {
               });
     };
 
+    // 삭제 confirm callback
     const removeUser = () => {
         let checkItemsStr = checkItems.join();
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useAlert from "common/hook/useAlert";
+import useAlert from "hook/useAlert";
 
 const AlertModal = () => {
     const { alertList } = useAlert();

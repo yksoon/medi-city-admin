@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useConfirm from "common/hook/useConfirm";
+import useConfirm from "hook/useConfirm";
 
 const ConfirmModal = () => {
     const { confirmList } = useConfirm();

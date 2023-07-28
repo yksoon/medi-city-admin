@@ -8,7 +8,7 @@ import { pwPattern } from "common/js/Pattern";
 import { set_spinner } from "redux/actions/commonAction";
 import { apiPath } from "webPath";
 import { RestServer } from "common/js/Rest";
-import useAlert from "common/hook/useAlert";
+import useAlert from "hook/useAlert";
 
 const RegUserModal = (props) => {
     // { isOpen, title, content, btn, handleModalClose }
@@ -302,6 +302,7 @@ const RegUserModal = (props) => {
             const url = apiPath.api_admin_user_mod;
             const data = modData;
 
+            console.log(data);
             RestServer("put", url, data)
                 .then((response) => {
                     let res = response;
@@ -319,6 +320,21 @@ const RegUserModal = (props) => {
                             type: "alert",
                             hook: alert,
                             message: res.headers.result_message_ko,
+                        });
+
+                        handleNeedUpdate();
+                        modalOption.handleModalClose();
+                    } else {
+                        dispatch(
+                            set_spinner({
+                                isLoading: false,
+                            })
+                        );
+
+                        CommonNotify({
+                            type: "alert",
+                            hook: alert,
+                            message: "잠시후 다시 시도해주세요",
                         });
 
                         handleNeedUpdate();

@@ -13,7 +13,7 @@ import { apiPath, routerPath } from "webPath";
 
 import $ from "jquery";
 import RegUserModal from "components/user/userList/RegUserModal";
-import useAlert from "common/hook/useAlert";
+import useAlert from "hook/useAlert";
 
 const SideNav = (props) => {
     const [isOpen, setIsOpen] = useState(false);
