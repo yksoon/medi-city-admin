@@ -1,23 +1,27 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { apiPath, routerPath } from "webPath";
 import { RestServer } from "common/js/Rest";
 import axios from "axios";
 import Router from "Router";
 import { useDispatch, useSelector } from "react-redux";
-import { CommonAlert, CommonSpinner } from "common/js/Common";
+import { CommonSpinner } from "common/js/Common";
 import {
     set_codes,
     set_result_code,
     set_country_bank,
 } from "redux/actions/codesAction";
 import { set_ip_info } from "redux/actions/ipInfoAction";
-import { set_alert } from "redux/actions/commonAction";
 import { useLocation, useNavigate } from "react-router";
+import ConfirmModal from "common/js/ConfirmModal";
+import { ConfirmContextProvider } from "common/context/ContextProvider";
+import { AlertContextProvider } from "common/context/ContextProvider";
+import AlertModal from "common/js/AlertModal";
 
 function App() {
     let ipInfo = useSelector((state) => state.ipInfo.ipInfo);
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // localStorage.clear();
@@ -39,27 +43,6 @@ function App() {
 
         // localStorage.clear();
     }, []);
-
-    const dispatch = useDispatch();
-
-    // Alert
-    let alertOption = useSelector((state) => state.common.alert);
-
-    const handleAlertClose = (callbackType, callback) => {
-        let alertOption = {
-            isAlertOpen: false,
-            alertTitle: "",
-            alertContent: "",
-            alertCallbackType: "",
-            alertCallback: "",
-        };
-
-        if (callbackType === "router") {
-            navigate(callback);
-        }
-
-        dispatch(set_alert(alertOption));
-    };
 
     // Spinner
     let spinnerOption = useSelector((state) => state.common.spinner);
@@ -137,12 +120,15 @@ function App() {
     return (
         <>
             <div className="wrap">
-                <Router />
-                <CommonAlert
-                    handleAlertClose={handleAlertClose}
-                    option={alertOption}
-                />
                 <CommonSpinner option={spinnerOption} />
+
+                <ConfirmContextProvider>
+                    <AlertContextProvider>
+                        <Router />
+                        <AlertModal />
+                        <ConfirmModal />
+                    </AlertContextProvider>
+                </ConfirmContextProvider>
             </div>
         </>
     );

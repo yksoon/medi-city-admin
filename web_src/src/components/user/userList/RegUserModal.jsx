@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "@mui/material";
 import { Link } from "react-router-dom";
-import { CommonConsole, CommonErrorCatch } from "common/js/Common";
+import { CommonErrorCatch, CommonNotify } from "common/js/Common";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { pwPattern } from "common/js/Pattern";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { apiPath, routerPath } from "webPath";
+import { set_spinner } from "redux/actions/commonAction";
+import { apiPath } from "webPath";
 import { RestServer } from "common/js/Rest";
-import { set_page } from "redux/actions/pageActios";
+import useAlert from "common/hook/useAlert";
 
 const RegUserModal = (props) => {
     // { isOpen, title, content, btn, handleModalClose }
     const dispatch = useDispatch();
+    const { alert } = useAlert();
 
     let modalOption = {
         isOpen: props.isOpen,
@@ -29,7 +29,7 @@ const RegUserModal = (props) => {
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectUserRoleOptions, setSelectUserRoleOptions] = useState([]);
     const [selectUserStatusOptions, setSelectUserStatusOptions] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState("");
+    const [selectedCountry, setSelectedCountry] = useState("82");
     const [idStatus, setIdStatus] = useState(false);
 
     const countryBank = useSelector((state) => state.codes.countryBank);
@@ -196,19 +196,18 @@ const RegUserModal = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: res.headers.result_message_ko,
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
 
                     // setIdStatus(false);
                     console.log(res);
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -230,6 +229,7 @@ const RegUserModal = (props) => {
             department_name_ko: inputDepartment.current.value,
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
+            user_status: selectUserStatus.current.value,
         };
 
         // 등록
@@ -251,19 +251,18 @@ const RegUserModal = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: res.headers.result_message_ko,
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
 
                     handleNeedUpdate();
                     modalOption.handleModalClose();
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -287,6 +286,7 @@ const RegUserModal = (props) => {
             department_name_ko: inputDepartment.current.value,
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
+            user_status: selectUserStatus.current.value,
         };
 
         if (checkValidation("mod")) {
@@ -315,19 +315,18 @@ const RegUserModal = (props) => {
                             })
                         );
 
-                        dispatch(
-                            set_alert({
-                                isAlertOpen: true,
-                                alertTitle: res.headers.result_message_ko,
-                            })
-                        );
+                        CommonNotify({
+                            type: "alert",
+                            hook: alert,
+                            message: res.headers.result_message_ko,
+                        });
 
                         handleNeedUpdate();
                         modalOption.handleModalClose();
                     }
                 })
                 .catch((error) => {
-                    CommonErrorCatch(error, dispatch);
+                    CommonErrorCatch(error, dispatch, alert);
                 });
         }
     };
@@ -338,29 +337,25 @@ const RegUserModal = (props) => {
         if (type === "signup") {
             // 아이디
             if (!inputID.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "아이디를 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "아이디를 입력해주세요",
+                });
+
                 inputMobile2.current.focus();
                 return false;
             }
 
             // 비밀번호 여부 확인
             if (!inputPW.current.value || !inputPWChk.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "비밀번호를 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "비밀번호를 입력해주세요",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
 
@@ -369,32 +364,26 @@ const RegUserModal = (props) => {
                 !pwPattern.test(inputPW.current.value) ||
                 !pwPattern.test(inputPWChk.current.value)
             ) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle:
-                            "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message:
+                        "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
 
             // 비밀번호 일치 확인
             if (inputPW.current.value !== inputPWChk.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "비밀번호가 일치하지 않습니다",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "비밀번호가 일치하지 않습니다",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
         }
@@ -409,32 +398,26 @@ const RegUserModal = (props) => {
                     !pwPattern.test(inputPW.current.value) ||
                     !pwPattern.test(inputPWChk.current.value)
                 ) {
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle:
-                                "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message:
+                            "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                    });
 
                     inputPW.current.focus();
-
                     return false;
                 }
 
                 // 비밀번호 일치 확인
                 if (inputPW.current.value !== inputPWChk.current.value) {
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "비밀번호가 일치하지 않습니다",
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "비밀번호가 일치하지 않습니다",
+                    });
 
                     inputPW.current.focus();
-
                     return false;
                 }
             }
@@ -443,13 +426,12 @@ const RegUserModal = (props) => {
 
         // 국적
         if (!selectedCountry) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "국적을 선택해 주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "국적을 선택해 주세요",
+            });
+
             return false;
         }
 
@@ -459,39 +441,34 @@ const RegUserModal = (props) => {
             !inputMobile2.current.value ||
             !inputMobile3.current.value
         ) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "휴대전화를 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "휴대전화를 입력해주세요",
+            });
+
             inputMobile2.current.focus();
             return false;
         }
 
         // 성명
         if (!inputFirstNameKo.current.value || !inputLastNameKo.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "성명을 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "성명을 입력해주세요",
+            });
             inputFirstNameKo.current.focus();
             return false;
         }
 
         // 성명(영문)
         if (!inputFirstNameEn.current.value || !inputLastNameEn.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "성명을 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "성명을 입력해주세요",
+            });
             inputFirstNameEn.current.focus();
             return false;
         }
@@ -509,6 +486,12 @@ const RegUserModal = (props) => {
             >
                 <div className="modal_wrap" id="modal_wrap">
                     <div className="modal w800" id="modal">
+                        <div
+                            className="modal_close"
+                            onClick={modalOption.handleModalClose}
+                        >
+                            <img src="img/common/modal_close.png" alt="" />
+                        </div>
                         <div className="mo_title">
                             <h3>{modalOption.title}</h3>
                         </div>

@@ -163,6 +163,11 @@ const apiPath = {
     api_admin_user_reg: `${
         base_api_url + slash + account + slash + version + slash
     }user`,
+
+    // 사용자 삭제 (관리자) DELETE
+    api_admin_user_remove: `${
+        base_api_url + slash + account + slash + version + slash
+    }user`,
 };
 
 export { routerPath, apiPath };

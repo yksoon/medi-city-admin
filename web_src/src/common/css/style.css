@@ -75,6 +75,9 @@ a.subbtn.sub {background:#dd0000;color:#fff;}
 a.subbtn.hold {border: 1px solid #efefef;background: #efefef;color: #bdbdbd;}
 a.subbtn.hold:hover {border: 1px solid #efefef;background: #efefef;color: #bdbdbd;}
 a.backbtn {display:inline-block;height: 53px;line-height: 53px;font-size: 16px;text-align: center;border-radius: 50px;transition:all 0.3s;border: 1px solid #ddd;padding: 0 60px;color: #bdbdbd;}
+/* 리액트 추가 */
+a.backbtn.on {background: #0047a0;color:#fff;transition:all 0.3s;}
+/* 리액트 추가 END */
 a.backbtn:hover {color: #616161;border: 1px solid #a8a8a8;}
 a.hotel_btn {display:inline-block;width: 220px;height: 53px;line-height: 53px;font-size: 16px;text-align: center;border-radius: 50px;margin: 0 20px 0 0 ;transition:all 0.3s;}
 .file {display:none;}

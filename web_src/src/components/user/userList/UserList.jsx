@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CommonConsole, CommonErrorCatch, CommonModal } from "common/js/Common";
+import {
+    CommonConsole,
+    CommonErrorCatch,
+    CommonNotify,
+} from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import { apiPath } from "webPath";
 import { useDispatch } from "react-redux";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_spinner } from "redux/actions/commonAction";
 import RegUserModal from "./RegUserModal";
 import { Pagination } from "@mui/material";
+import useConfirm from "common/hook/useConfirm";
+import useAlert from "common/hook/useAlert";
 
 const UserList = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +22,8 @@ const UserList = () => {
     const [isNeedUpdate, setIsNeedUpdate] = useState(false);
     const [checkItems, setCheckItems] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
+    const { confirm } = useConfirm();
+    const { alert } = useAlert();
 
     const dispatch = useDispatch();
 
@@ -83,7 +91,7 @@ const UserList = () => {
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -131,24 +139,90 @@ const UserList = () => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: response.headers.result_message_ko,
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: response.headers.result_message_ko,
+                    });
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
     // 회원 선택 삭제
-    // TODO: 백엔드 완료 시 REST
+    const clickRemove = () => {
+        checkItems.length === 0
+            ? CommonNotify({
+                  type: "alert",
+                  hook: alert,
+                  message: "사용자를 선택해주세요",
+              })
+            : CommonNotify({
+                  type: "confirm",
+                  hook: confirm,
+                  message: "선택된 사용자를 삭제 하시겠습니까?",
+                  callback: removeUser,
+              });
+    };
+
     const removeUser = () => {
-        CommonConsole("log", ["1111111111111", checkItems]);
+        let checkItemsStr = checkItems.join();
+
+        dispatch(
+            set_spinner({
+                isLoading: true,
+            })
+        );
+
+        // account/v1/user/user/{user_idx}
+        // DELETE
+        const url = apiPath.api_admin_user_remove + `/${checkItemsStr}`;
+        const data = {};
+
+        RestServer("delete", url, data)
+            .then((response) => {
+                let res = response;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
+
+                // 성공
+                if (result_code === "0000") {
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: response.headers.result_message_ko,
+                    });
+
+                    handleNeedUpdate();
+                }
+                // 에러
+                else {
+                    CommonConsole("log", response);
+
+                    dispatch(
+                        set_spinner({
+                            isLoading: false,
+                        })
+                    );
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: response.headers.result_message_ko,
+                    });
+                }
+            })
+            .catch((error) => {
+                CommonErrorCatch(error, dispatch, alert);
+            });
     };
 
     // 체크박스 단일 선택
@@ -198,7 +272,7 @@ const UserList = () => {
                             <Link className="subbtn off">검색</Link>
                         </div>
                         <div>
-                            <Link className="subbtn del" onClick={removeUser}>
+                            <Link className="subbtn del" onClick={clickRemove}>
                                 선택삭제
                             </Link>{" "}
                             <Link className="subbtn on" onClick={regUser}>

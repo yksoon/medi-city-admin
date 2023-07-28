@@ -1,9 +1,14 @@
-import { CommonConsole, CommonErrorCatch } from "common/js/Common";
+import useAlert from "common/hook/useAlert";
+import {
+    CommonConsole,
+    CommonErrorCatch,
+    CommonNotify,
+} from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_spinner } from "redux/actions/commonAction";
 import { set_page } from "redux/actions/pageActios";
 import {
     init_user_info,
@@ -16,6 +21,7 @@ const LoginMain = () => {
     const userToken = useSelector((state) => state.userInfo.userToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { alert } = useAlert();
 
     const inputID = useRef(null);
     const inputPW = useRef(null);
@@ -32,24 +38,22 @@ const LoginMain = () => {
 
     const clickLogin = () => {
         if (!inputID.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "아이디를 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "아이디를 입력해주세요",
+            });
+
             inputID.current.focus();
             return false;
         }
         if (!inputPW.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "비밀번호를 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "비밀번호를 입력해주세요",
+            });
+
             inputPW.current.focus();
             return false;
         }
@@ -113,21 +117,17 @@ const LoginMain = () => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: res.headers.result_message_ko,
-                            alertContent: "",
-                            alertCallbackType: "router",
-                            alertCallback: routerPath.login_url,
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
                 }
 
                 CommonConsole("log", response);
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
