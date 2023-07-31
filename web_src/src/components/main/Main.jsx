@@ -45,11 +45,11 @@ const Main = () => {
         RestServer("get", url, data)
             .then((response) => {
                 const res = response;
-                const result_code = res.headers.result_code;
+                const resultCode = res.headers.resultCode;
                 let resData = [];
 
-                if (result_code === "0000") {
-                    resData = res.data.result_info;
+                if (resultCode === "0000") {
+                    resData = res.data.resultInfo;
 
                     createMenuList(resData);
                 }

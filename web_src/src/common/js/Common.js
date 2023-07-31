@@ -141,8 +141,8 @@ const CommonErrorCatch = (error, dispatch, alert) => {
         }
         // 비정상접근 or 비정상토큰
         else if (
-            error.response.headers.result_code === "9995" ||
-            error.response.headers.result_code === "2003"
+            error.response.headers.resultCode === "9995" ||
+            error.response.headers.resultCode === "2003"
         ) {
             tokenExpire(dispatch, alert);
         }
@@ -157,7 +157,7 @@ const CommonErrorCatch = (error, dispatch, alert) => {
             CommonNotify({
                 type: "alert",
                 hook: alert,
-                message: error.response.headers.result_message_ko,
+                message: error.response.headers.resultMessageKo,
             });
         }
     }

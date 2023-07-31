@@ -65,18 +65,18 @@ const SideNav = (props) => {
         RestServer("get", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+                let resultCode = res.headers.resultCode;
+                let resultInfo = res.data.resultInfo;
 
                 // 성공
-                if (result_code === "0000") {
+                if (resultCode === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
                         })
                     );
 
-                    setModUserData(result_info);
+                    setModUserData(resultInfo);
 
                     setModalTitle("회원수정");
                     setIsOpen(true);
@@ -94,7 +94,7 @@ const SideNav = (props) => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.result_message_ko,
+                        message: response.headers.resultMessageKo,
                     });
                 }
             })

@@ -174,8 +174,8 @@ const RegUserModal = (props) => {
         // POST
         const user_chk_url = apiPath.api_user_check;
         let data = {
-            signup_type: "000",
-            user_id: `${inputID.current.value}`,
+            signupType: "000",
+            userId: `${inputID.current.value}`,
         };
 
         RestServer("post", user_chk_url, data)
@@ -213,23 +213,23 @@ const RegUserModal = (props) => {
 
     const regUser = () => {
         let signupData = {
-            signup_type: "000",
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            user_name_first_ko: inputFirstNameKo.current.value,
-            user_name_last_ko: inputLastNameKo.current.value,
-            user_name_first_en: inputFirstNameEn.current.value,
-            user_name_last_en: inputLastNameEn.current.value,
-            inter_phone_number: selectedCountry,
+            signupType: "000",
+            userId: inputID.current.value,
+            userPwd: inputPW.current.value,
+            userNameFirstKo: inputFirstNameKo.current.value,
+            userNameLastKo: inputLastNameKo.current.value,
+            userNameFirstEn: inputFirstNameEn.current.value,
+            userNameLastEn: inputLastNameEn.current.value,
+            interPhoneNumber: selectedCountry,
             mobile1: inputMobile1.current.value,
             mobile2: inputMobile2.current.value,
             mobile3: inputMobile3.current.value,
-            md_licenses_number: inputLisenceNum.current.value,
-            organization_name_ko: inputOrganization.current.value,
-            department_name_ko: inputDepartment.current.value,
-            specialized_name_ko: inputSpecialized.current.value,
-            user_role: selectUserRole.current.value,
-            user_status: selectUserStatus.current.value,
+            mdLicensesNumber: inputLisenceNum.current.value,
+            organizationNameKo: inputOrganization.current.value,
+            departmentNameKo: inputDepartment.current.value,
+            specializedNameKo: inputSpecialized.current.value,
+            userRole: selectUserRole.current.value,
+            userStatus: selectUserStatus.current.value,
         };
 
         // 등록
@@ -269,24 +269,24 @@ const RegUserModal = (props) => {
     // 회원수정
     const modUser = () => {
         let modData = {
-            signup_type: "000",
-            user_idx: modUserData.user_idx,
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            user_name_first_ko: inputFirstNameKo.current.value,
-            user_name_last_ko: inputLastNameKo.current.value,
-            user_name_first_en: inputFirstNameEn.current.value,
-            user_name_last_en: inputLastNameEn.current.value,
-            inter_phone_number: selectedCountry,
+            signupType: "000",
+            userIdx: modUserData.user_idx,
+            userId: inputID.current.value,
+            userPwd: inputPW.current.value,
+            userNameFirstKo: inputFirstNameKo.current.value,
+            userNameLastKo: inputLastNameKo.current.value,
+            userNameFirstEn: inputFirstNameEn.current.value,
+            userNameLastEn: inputLastNameEn.current.value,
+            interPhoneNumber: selectedCountry,
             mobile1: inputMobile1.current.value,
             mobile2: inputMobile2.current.value,
             mobile3: inputMobile3.current.value,
-            md_licenses_number: inputLisenceNum.current.value,
-            organization_name_ko: inputOrganization.current.value,
-            department_name_ko: inputDepartment.current.value,
-            specialized_name_ko: inputSpecialized.current.value,
-            user_role: selectUserRole.current.value,
-            user_status: selectUserStatus.current.value,
+            mdLicensesNumber: inputLisenceNum.current.value,
+            organizationNameKo: inputOrganization.current.value,
+            departmentNameKo: inputDepartment.current.value,
+            specializedNameKo: inputSpecialized.current.value,
+            userRole: selectUserRole.current.value,
+            userStatus: selectUserStatus.current.value,
         };
 
         if (checkValidation("mod")) {

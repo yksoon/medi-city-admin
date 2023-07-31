@@ -8,12 +8,12 @@ export default function Login(url, data, resultCode, dispatch) {
     RestServer("post", url, data)
         .then(function (response) {
             // response
-            let user_info;
+            let userInfo;
 
-            let result_code = response.headers.result_code;
+            let resultCode = response.headers.resultCode;
 
-            if (result_code === "0000") {
-                user_info = response.data.result_info;
+            if (resultCode === "0000") {
+                userInfo = response.data.resultInfo;
 
                 let deleteKey = [
                     "md_licenses_number",
@@ -27,10 +27,10 @@ export default function Login(url, data, resultCode, dispatch) {
                 ];
 
                 for (let i = 0; i < deleteKey.length; i++) {
-                    delete user_info[deleteKey[i]];
+                    delete userInfo[deleteKey[i]];
                 }
 
-                dispatch(set_user_info(JSON.stringify(user_info)));
+                dispatch(set_user_info(JSON.stringify(userInfo)));
 
                 dispatch(
                     set_spinner({

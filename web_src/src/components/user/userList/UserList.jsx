@@ -57,22 +57,22 @@ const UserList = () => {
         // POST
         let url = apiPath.api_user_list;
         let data = {
-            page_num: pageNum,
-            page_size: pageSize,
+            pageNum: pageNum,
+            pageSize: pageSize,
         };
 
         RestServer("post", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
+                let resultCode = res.headers.resultCode;
 
                 // 성공
-                if (result_code === "0000") {
-                    let result_info = res.data.result_info;
-                    let page_info = res.data.page_info;
+                if (resultCode === "0000") {
+                    let resultInfo = res.data.resultInfo;
+                    let pageInfo = res.data.pageInfo;
 
-                    setUserList(result_info);
-                    setPageInfo(page_info);
+                    setUserList(resultInfo);
+                    setPageInfo(pageInfo);
 
                     dispatch(
                         set_spinner({
@@ -113,18 +113,18 @@ const UserList = () => {
         RestServer("get", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+                let resultCode = res.headers.resultCode;
+                let resultInfo = res.data.resultInfo;
 
                 // 성공
-                if (result_code === "0000") {
+                if (resultCode === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
                         })
                     );
 
-                    setModUserData(result_info);
+                    setModUserData(resultInfo);
 
                     setModalTitle("회원수정");
                     setIsOpen(true);
@@ -142,7 +142,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.result_message_ko,
+                        message: response.headers.resultMessageKo,
                     });
                 }
             })
@@ -186,11 +186,11 @@ const UserList = () => {
         RestServer("delete", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+                let resultCode = res.headers.resultCode;
+                let resultInfo = res.data.resultInfo;
 
                 // 성공
-                if (result_code === "0000") {
+                if (resultCode === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -200,7 +200,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.result_message_ko,
+                        message: response.headers.resultMessageKo,
                     });
 
                     handleNeedUpdate();
@@ -218,7 +218,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.result_message_ko,
+                        message: response.headers.resultMessageKo,
                     });
                 }
             })
