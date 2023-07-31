@@ -243,7 +243,7 @@ const UserList = () => {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            userList.forEach((el) => idArray.push(el.user_idx));
+            userList.forEach((el) => idArray.push(el.userIdx));
             setCheckItems(idArray);
         } else {
             // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -336,41 +336,41 @@ const UserList = () => {
                                             <td>
                                                 <input
                                                     type="checkbox"
-                                                    name={`userIdx_${item.user_idx}`}
-                                                    id={item.user_idx}
-                                                    defaultValue={item.user_idx}
+                                                    name={`userIdx_${item.userIdx}`}
+                                                    id={item.userIdx}
+                                                    defaultValue={item.userIdx}
                                                     onChange={(e) =>
                                                         handleSingleCheck(
                                                             e.target.checked,
-                                                            item.user_idx
+                                                            item.userIdx
                                                         )
                                                     }
                                                     checked={
                                                         checkItems.includes(
-                                                            item.user_idx
+                                                            item.userIdx
                                                         )
                                                             ? true
                                                             : false
                                                     }
                                                 />
                                             </td>
-                                            <td>{item.user_key}</td>
-                                            <td>{item.user_role}</td>
-                                            <td>{item.user_status}</td>
-                                            <td>{item.user_id}</td>
-                                            <td>{item.user_name_ko}</td>
+                                            <td>{item.userKey}</td>
+                                            <td>{item.userRole}</td>
+                                            <td>{item.userStatus}</td>
+                                            <td>{item.userId}</td>
+                                            <td>{item.userNameKo}</td>
                                             <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
-                                            <td>{item.organization_name_ko}</td>
-                                            <td>{item.department_name_ko}</td>
-                                            <td>{item.specialized_name_ko}</td>
+                                            <td>{item.organizationNameKo}</td>
+                                            <td>{item.departmentNameKo}</td>
+                                            <td>{item.specializedNameKo}</td>
                                             <td>
-                                                {item.reg_dttm.split(" ")[0]}
+                                                {item.regDttm.split(" ")[0]}
                                             </td>
                                             <td>
                                                 <Link
                                                     className="tablebtn"
                                                     onClick={(e) => {
-                                                        modUser(item.user_idx);
+                                                        modUser(item.userIdx);
                                                     }}
                                                 >
                                                     정보 수정

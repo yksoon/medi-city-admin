@@ -48,9 +48,9 @@ const CommonModal = ({ isOpen, title, content, btn, handleModalClose }) => {
 const CommonConsole = (type, responseData) => {
     let response;
 
-    let result_message_ko;
-    let result_message_en;
-    let result_code;
+    let resultMessageKo;
+    let resultMessageEn;
+    let resultCode;
     let message;
 
     if (!responseData.response) {
@@ -60,9 +60,9 @@ const CommonConsole = (type, responseData) => {
     }
 
     if (response.headers) {
-        result_message_ko = response.headers.result_message_ko;
-        result_message_en = response.headers.result_message_en;
-        result_code = response.headers.result_code;
+        resultMessageKo = response.headers.resultMessageKo;
+        resultMessageEn = response.headers.resultMessageEn;
+        resultCode = response.headers.resultCode;
         message = response.headers.message;
     } else {
         response = responseData;
@@ -74,14 +74,14 @@ const CommonConsole = (type, responseData) => {
 
         case "decLog":
             return console.log(
-                decodeURI(result_message_ko),
-                decodeURI(result_message_en),
-                decodeURI(result_code),
+                decodeURI(resultMessageKo),
+                decodeURI(resultMessageEn),
+                decodeURI(resultCode),
                 decodeURI(message)
             );
 
         case "alertMsg":
-            return alert(decodeURI(result_message_ko).replace("%20", " "));
+            return alert(decodeURI(resultMessageKo).replace("%20", " "));
 
         case "alert":
             return alert(responseData);

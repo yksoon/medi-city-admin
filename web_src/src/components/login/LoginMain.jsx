@@ -120,7 +120,7 @@ const LoginMain = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: res.headers.result_message_ko,
+                        message: res.headers.resultMessageKo,
                     });
                 }
 

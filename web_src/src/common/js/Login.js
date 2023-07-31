@@ -39,7 +39,7 @@ export default function Login(url, data, resultCode, dispatch) {
                 );
 
                 window.location.replace(routerPath.main_url);
-            } else if (result_code === "1003") {
+            } else if (resultCode === "1003") {
                 CommonConsole("log", response);
 
                 CommonConsole("decLog", response);
@@ -48,8 +48,8 @@ export default function Login(url, data, resultCode, dispatch) {
                 dispatch(
                     set_alert({
                         isAlertOpen: true,
-                        alertTitle: response.headers.result_message_ko
-                            ? response.headers.result_message_ko
+                        alertTitle: response.headers.resultMessageKo
+                            ? response.headers.resultMessageKo
                             : "",
                         alertContent: "",
                     })
@@ -70,8 +70,8 @@ export default function Login(url, data, resultCode, dispatch) {
             dispatch(
                 set_alert({
                     isAlertOpen: true,
-                    alertTitle: error.response.headers.result_message_ko
-                        ? error.response.headers.result_message_ko
+                    alertTitle: error.response.headers.resultMessageKo
+                        ? error.response.headers.resultMessageKo
                         : "",
                     alertContent: "",
                 })
