@@ -65,7 +65,7 @@ const tokenExpire = (dispatch, alert) => {
             CommonNotify({
                 type: "alert",
                 hook: alert,
-                message: error.response.headers.resultMessageKo,
+                message: error.response.headers.result_message_ko,
             });
 
             // dispatch(set_user_info(null));

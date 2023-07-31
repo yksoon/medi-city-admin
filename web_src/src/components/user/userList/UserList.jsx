@@ -57,22 +57,22 @@ const UserList = () => {
         // POST
         let url = apiPath.api_user_list;
         let data = {
-            pageNum: pageNum,
-            pageSize: pageSize,
+            page_num: pageNum,
+            page_size: pageSize,
         };
 
         RestServer("post", url, data)
             .then((response) => {
                 let res = response;
-                let resultCode = res.headers.resultCode;
+                let result_code = res.headers.result_code;
 
                 // 성공
-                if (resultCode === "0000") {
-                    let resultInfo = res.data.resultInfo;
-                    let pageInfo = res.data.pageInfo;
+                if (result_code === "0000") {
+                    let result_info = res.data.result_info;
+                    let page_info = res.data.page_info;
 
-                    setUserList(resultInfo);
-                    setPageInfo(pageInfo);
+                    setUserList(result_info);
+                    setPageInfo(page_info);
 
                     dispatch(
                         set_spinner({
@@ -113,18 +113,18 @@ const UserList = () => {
         RestServer("get", url, data)
             .then((response) => {
                 let res = response;
-                let resultCode = res.headers.resultCode;
-                let resultInfo = res.data.resultInfo;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
 
                 // 성공
-                if (resultCode === "0000") {
+                if (result_code === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
                         })
                     );
 
-                    setModUserData(resultInfo);
+                    setModUserData(result_info);
 
                     setModalTitle("회원수정");
                     setIsOpen(true);
@@ -142,7 +142,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.resultMessageKo,
+                        message: response.headers.result_message_ko,
                     });
                 }
             })
@@ -186,11 +186,11 @@ const UserList = () => {
         RestServer("delete", url, data)
             .then((response) => {
                 let res = response;
-                let resultCode = res.headers.resultCode;
-                let resultInfo = res.data.resultInfo;
+                let result_code = res.headers.result_code;
+                let result_info = res.data.result_info;
 
                 // 성공
-                if (resultCode === "0000") {
+                if (result_code === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -200,7 +200,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.resultMessageKo,
+                        message: response.headers.result_message_ko,
                     });
 
                     handleNeedUpdate();
@@ -218,7 +218,7 @@ const UserList = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.resultMessageKo,
+                        message: response.headers.result_message_ko,
                     });
                 }
             })
@@ -243,7 +243,7 @@ const UserList = () => {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            userList.forEach((el) => idArray.push(el.userIdx));
+            userList.forEach((el) => idArray.push(el.user_idx));
             setCheckItems(idArray);
         } else {
             // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -336,41 +336,41 @@ const UserList = () => {
                                             <td>
                                                 <input
                                                     type="checkbox"
-                                                    name={`userIdx_${item.userIdx}`}
-                                                    id={item.userIdx}
-                                                    defaultValue={item.userIdx}
+                                                    name={`userIdx_${item.user_idx}`}
+                                                    id={item.user_idx}
+                                                    defaultValue={item.user_idx}
                                                     onChange={(e) =>
                                                         handleSingleCheck(
                                                             e.target.checked,
-                                                            item.userIdx
+                                                            item.user_idx
                                                         )
                                                     }
                                                     checked={
                                                         checkItems.includes(
-                                                            item.userIdx
+                                                            item.user_idx
                                                         )
                                                             ? true
                                                             : false
                                                     }
                                                 />
                                             </td>
-                                            <td>{item.userKey}</td>
-                                            <td>{item.userRole}</td>
-                                            <td>{item.userStatus}</td>
-                                            <td>{item.userId}</td>
-                                            <td>{item.userNameKo}</td>
+                                            <td>{item.user_key}</td>
+                                            <td>{item.user_role}</td>
+                                            <td>{item.user_status}</td>
+                                            <td>{item.user_id}</td>
+                                            <td>{item.user_name_ko}</td>
                                             <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
-                                            <td>{item.organizationNameKo}</td>
-                                            <td>{item.departmentNameKo}</td>
-                                            <td>{item.specializedNameKo}</td>
+                                            <td>{item.organization_name_ko}</td>
+                                            <td>{item.department_name_ko}</td>
+                                            <td>{item.specialized_name_ko}</td>
                                             <td>
-                                                {item.regDttm.split(" ")[0]}
+                                                {item.reg_dttm.split(" ")[0]}
                                             </td>
                                             <td>
                                                 <Link
                                                     className="tablebtn"
                                                     onClick={(e) => {
-                                                        modUser(item.userIdx);
+                                                        modUser(item.user_idx);
                                                     }}
                                                 >
                                                     정보 수정
