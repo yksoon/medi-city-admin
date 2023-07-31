@@ -75,6 +75,9 @@ a.subbtn.sub {background:#dd0000;color:#fff;}
 a.subbtn.hold {border: 1px solid #efefef;background: #efefef;color: #bdbdbd;}
 a.subbtn.hold:hover {border: 1px solid #efefef;background: #efefef;color: #bdbdbd;}
 a.backbtn {display:inline-block;height: 53px;line-height: 53px;font-size: 16px;text-align: center;border-radius: 50px;transition:all 0.3s;border: 1px solid #ddd;padding: 0 60px;color: #bdbdbd;}
+/* 리액트 추가 */
+a.backbtn.on {background: #0047a0;color:#fff;transition:all 0.3s;}
+/* 리액트 추가 END */
 a.backbtn:hover {color: #616161;border: 1px solid #a8a8a8;}
 a.hotel_btn {display:inline-block;width: 220px;height: 53px;line-height: 53px;font-size: 16px;text-align: center;border-radius: 50px;margin: 0 20px 0 0 ;transition:all 0.3s;}
 .file {display:none;}
@@ -238,3 +241,9 @@ div.select input:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1p
 .error_page > img {width:180px;}
 .error_page a.backbtn {background:#fff;}
 .error_page h3 {font-size: 32px;font-weight: 700;margin: 32px 0 15px;}
+
+/* pagenation */
+.pagenation ul {justify-content: center;margin:40px 0 0;}
+.pagenation ul li {border-radius:5px !important;}
+.pagenation ul li button {background:#f2f2f2;}
+.pagenation ul li:first-child button, .pagenation ul li:last-child button {background:none;}

@@ -1,7 +1,7 @@
 import { React, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { CircularProgress, Dialog, Modal } from "@mui/material";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_spinner } from "redux/actions/commonAction";
 import { routerPath } from "webPath";
 import tokenExpire from "./tokenExpire";
 
@@ -40,67 +40,6 @@ const CommonModal = ({ isOpen, title, content, btn, handleModalClose }) => {
                     </div>
                 </div>
             </Modal>
-        </>
-    );
-};
-
-const CommonAlert = (props) => {
-    let option = props.option;
-
-    let isAlertOpen = option.isAlertOpen;
-    let title = option.alertTitle;
-    let content = option.alertContent;
-    let callbackType = option.alertCallbackType ? option.alertCallbackType : "";
-    let callback = option.alertCallback ? option.alertCallback : "";
-
-    let handleAlertClose = props.handleAlertClose;
-
-    return (
-        <>
-            <Dialog
-                open={isAlertOpen}
-                onClose={handleAlertClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                closeAfterTransition={true}
-            >
-                <div className="modal_wrap block">
-                    <div className="modal noti_modal ">
-                        <div>
-                            <span className="noti_icon" id="modal-modal-title">
-                                <img src="img/common/alert.png" alt="" />
-                            </span>
-                            <h3>
-                                {title
-                                    ? decodeURI(title)
-                                          .replaceAll("%20", " ")
-                                          .replaceAll("%40", "@")
-                                    : ""}
-                            </h3>
-                            <p>
-                                {content
-                                    ? decodeURI(content)
-                                          .replaceAll("%20", " ")
-                                          .replaceAll("%40", "@")
-                                    : ""}
-                            </p>
-                        </div>
-                        <div className="btn_box">
-                            <Link
-                                className="backbtn"
-                                onClick={(e) =>
-                                    handleAlertClose(callbackType, callback)
-                                }
-                            >
-                                확인{" "}
-                                <span>
-                                    <img src="img/common/arrow.png" alt="" />
-                                </span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </Dialog>
         </>
     );
 };
@@ -182,7 +121,7 @@ const CommonSpinner = (props) => {
     );
 };
 
-const CommonErrorCatch = (error, dispatch) => {
+const CommonErrorCatch = (error, dispatch, alert) => {
     // 오류발생시 실행
     CommonConsole("log", error);
 
@@ -194,20 +133,18 @@ const CommonErrorCatch = (error, dispatch) => {
                 })
             );
 
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "",
-                    alertContent: "잠시 후 다시 시도해주세요",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "잠시 후 다시 시도해주세요",
+            });
         }
         // 비정상접근 or 비정상토큰
         else if (
             error.response.headers.result_code === "9995" ||
             error.response.headers.result_code === "2003"
         ) {
-            tokenExpire(dispatch);
+            tokenExpire(dispatch, alert);
         }
         // 에러
         else {
@@ -217,13 +154,11 @@ const CommonErrorCatch = (error, dispatch) => {
                 })
             );
 
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "",
-                    alertContent: error.response.headers.result_message_ko,
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: error.response.headers.result_message_ko,
+            });
         }
     }
     // 타임아웃
@@ -234,13 +169,55 @@ const CommonErrorCatch = (error, dispatch) => {
             })
         );
 
-        dispatch(
-            set_alert({
-                isAlertOpen: true,
-                alertTitle: "",
-                alertContent: "잠시 후 다시 시도해주세요",
-            })
-        );
+        CommonNotify({
+            type: "alert",
+            hook: alert,
+            message: "잠시 후 다시 시도해주세요",
+        });
+    }
+};
+
+// 알림창
+const CommonNotify = async (option) => {
+    const type = option.type;
+    const hook = option.hook;
+    const message = option.message;
+    const callback = option.callback && option.callback;
+
+    switch (type) {
+        case "confirm":
+            const resultConfirm = await hook({
+                message: message,
+                buttons: {
+                    ok: "확인",
+                    cancel: "취소",
+                },
+            });
+
+            if (resultConfirm) {
+                if (callback) {
+                    const type = typeof callback;
+
+                    if (type === "function") {
+                        callback();
+                    }
+                }
+            }
+
+            break;
+
+        case "alert":
+            await hook({
+                message: message,
+                buttons: {
+                    ok: "확인",
+                    cancel: "취소",
+                },
+            });
+
+            break;
+        default:
+            break;
     }
 };
 
@@ -248,6 +225,6 @@ export {
     CommonModal,
     CommonConsole,
     CommonSpinner,
-    CommonAlert,
     CommonErrorCatch,
+    CommonNotify,
 };

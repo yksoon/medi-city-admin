@@ -1,21 +1,26 @@
-import { CommonConsole, CommonErrorCatch } from "common/js/Common";
+import {
+    CommonConsole,
+    CommonErrorCatch,
+    CommonNotify,
+} from "common/js/Common";
 import { RestServer } from "common/js/Rest";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { init_user_info, set_user_info } from "redux/actions/userInfoAction";
+import { set_spinner } from "redux/actions/commonAction";
+import { init_user_info } from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
 
 import $ from "jquery";
 import RegUserModal from "components/user/userList/RegUserModal";
-import { set_page } from "redux/actions/pageActios";
+import useAlert from "hook/useAlert";
 
 const SideNav = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modUserData, setModUserData] = useState(null);
     const navigate = useNavigate();
+    const { alert } = useAlert();
 
     let userInfo;
     const switchPage = props.switchPage;
@@ -29,7 +34,8 @@ const SideNav = (props) => {
     const navList = props.menuList;
 
     let page = useSelector((state) => state.page.page);
-    console.log($(`#${page}`).parents());
+
+    // console.log($(`#${page}`).parents());
 
     useEffect(() => {
         $(".depth1").first().addClass("on");
@@ -85,17 +91,15 @@ const SideNav = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: response.headers.result_message_ko,
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: response.headers.result_message_ko,
+                    });
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -149,12 +153,11 @@ const SideNav = (props) => {
                     })
                 );
 
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        title: error.response.headers.result_message_ko,
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: error.response.headers.result_message_ko,
+                });
 
                 // dispatch(
                 //     set_page({

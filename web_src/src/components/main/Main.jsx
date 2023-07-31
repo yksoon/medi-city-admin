@@ -1,6 +1,6 @@
+import useAlert from "hook/useAlert";
 import { CommonConsole, CommonErrorCatch } from "common/js/Common";
 import { RestServer } from "common/js/Rest";
-import tokenExpire from "common/js/tokenExpire";
 import DashBoardMain from "components/dashboard/DashBoardMain";
 import HotelListMain from "components/hotel/hotelList/HotelListMain";
 import SideNav from "components/nav/SideNav";
@@ -8,7 +8,7 @@ import UserList from "components/user/userList/UserList";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { set_spinner } from "redux/actions/commonAction";
 import { set_page } from "redux/actions/pageActios";
 import { apiPath, routerPath } from "webPath";
 
@@ -18,6 +18,7 @@ const Main = () => {
     let userToken = useSelector((state) => state.userInfo.userToken);
     let page = useSelector((state) => state.page.page);
     const dispatch = useDispatch();
+    const { alert } = useAlert();
 
     const [menuList, setMenuList] = useState([]);
 
@@ -54,7 +55,7 @@ const Main = () => {
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 

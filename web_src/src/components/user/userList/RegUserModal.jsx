@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "@mui/material";
 import { Link } from "react-router-dom";
-import { CommonConsole, CommonErrorCatch } from "common/js/Common";
+import { CommonErrorCatch, CommonNotify } from "common/js/Common";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { pwPattern } from "common/js/Pattern";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
-import { apiPath, routerPath } from "webPath";
+import { set_spinner } from "redux/actions/commonAction";
+import { apiPath } from "webPath";
 import { RestServer } from "common/js/Rest";
-import { set_page } from "redux/actions/pageActios";
+import useAlert from "hook/useAlert";
 
 const RegUserModal = (props) => {
     // { isOpen, title, content, btn, handleModalClose }
     const dispatch = useDispatch();
+    const { alert } = useAlert();
 
     let modalOption = {
         isOpen: props.isOpen,
@@ -28,13 +28,16 @@ const RegUserModal = (props) => {
 
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectUserRoleOptions, setSelectUserRoleOptions] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState("");
+    const [selectUserStatusOptions, setSelectUserStatusOptions] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState("82");
     const [idStatus, setIdStatus] = useState(false);
 
     const countryBank = useSelector((state) => state.codes.countryBank);
     const codes = useSelector((state) => state.codes.codes);
+    const userInfo = useSelector((state) => state.userInfo.userInfo);
 
     const selectUserRole = useRef(null);
+    const selectUserStatus = useRef(null);
     const inputID = useRef(null);
     const inputPW = useRef(null);
     const inputPWChk = useRef(null);
@@ -51,9 +54,14 @@ const RegUserModal = (props) => {
     const inputSpecialized = useRef(null);
 
     useEffect(() => {
+        // 국가번호
         selectboxCountry();
 
+        // 권한
         selectboxUserRole();
+
+        // 상태
+        selectboxUserStatus();
     }, []);
 
     useEffect(() => {
@@ -90,10 +98,34 @@ const RegUserModal = (props) => {
                 label: userRole[i].code_value,
             };
 
-            options.push(newObj);
+            // 로그인유저가 시스템 관리자가 아닌경우 시스템관리자 빼고 담어
+            if (userInfo.user_role_cd !== "000") {
+                if (newObj.value !== "000") {
+                    options.push(newObj);
+                }
+            } else {
+                options.push(newObj);
+            }
         }
 
         setSelectUserRoleOptions(options);
+    };
+
+    // 유저상태 SELECT 가공
+    const selectboxUserStatus = () => {
+        let options = [];
+        const userStatus = codes.filter((e) => e.code_type === "USER_STATUS");
+
+        for (let i = 0; i < userStatus.length; i++) {
+            let newObj = {
+                value: userStatus[i].code_key,
+                label: userStatus[i].code_value,
+            };
+
+            options.push(newObj);
+        }
+
+        setSelectUserStatusOptions(options);
     };
 
     // 국적 SELECT 스타일
@@ -164,19 +196,18 @@ const RegUserModal = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: res.headers.result_message_ko,
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
 
                     // setIdStatus(false);
                     console.log(res);
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -198,6 +229,7 @@ const RegUserModal = (props) => {
             department_name_ko: inputDepartment.current.value,
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
+            user_status: selectUserStatus.current.value,
         };
 
         // 등록
@@ -219,19 +251,18 @@ const RegUserModal = (props) => {
                         })
                     );
 
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: res.headers.result_message_ko,
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
 
                     handleNeedUpdate();
                     modalOption.handleModalClose();
                 }
             })
             .catch((error) => {
-                CommonErrorCatch(error, dispatch);
+                CommonErrorCatch(error, dispatch, alert);
             });
     };
 
@@ -255,6 +286,7 @@ const RegUserModal = (props) => {
             department_name_ko: inputDepartment.current.value,
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
+            user_status: selectUserStatus.current.value,
         };
 
         if (checkValidation("mod")) {
@@ -270,6 +302,7 @@ const RegUserModal = (props) => {
             const url = apiPath.api_admin_user_mod;
             const data = modData;
 
+            console.log(data);
             RestServer("put", url, data)
                 .then((response) => {
                     let res = response;
@@ -283,19 +316,33 @@ const RegUserModal = (props) => {
                             })
                         );
 
+                        CommonNotify({
+                            type: "alert",
+                            hook: alert,
+                            message: res.headers.result_message_ko,
+                        });
+
+                        handleNeedUpdate();
+                        modalOption.handleModalClose();
+                    } else {
                         dispatch(
-                            set_alert({
-                                isAlertOpen: true,
-                                alertTitle: res.headers.result_message_ko,
+                            set_spinner({
+                                isLoading: false,
                             })
                         );
+
+                        CommonNotify({
+                            type: "alert",
+                            hook: alert,
+                            message: "잠시후 다시 시도해주세요",
+                        });
 
                         handleNeedUpdate();
                         modalOption.handleModalClose();
                     }
                 })
                 .catch((error) => {
-                    CommonErrorCatch(error, dispatch);
+                    CommonErrorCatch(error, dispatch, alert);
                 });
         }
     };
@@ -306,29 +353,25 @@ const RegUserModal = (props) => {
         if (type === "signup") {
             // 아이디
             if (!inputID.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "아이디를 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "아이디를 입력해주세요",
+                });
+
                 inputMobile2.current.focus();
                 return false;
             }
 
             // 비밀번호 여부 확인
             if (!inputPW.current.value || !inputPWChk.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "비밀번호를 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "비밀번호를 입력해주세요",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
 
@@ -337,32 +380,26 @@ const RegUserModal = (props) => {
                 !pwPattern.test(inputPW.current.value) ||
                 !pwPattern.test(inputPWChk.current.value)
             ) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle:
-                            "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message:
+                        "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
 
             // 비밀번호 일치 확인
             if (inputPW.current.value !== inputPWChk.current.value) {
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: "비밀번호가 일치하지 않습니다",
-                        alertContent: "",
-                    })
-                );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "비밀번호가 일치하지 않습니다",
+                });
 
                 inputPW.current.focus();
-
                 return false;
             }
         }
@@ -377,32 +414,26 @@ const RegUserModal = (props) => {
                     !pwPattern.test(inputPW.current.value) ||
                     !pwPattern.test(inputPWChk.current.value)
                 ) {
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle:
-                                "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message:
+                            "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                    });
 
                     inputPW.current.focus();
-
                     return false;
                 }
 
                 // 비밀번호 일치 확인
                 if (inputPW.current.value !== inputPWChk.current.value) {
-                    dispatch(
-                        set_alert({
-                            isAlertOpen: true,
-                            alertTitle: "비밀번호가 일치하지 않습니다",
-                            alertContent: "",
-                        })
-                    );
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "비밀번호가 일치하지 않습니다",
+                    });
 
                     inputPW.current.focus();
-
                     return false;
                 }
             }
@@ -411,13 +442,12 @@ const RegUserModal = (props) => {
 
         // 국적
         if (!selectedCountry) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "국적을 선택해 주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "국적을 선택해 주세요",
+            });
+
             return false;
         }
 
@@ -427,39 +457,34 @@ const RegUserModal = (props) => {
             !inputMobile2.current.value ||
             !inputMobile3.current.value
         ) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "휴대전화를 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "휴대전화를 입력해주세요",
+            });
+
             inputMobile2.current.focus();
             return false;
         }
 
         // 성명
         if (!inputFirstNameKo.current.value || !inputLastNameKo.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "성명을 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "성명을 입력해주세요",
+            });
             inputFirstNameKo.current.focus();
             return false;
         }
 
         // 성명(영문)
         if (!inputFirstNameEn.current.value || !inputLastNameEn.current.value) {
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: "성명을 입력해주세요",
-                    alertContent: "",
-                })
-            );
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "성명을 입력해주세요",
+            });
             inputFirstNameEn.current.focus();
             return false;
         }
@@ -477,6 +502,12 @@ const RegUserModal = (props) => {
             >
                 <div className="modal_wrap" id="modal_wrap">
                     <div className="modal w800" id="modal">
+                        <div
+                            className="modal_close"
+                            onClick={modalOption.handleModalClose}
+                        >
+                            <img src="img/common/modal_close.png" alt="" />
+                        </div>
                         <div className="mo_title">
                             <h3>{modalOption.title}</h3>
                         </div>
@@ -505,6 +536,33 @@ const RegUserModal = (props) => {
                                                     (item, idx) => (
                                                         <option
                                                             key={`selectUserRole_${idx}`}
+                                                            value={item.value}
+                                                        >
+                                                            {item.label}
+                                                        </option>
+                                                    )
+                                                )}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상태</th>
+                                    <td>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="w180"
+                                            ref={selectUserStatus}
+                                            defaultValue={
+                                                modUserData &&
+                                                modUserData.user_status_cd
+                                            }
+                                        >
+                                            {selectUserStatusOptions &&
+                                                selectUserStatusOptions.map(
+                                                    (item, idx) => (
+                                                        <option
+                                                            key={`selectUserStatus_${idx}`}
                                                             value={item.value}
                                                         >
                                                             {item.label}
