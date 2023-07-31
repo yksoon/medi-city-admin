@@ -72,7 +72,7 @@ function App() {
                 console.log("result_code", response);
 
                 dispatch(
-                    set_result_code(JSON.stringify(response.data.result_info))
+                    set_result_code(JSON.stringify(response.data.resultInfo))
                 );
             })
             .catch((error) => {
@@ -84,13 +84,13 @@ function App() {
     // codes
     const getCodes = () => {
         RestServer("post", apiPath.api_mng_codes, {
-            code_types: [],
-            exclude_code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
+            codeTypes: [],
+            excludeCodeTypes: ["COUNTRY_TYPE", "BANK_TYPE"],
         })
             .then((response) => {
                 console.log("codes", response);
 
-                dispatch(set_codes(JSON.stringify(response.data.result_info)));
+                dispatch(set_codes(JSON.stringify(response.data.resultInfo)));
             })
             .catch((error) => {
                 // 오류발생시 실행
@@ -101,14 +101,14 @@ function App() {
     // codes
     const getCountryBank = () => {
         RestServer("post", apiPath.api_mng_codes, {
-            code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
-            exclude_code_types: [],
+            codeTypes: ["COUNTRY_TYPE", "BANK_TYPE"],
+            excludeCodeTypes: [],
         })
             .then((response) => {
                 console.log("codesCountryBank", response);
 
                 dispatch(
-                    set_country_bank(JSON.stringify(response.data.result_info))
+                    set_country_bank(JSON.stringify(response.data.resultInfo))
                 );
             })
             .catch((error) => {

@@ -45,11 +45,11 @@ const Main = () => {
         RestServer("get", url, data)
             .then((response) => {
                 const res = response;
-                const result_code = res.headers.result_code;
+                const resultCode = res.headers.resultCode;
                 let resData = [];
 
-                if (result_code === "0000") {
-                    resData = res.data.result_info;
+                if (resultCode === "0000") {
+                    resData = res.data.resultInfo;
 
                     createMenuList(resData);
                 }
@@ -186,14 +186,14 @@ const Main = () => {
         menuData.map((item) => {
             let menuOnce = {};
 
-            menuOnce["title"] = item.menu_name_ko;
-            menuOnce["page"] = item.menu_path ? item.menu_path : "";
+            menuOnce["title"] = item.menuNameKo;
+            menuOnce["page"] = item.menuPath ? item.menuPath : "";
             menuOnce["child"] = [];
-            menuOnce["menu_code"] = Number(item.menu_code);
+            menuOnce["menuCode"] = Number(item.menuCode);
 
-            if (item.menu_depth === 0) {
+            if (item.menuDepth === 0) {
                 depth1.push(menuOnce);
-            } else if (item.menu_depth === 1) {
+            } else if (item.menuDepth === 1) {
                 depth2.push(menuOnce);
             } else {
                 depth3.push(menuOnce);
@@ -204,11 +204,11 @@ const Main = () => {
         depth2.map((item2) => {
             depth3.map((item3) => {
                 if (
-                    item3.menu_code > item2.menu_code &&
-                    item3.menu_code < item2.menu_code + 100
+                    item3.menuCode > item2.menuCode &&
+                    item3.menuCode < item2.menuCode + 100
                 ) {
                     depth2
-                        .find((e) => e.menu_code === item2.menu_code)
+                        .find((e) => e.menuCode === item2.menuCode)
                         .child.push(item3);
                 }
 
@@ -221,11 +221,11 @@ const Main = () => {
         depth1.map((item1) => {
             depth2.map((item2) => {
                 if (
-                    item2.menu_code > item1.menu_code &&
-                    item2.menu_code < item1.menu_code + 1000
+                    item2.menuCode > item1.menuCode &&
+                    item2.menuCode < item1.menuCode + 1000
                 ) {
                     depth1
-                        .find((e) => e.menu_code === item1.menu_code)
+                        .find((e) => e.menuCode === item1.menuCode)
                         .child.push(item2);
                 }
 

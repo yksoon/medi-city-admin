@@ -65,20 +65,20 @@ const RegUserModal = (props) => {
     }, []);
 
     useEffect(() => {
-        modUserData && setSelectedCountry(modUserData.inter_phone_number);
+        modUserData && setSelectedCountry(modUserData.interPhoneNumber);
     }, [modUserData]);
 
     // 국가번호 SELECT 가공
     const selectboxCountry = () => {
         let options = [];
         const country = countryBank.filter(
-            (e) => e.code_type === "COUNTRY_TYPE"
+            (e) => e.codeType === "COUNTRY_TYPE"
         );
 
         for (let i = 0; i < country.length; i++) {
             let newObj = {
-                value: country[i].code_key,
-                label: country[i].code_value,
+                value: country[i].codeKey,
+                label: country[i].codeValue,
             };
 
             options.push(newObj);
@@ -90,16 +90,16 @@ const RegUserModal = (props) => {
     // 유저권한 SELECT 가공
     const selectboxUserRole = () => {
         let options = [];
-        const userRole = codes.filter((e) => e.code_type === "USER_ROLE");
+        const userRole = codes.filter((e) => e.codeType === "USER_ROLE");
 
         for (let i = 0; i < userRole.length; i++) {
             let newObj = {
-                value: userRole[i].code_key,
-                label: userRole[i].code_value,
+                value: userRole[i].codeKey,
+                label: userRole[i].codeValue,
             };
 
             // 로그인유저가 시스템 관리자가 아닌경우 시스템관리자 빼고 담어
-            if (userInfo.user_role_cd !== "000") {
+            if (userInfo.userRoleCd !== "000") {
                 if (newObj.value !== "000") {
                     options.push(newObj);
                 }
@@ -114,12 +114,12 @@ const RegUserModal = (props) => {
     // 유저상태 SELECT 가공
     const selectboxUserStatus = () => {
         let options = [];
-        const userStatus = codes.filter((e) => e.code_type === "USER_STATUS");
+        const userStatus = codes.filter((e) => e.codeType === "USER_STATUS");
 
         for (let i = 0; i < userStatus.length; i++) {
             let newObj = {
-                value: userStatus[i].code_key,
-                label: userStatus[i].code_value,
+                value: userStatus[i].codeKey,
+                label: userStatus[i].codeValue,
             };
 
             options.push(newObj);
@@ -174,8 +174,8 @@ const RegUserModal = (props) => {
         // POST
         const user_chk_url = apiPath.api_user_check;
         let data = {
-            signup_type: "000",
-            user_id: `${inputID.current.value}`,
+            signupType: "000",
+            userId: `${inputID.current.value}`,
         };
 
         RestServer("post", user_chk_url, data)
@@ -184,12 +184,12 @@ const RegUserModal = (props) => {
 
                 console.log(res);
 
-                if (res.headers.result_code === "0000") {
+                if (res.headers.resultCode === "0000") {
                     // setIdStatus(true);
                     console.log(res);
 
                     regUser();
-                } else if (res.headers.result_code === "1000") {
+                } else if (res.headers.resultCode === "1000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -199,7 +199,7 @@ const RegUserModal = (props) => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: res.headers.result_message_ko,
+                        message: res.headers.resultMessageKo,
                     });
 
                     // setIdStatus(false);
@@ -213,23 +213,23 @@ const RegUserModal = (props) => {
 
     const regUser = () => {
         let signupData = {
-            signup_type: "000",
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            user_name_first_ko: inputFirstNameKo.current.value,
-            user_name_last_ko: inputLastNameKo.current.value,
-            user_name_first_en: inputFirstNameEn.current.value,
-            user_name_last_en: inputLastNameEn.current.value,
-            inter_phone_number: selectedCountry,
+            signupType: "000",
+            userId: inputID.current.value,
+            userPwd: inputPW.current.value,
+            userNameFirstKo: inputFirstNameKo.current.value,
+            userNameLastKo: inputLastNameKo.current.value,
+            userNameFirstEn: inputFirstNameEn.current.value,
+            userNameLastEn: inputLastNameEn.current.value,
+            interPhoneNumber: selectedCountry,
             mobile1: inputMobile1.current.value,
             mobile2: inputMobile2.current.value,
             mobile3: inputMobile3.current.value,
-            md_licenses_number: inputLisenceNum.current.value,
-            organization_name_ko: inputOrganization.current.value,
-            department_name_ko: inputDepartment.current.value,
-            specialized_name_ko: inputSpecialized.current.value,
-            user_role: selectUserRole.current.value,
-            user_status: selectUserStatus.current.value,
+            mdLicensesNumber: inputLisenceNum.current.value,
+            organizationNameKo: inputOrganization.current.value,
+            departmentNameKo: inputDepartment.current.value,
+            specializedNameKo: inputSpecialized.current.value,
+            userRole: selectUserRole.current.value,
+            userStatus: selectUserStatus.current.value,
         };
 
         // 등록
@@ -244,7 +244,7 @@ const RegUserModal = (props) => {
 
                 console.log(res);
 
-                if (res.headers.result_code === "0000") {
+                if (res.headers.resultCode === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
@@ -254,7 +254,7 @@ const RegUserModal = (props) => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: res.headers.result_message_ko,
+                        message: res.headers.resultMessageKo,
                     });
 
                     handleNeedUpdate();
@@ -269,24 +269,24 @@ const RegUserModal = (props) => {
     // 회원수정
     const modUser = () => {
         let modData = {
-            signup_type: "000",
-            user_idx: modUserData.user_idx,
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            user_name_first_ko: inputFirstNameKo.current.value,
-            user_name_last_ko: inputLastNameKo.current.value,
-            user_name_first_en: inputFirstNameEn.current.value,
-            user_name_last_en: inputLastNameEn.current.value,
-            inter_phone_number: selectedCountry,
+            signupType: "000",
+            userIdx: modUserData.userIdx,
+            userId: inputID.current.value,
+            userPwd: inputPW.current.value,
+            userNameFirstKo: inputFirstNameKo.current.value,
+            userNameLastKo: inputLastNameKo.current.value,
+            userNameFirstEn: inputFirstNameEn.current.value,
+            userNameLastEn: inputLastNameEn.current.value,
+            interPhoneNumber: selectedCountry,
             mobile1: inputMobile1.current.value,
             mobile2: inputMobile2.current.value,
             mobile3: inputMobile3.current.value,
-            md_licenses_number: inputLisenceNum.current.value,
-            organization_name_ko: inputOrganization.current.value,
-            department_name_ko: inputDepartment.current.value,
-            specialized_name_ko: inputSpecialized.current.value,
-            user_role: selectUserRole.current.value,
-            user_status: selectUserStatus.current.value,
+            mdLicensesNumber: inputLisenceNum.current.value,
+            organizationNameKo: inputOrganization.current.value,
+            departmentNameKo: inputDepartment.current.value,
+            specializedNameKo: inputSpecialized.current.value,
+            userRole: selectUserRole.current.value,
+            userStatus: selectUserStatus.current.value,
         };
 
         if (checkValidation("mod")) {
@@ -309,7 +309,7 @@ const RegUserModal = (props) => {
 
                     console.log(res);
 
-                    if (res.headers.result_code === "0000") {
+                    if (res.headers.resultCode === "0000") {
                         dispatch(
                             set_spinner({
                                 isLoading: false,
@@ -319,7 +319,7 @@ const RegUserModal = (props) => {
                         CommonNotify({
                             type: "alert",
                             hook: alert,
-                            message: res.headers.result_message_ko,
+                            message: res.headers.resultMessageKo,
                         });
 
                         handleNeedUpdate();
@@ -528,7 +528,7 @@ const RegUserModal = (props) => {
                                             ref={selectUserRole}
                                             defaultValue={
                                                 modUserData &&
-                                                modUserData.user_role_cd
+                                                modUserData.userRoleCd
                                             }
                                         >
                                             {selectUserRoleOptions &&
@@ -555,7 +555,7 @@ const RegUserModal = (props) => {
                                             ref={selectUserStatus}
                                             defaultValue={
                                                 modUserData &&
-                                                modUserData.user_status_cd
+                                                modUserData.userStatusCd
                                             }
                                         >
                                             {selectUserStatusOptions &&
@@ -584,7 +584,7 @@ const RegUserModal = (props) => {
                                                 ref={inputID}
                                                 defaultValue={
                                                     modUserData
-                                                        ? modUserData.user_id
+                                                        ? modUserData.userId
                                                         : ""
                                                 }
                                                 readOnly
@@ -637,7 +637,7 @@ const RegUserModal = (props) => {
                                             ref={inputFirstNameKo}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.user_name_first_ko
+                                                    ? modUserData.userNameFirstKo
                                                     : ""
                                             }
                                         />
@@ -648,7 +648,7 @@ const RegUserModal = (props) => {
                                             ref={inputLastNameKo}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.user_name_last_ko
+                                                    ? modUserData.userNameLastKo
                                                     : ""
                                             }
                                         />
@@ -666,7 +666,7 @@ const RegUserModal = (props) => {
                                             placeholder="First name"
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.user_name_first_en
+                                                    ? modUserData.userNameFirstEn
                                                     : ""
                                             }
                                             ref={inputFirstNameEn}
@@ -677,7 +677,7 @@ const RegUserModal = (props) => {
                                             placeholder="Last name"
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.user_name_last_en
+                                                    ? modUserData.userNameLastEn
                                                     : ""
                                             }
                                             ref={inputLastNameEn}
@@ -695,7 +695,7 @@ const RegUserModal = (props) => {
                                                     ? selectCountryOptions.find(
                                                           (e) =>
                                                               e.value ===
-                                                              modUserData.inter_phone_number
+                                                              modUserData.interPhoneNumber
                                                       )
                                                     : selectCountryOptions.find(
                                                           (e) =>
@@ -704,7 +704,7 @@ const RegUserModal = (props) => {
                                             }
                                             key={
                                                 modUserData
-                                                    ? modUserData.inter_phone_number
+                                                    ? modUserData.interPhoneNumber
                                                     : "82"
                                             }
                                             styles={customStyles}
@@ -724,9 +724,12 @@ const RegUserModal = (props) => {
                                                 type="tel"
                                                 className="input w120"
                                                 id="phone_num1"
-                                                defaultValue="010"
+                                                defaultValue={
+                                                    modUserData
+                                                        ? modUserData.mobile1
+                                                        : "010"
+                                                }
                                                 ref={inputMobile1}
-                                                readOnly
                                             />
                                             <input
                                                 type="tel"
@@ -762,7 +765,7 @@ const RegUserModal = (props) => {
                                             ref={inputLisenceNum}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.md_licenses_number
+                                                    ? modUserData.mdLicensesNumber
                                                     : ""
                                             }
                                         />
@@ -777,7 +780,7 @@ const RegUserModal = (props) => {
                                             ref={inputOrganization}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.organization_name_ko
+                                                    ? modUserData.organizationNameKo
                                                     : ""
                                             }
                                         />
@@ -792,7 +795,7 @@ const RegUserModal = (props) => {
                                             ref={inputDepartment}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.department_name_ko
+                                                    ? modUserData.departmentNameKo
                                                     : ""
                                             }
                                         />
@@ -807,7 +810,7 @@ const RegUserModal = (props) => {
                                             ref={inputSpecialized}
                                             defaultValue={
                                                 modUserData
-                                                    ? modUserData.specialized_name_ko
+                                                    ? modUserData.specializedNameKo
                                                     : ""
                                             }
                                         />

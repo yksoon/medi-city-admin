@@ -65,18 +65,18 @@ const SideNav = (props) => {
         RestServer("get", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+                let resultCode = res.headers.resultCode;
+                let resultInfo = res.data.resultInfo;
 
                 // 성공
-                if (result_code === "0000") {
+                if (resultCode === "0000") {
                     dispatch(
                         set_spinner({
                             isLoading: false,
                         })
                     );
 
-                    setModUserData(result_info);
+                    setModUserData(resultInfo);
 
                     setModalTitle("회원수정");
                     setIsOpen(true);
@@ -94,7 +94,7 @@ const SideNav = (props) => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: response.headers.result_message_ko,
+                        message: response.headers.resultMessageKo,
                     });
                 }
             })
@@ -120,9 +120,9 @@ const SideNav = (props) => {
         RestServer("post", url, data)
             .then(function (response) {
                 // response
-                let result_code = response.headers.result_code;
+                let resultCode = response.headers.resultCode;
 
-                if (result_code === "0000") {
+                if (resultCode === "0000") {
                     // localStorage.removeItem("userInfo");
                     dispatch(init_user_info(null));
 
@@ -156,7 +156,7 @@ const SideNav = (props) => {
                 CommonNotify({
                     type: "alert",
                     hook: alert,
-                    message: error.response.headers.result_message_ko,
+                    message: error.response.headers.resultMessageKo,
                 });
 
                 // dispatch(
@@ -200,10 +200,10 @@ const SideNav = (props) => {
             <header>
                 <div className="gnb">
                     <div className="adm_profile">
-                        <Link onClick={(e) => modUser(userInfo.user_idx)}>
+                        <Link onClick={(e) => modUser(userInfo.userIdx)}>
                             <p>
-                                <span>{userInfo && userInfo.user_name_ko}</span>
-                                <span>({userInfo && userInfo.user_id})</span>
+                                <span>{userInfo && userInfo.userNameKo}</span>
+                                <span>({userInfo && userInfo.userId})</span>
                             </p>
                         </Link>
 

@@ -72,42 +72,42 @@ const LoginMain = () => {
         // POST
         let url = apiPath.api_auth_login;
         let data = {
-            signup_type: "000",
-            user_id: inputID.current.value,
-            user_pwd: inputPW.current.value,
-            admin_yn: "Y",
+            signupType: "000",
+            userId: inputID.current.value,
+            userPwd: inputPW.current.value,
+            adminYn: "Y",
         };
 
         RestServer("post", url, data)
             .then((response) => {
                 let res = response;
-                let result_code = res.headers.result_code;
+                let resultCode = res.headers.resultCode;
 
-                if (result_code === "0000") {
-                    let user_info = response.data.result_info;
+                if (resultCode === "0000") {
+                    let userInfo = response.data.resultInfo;
 
                     let deleteKey = [
-                        "md_licenses_number",
-                        "signin_policy",
-                        "signin_policy_cd",
-                        "user_pwd",
-                        "user_role",
-                        "user_salt",
+                        "mdLicensesNumber",
+                        "signinPolicy",
+                        "signinPolicyCd",
+                        "userPwd",
+                        "userRole",
+                        "userSalt",
                     ];
 
                     for (let i = 0; i < deleteKey.length; i++) {
-                        delete user_info[deleteKey[i]];
+                        delete userInfo[deleteKey[i]];
                     }
 
                     dispatch(init_user_info);
 
-                    sessionStorage.setItem(
-                        "userInfo",
-                        JSON.stringify(user_info)
-                    );
-                    dispatch(set_user_info(JSON.stringify(user_info)));
+                    // sessionStorage.setItem(
+                    //     "userInfo",
+                    //     JSON.stringify(userInfo)
+                    // );
+                    dispatch(set_user_info(JSON.stringify(userInfo)));
 
-                    dispatch(set_user_token(JSON.stringify(user_info)));
+                    dispatch(set_user_token(JSON.stringify(userInfo)));
 
                     navigate(routerPath.main_url);
                 } else {
@@ -120,7 +120,7 @@ const LoginMain = () => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: res.headers.result_message_ko,
+                        message: res.headers.resultMessageKo,
                     });
                 }
 

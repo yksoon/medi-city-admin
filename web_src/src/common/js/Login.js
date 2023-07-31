@@ -8,12 +8,12 @@ export default function Login(url, data, resultCode, dispatch) {
     RestServer("post", url, data)
         .then(function (response) {
             // response
-            let user_info;
+            let userInfo;
 
-            let result_code = response.headers.result_code;
+            let resultCode = response.headers.resultCode;
 
-            if (result_code === "0000") {
-                user_info = response.data.result_info;
+            if (resultCode === "0000") {
+                userInfo = response.data.resultInfo;
 
                 let deleteKey = [
                     "md_licenses_number",
@@ -27,10 +27,10 @@ export default function Login(url, data, resultCode, dispatch) {
                 ];
 
                 for (let i = 0; i < deleteKey.length; i++) {
-                    delete user_info[deleteKey[i]];
+                    delete userInfo[deleteKey[i]];
                 }
 
-                dispatch(set_user_info(JSON.stringify(user_info)));
+                dispatch(set_user_info(JSON.stringify(userInfo)));
 
                 dispatch(
                     set_spinner({
@@ -39,7 +39,7 @@ export default function Login(url, data, resultCode, dispatch) {
                 );
 
                 window.location.replace(routerPath.main_url);
-            } else if (result_code === "1003") {
+            } else if (resultCode === "1003") {
                 CommonConsole("log", response);
 
                 CommonConsole("decLog", response);
@@ -48,8 +48,8 @@ export default function Login(url, data, resultCode, dispatch) {
                 dispatch(
                     set_alert({
                         isAlertOpen: true,
-                        alertTitle: response.headers.result_message_ko
-                            ? response.headers.result_message_ko
+                        alertTitle: response.headers.resultMessageKo
+                            ? response.headers.resultMessageKo
                             : "",
                         alertContent: "",
                     })
@@ -70,8 +70,8 @@ export default function Login(url, data, resultCode, dispatch) {
             dispatch(
                 set_alert({
                     isAlertOpen: true,
-                    alertTitle: error.response.headers.result_message_ko
-                        ? error.response.headers.result_message_ko
+                    alertTitle: error.response.headers.resultMessageKo
+                        ? error.response.headers.resultMessageKo
                         : "",
                     alertContent: "",
                 })
