@@ -144,32 +144,42 @@ fi
 echo "jenkinsTargetDir : $jenkinsTargetDir"
 echo "current path : `pwd`"
 
-#git diff -name-only $lastCommitHash HEAD > gitUpdateFileList.txt
-#git diff-tree -r --no-commit-id --name-only $lastCommitHash HEAD | xargs tar -rf $gitRepository.tar
-
 if [ "$dirName" == "jobara" ]; then
-	git archive --format=tar.gz HEAD -o $jenkinsTargetDir.tar.gz $(git diff --name-only HEAD^)
-else
-        git archive --format=tar.gz HEAD -o $jenkinsTargetDir$gitRepository.tar.gz $(git diff --name-only HEAD^)
+        if [ "$gitRepository" == "back-end" ]; then
+		echo "git sync dir : `ls -al /home/hicomp/jobara-back`"
+		cp -rf /home/hicomp/jobara-back/* /home/jenkins-data/workspace/jobara-back
+		echo "copying..."
+		echo "jenkins workspace dir : `ls -l /home/jenkins-data/workspace/jobara-back/jobara-service`"
+        else
+		#git diff -name-only $lastCommitHash HEAD > gitUpdateFileList.txt
+		#git diff-tree -r --no-commit-id --name-only $lastCommitHash HEAD | xargs tar -rf $gitRepository.tar
+
+		if [ "$dirName" == "jobara" ]; then
+		        git archive --format=tar.gz HEAD -o $jenkinsTargetDir.tar.gz $(git diff --name-only HEAD^)
+		else
+		        git archive --format=tar.gz HEAD -o $jenkinsTargetDir$gitRepository.tar.gz $(git diff --name-only HEAD^)
+		fi
+		echo "git archive..."
+
+		#mv -f `git diff --name-only HEAD~1` $jenkinsTargetDir
+		#mv -f $gitRepository.tar $jenkinsTargetDir
+
+		cd $jenkinsTargetDir
+		chown -R jenkins:jenkins $jenkinsWorkspace
+
+		if [ "$dirName" == "jobara" ]; then
+		        tar -zxvf $jenkinsTargetDir.tar.gz
+		        rm -rf $jenkinsTargetDir.tar.gz
+		else
+		        tar -zxvf $jenkinsTargetDir$gitRepository.tar.gz
+		        rm -rf $jenkinsTargetDir$gitRepository.tar.gz
+		fi
+
+		echo ">>>>>"$jenkinsTargetDir
+		ls -l $jenkinsTargetDir
+
+        fi
 fi
-echo "git archive..."
-
-#mv -f `git diff --name-only HEAD~1` $jenkinsTargetDir
-#mv -f $gitRepository.tar $jenkinsTargetDir
-
-cd $jenkinsTargetDir 
-chown -R jenkins:jenkins $jenkinsWorkspace
-
-if [ "$dirName" == "jobara" ]; then
-	tar -zxvf $jenkinsTargetDir.tar.gz
-	rm -rf $jenkinsTargetDir.tar.gz
-else
-	tar -zxvf $jenkinsTargetDir$gitRepository.tar.gz
-	rm -rf $jenkinsTargetDir$gitRepository.tar.gz
-fi
-
-ls -l $jenkinsTargetDir
-
 echo "-------------------------------------- JENKINS WORKSPACE END ----------------------------------"
 echo ""
 echo ""
