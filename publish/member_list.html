@@ -69,9 +69,20 @@
                     <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
                     <li><a>K-MEDI</a>
                         <ul class="sub_2depth">
-                            <li><a onclick="navList('kMediMember')">회원 관리</a></li>
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
                             <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
                             <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
                         </ul>
                     </li>
                     <li><a>게시판 관리</a>

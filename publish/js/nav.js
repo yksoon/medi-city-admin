@@ -41,6 +41,14 @@ function navList(listName) {
             location.href = "hotel_facilities.html";
             break;
 
+        case "hotelFacilities":
+            location.href = "hotel_facilities.html";
+            break;
+
+        case "kMediMemberLocal":
+            location.href = "kmedi_member_local.html";
+            break;
+
         default:
             break;
     }

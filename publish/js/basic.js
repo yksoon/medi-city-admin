@@ -12,8 +12,12 @@ function modal_close(){
 //    modalContent.classList.add('block');
 //}
 
-$('.modal_btn').click(function(){
-    $('#modal_wrap').show();
-    $('.modal_content').hide();
-    $($(this).attr('title')).show();
-})
+// $('.modal_btn').click(function(){
+//     $('#modal_wrap').show();
+//     $('.modal_content').hide();
+//     $($(this).attr('title')).show();
+// })
+
+function modal_open(){
+    document.getElementById('modal_wrap').style.display = "block";
+}
