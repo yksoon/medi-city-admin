@@ -49,6 +49,10 @@ function navList(listName) {
             location.href = "kmedi_member_local.html";
             break;
 
+        case "kMediMemberKorea":
+            location.href = "kmedi_member_creator.html";
+            break;
+
         default:
             break;
     }

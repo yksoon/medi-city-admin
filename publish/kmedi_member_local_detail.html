@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>회원 관리 - 현지회원</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi kmedi_member_wrap">
+                    <h3 class="h_title">임은지 (AADF34234)</h3>
+                    <div class="kmedi_member_box">
+                        <h5>회원정보 수정</h5>
+                        <table class="table_a member_table">
+                            <thead>
+                                <tr>
+                                    <th>회원상태</th>
+                                    <th>가입일</th>
+                                    <th>구분</th>
+                                    <th>이름</th>
+                                    <th>연락처</th>
+                                    <th>이메일</th>
+                                    <th>비밀번호</th>
+                                    <th>소속병원</th>
+                                    <th>진단과목</th>
+                                    <th>초대한 회원</th>
+                                    <th>포인트</th>
+                                    <th>추천코드</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>정상</td>
+                                    <td>23.05.30</td>
+                                    <td>개인의사</td>
+                                    <td><input type="name" class="input" value="임은지"></td>
+                                    <td>
+                                        <input type="tel" class="input w80" id="phone_num1" value="010" readonly>&nbsp;-&nbsp;
+                                        <input type="tel" class="input w80" id="phone_num2">&nbsp;-&nbsp;
+                                        <input type="tel" class="input w80" id="phone_num3">
+                                    </td>
+                                    <td class="long"><input type="email" class="input w180" value="ej.lim@hicomp.net"></td>
+                                    <td><input type="password" class="input" value="qwert1234"></td>
+                                    <td><input type="text" class="input" value="hicompint"></td>
+                                    <td><input type="text" class="input" value="dentist"></td>
+                                    <td>정유은(AADF34200)</td>
+                                    <td>
+                                        1,365,468 <a href="javascript:void()" class="tablebtn" onclick="modal_open(1)">포인트 이력조회</a>
+                                    </td>
+                                    <td class="member_invited">
+                                        AB345DS <span>5명 초대</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="kmedi_member_box">
+                        <div class="kmedi_member_sub">
+                            <h5>이용중인 구독권</h5>
+                            <p>3개월 이용권 (23.05.30 ~ 23.08.30) <a href="javascript:alert('정말 강제종료 하시겠습니까?')" class="tablebtn red">구독권 강제종료</a> </p>
+                            <p class="hold">3개월 이용권 (23.01.30 ~ 23.03.30) <a href="javascript:alert('정말 복구 하시겠습니까?')" class="tablebtn">구독권 복구</a></p>
+                        </div>
+                    </div>
+                    <div class="kmedi_member_box">
+                        <ul class="kmedi_member_datail_tab">
+                            <li id="tab01" class="on">결제이력(38)</li>
+                            <li id="tab02" class="">의료Q&A(00)</li>
+                            <li id="tab03" class="">1:1문의(00)</li>
+                            <li id="tab04" class="">초대한 회원(00)</li>
+                        </ul>
+                        <div class="kmedi_member_datail_tabbox">
+                            <div class="tabbox tab01_box">
+                                <h5>결제이력 <span>총 38건</span></h5>
+                                <table class="table_a member_table">
+                                    <thead>
+                                        <tr>
+                                            <th>주문번호</th>
+                                            <th>결제일</th>
+                                            <th>항목</th>
+                                            <th>금액</th>
+                                            <th>결제취소</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#3422133</td>
+                                            <td>23.04.03 18:35</td>
+                                            <td>3개월 구독권</td>
+                                            <td>$2,500</td>
+                                            <td>
+                                                <a href="kmedi_member_local_detail.html" class="tablebtn red">결제취소</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#3422133</td>
+                                            <td>23.04.03 18:35</td>
+                                            <td>충치 마취 수술진료</td>
+                                            <td>$500</td>
+                                            <td>
+                                                <a href="javascript:alert('이미 사용한 상품입니다.')" class="tablebtn">결제취소</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tabbox tab02_box">
+                                <h5>의료Q&A <span>총 38건</span></h5>
+                                <table class="table_a member_table">
+                                    <thead>
+                                        <tr>
+                                            <th>등록일시</th>
+                                            <th>답변상태</th>
+                                            <th>질문제목</th>
+                                            <th>담당크리에이터</th>
+                                            <th>컨텐츠 제목</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span class="wait">답변대기</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span class="wait">답변대기</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span>답변완료</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tabbox tab03_box">
+                                <h5>1:1문의 <span>총 38건</span></h5>
+                                <table class="table_a member_table">
+                                    <thead>
+                                        <tr>
+                                            <th>등록일시</th>
+                                            <th>답변상태</th>
+                                            <th>답변완료 일시</th>
+                                            <th>질문제목</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span class="wait">답변대기</span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <a href="kmedi_inquiry_detail.html" class="default_a">포인트를 복구할 수 있을까요?</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span class="wait">답변대기</span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <a href="kmedi_inquiry_detail.html" class="default_a">포인트를 복구할 수 있을까요?</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>
+                                                <span>답변완료</span>
+                                            </td>
+                                            <td>23.04.04 18:35</td>
+                                            <td>
+                                                <a href="kmedi_inquiry_detail.html" class="default_a">포인트를 복구할 수 있을까요?</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="tabbox tab04_box">
+                                <h5>초대한 회원 <span>총 38건</span></h5>
+                                <table class="table_a member_table">
+                                    <thead>
+                                        <tr>
+                                            <th>가입일시</th>
+                                            <th>회원상태</th>
+                                            <th>초대받은 회원</th>
+                                            <th>결제금액</th>
+                                            <th>적립포인트</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td><span class="sucsess">결제완료</span></td>
+                                            <td>
+                                                <a href="kmedi_inquiry_detail.html" class="default_a">홍길동</a>
+                                            </td>
+                                            <td>$1,000</td>
+                                            <td>100P (10%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03 18:35</td>
+                                            <td>회원가입</td>
+                                            <td>
+                                                <a href="kmedi_inquiry_detail.html" class="default_a">홍길동</a>
+                                            </td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="pagenation">
+                                페이지네이션 여기에
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kmedi_member_box">
+                        <h5>관리자 메모</h5>
+                        <textarea name="" id=""></textarea>                    
+                    </div>
+                </div>
+                
+                <div class="subbtn_box">
+                    <a href="kmedi_member_local.html" class="modal_btn subbtn off">목록으로</a>
+                    <a href="javascript:alert('정말 강제탈퇴 하시겠습니까? ');" class="subbtn del">강제탈퇴</a>
+                    <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- modal content - 포인트 등록 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" > <!-- modal1 -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">포인트 내역</h4>
+                <table class="table_bb modal_table">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>포인트 추가</th>
+                            <td>
+                                <input type="text" class="input w180">
+                                <a href="" class="tablebtn">추가</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>포인트 차감</th>
+                            <td>
+                                <input type="text" class="input w180">
+                                <a href="" class="tablebtn">추가</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br/>
+                <h5 class="mo_stitle">Olivia님의 포인트</h5>
+                <table class="table_a modal_table">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>+/-</th>
+                            <th>날짜</th>
+                            <th>내용</th>
+                            <th>포인트</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagenation">
+                    페이지네이션 여기에
+                </div>
+
+                <div class="btn_box">
+                    <a href="" class="mainbtn btn01">등록</a>
+                    <a href="" class="mainbtn btn02">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 포인트등록 //E -->
+
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
+

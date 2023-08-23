@@ -100,7 +100,7 @@
 
         <div class="content">
             <div class="title">
-                <h3>회원 관리 - 현지회원</h3>
+                <h3>회원 관리 - 한국 크리에이터</h3>
             </div>
             <div class="con_area">
                 <div class="kmedi_top_wrap">
@@ -129,42 +129,12 @@
                             </div>
                         </div>
                         <div class="kmedi_top">
-                            <h5>회원구분</h5>
-                            <div>
-                                <input type="radio" id="member_division1" name="member_division">
-                                <label for="member_division1">전체</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="member_division2" name="member_division">
-                                <label for="member_division2">개인의사</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="member_division3" name="member_division">
-                                <label for="member_division3">영업사원</label>
-                            </div>
-                        </div>
-                        <div class="kmedi_top">
-                            <h5>상세정보</h5>
-                            <div>
-                                <input type="radio" id="member_detail1" name="member_detail">
-                                <label for="member_detail1">전체</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="member_detail2" name="member_detail">
-                                <label for="member_detail2">입력</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="member_detail3" name="member_detail">
-                                <label for="member_detail3">미입력</label>
-                            </div>
-                        </div>
-                        <div class="kmedi_top">
                             <select name="" id="">
                                 <option value="">구분</option>
                                 <option value="">회원이름</option>
                                 <option value="">병원이름</option>
+                                <option value="">이메일</option>
                                 <option value="">핸드폰</option>
-                                <option value="">customer ID</option>
                             </select>
                             <input type="text" class="input">
                             <a href="" class="subbtn off">검색</a>
@@ -180,8 +150,12 @@
                         </colgroup>
                         <tbody>
                             <tr>
-                                <th rowspan="4">회원</th>
+                                <th rowspan="5">회원</th>
                                 <th>개인의사</th>
+                                <td><a href="">00</a></td>
+                            </tr>
+                            <tr>
+                                <th>병원그룹</th>
                                 <td><a href="">00</a></td>
                             </tr>
                             <tr>
@@ -190,28 +164,6 @@
                             </tr>
                             <tr>
                                 <th>한국 크리에이터</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>전체</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table_a inner_table">
-                        <colgroup>
-                            <col width="33%" />
-                            <col width="33%" />
-                            <col width="*" />
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th rowspan="3">1:1문의</th>
-                                <th>답변대기</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>답변완료</th>
                                 <td><a href="">00</a></td>
                             </tr>
                             <tr>
@@ -229,17 +181,6 @@
                 </div>
                 <div class="adm_table">
                     <table class="table_a">
-                        <colgroup>
-                            <col width="5%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                        </colgroup>
                         <thead>
                             <tr>
                                 <th><input type="checkbox"></th>
@@ -247,9 +188,12 @@
                                 <th>상태</th>
                                 <th>구분</th>
                                 <th>이름</th>
+                                <th>직급</th>
                                 <th>연락처</th>
                                 <th>이메일</th>
                                 <th>소속병원</th>
+                                <th>진료과목</th>
+                                <th>의료Q&A</th>
                                 <th>상세보기</th>
                             </tr>
                         </thead>
@@ -262,11 +206,14 @@
                                 <td>정상</td>
                                 <td>개인의사</td>
                                 <td>임은지</td>
+                                <td>주임</td>
                                 <td>010-0000-0000</td>
                                 <td>ej.lim@hicomp.net</td>
                                 <td>hicompint</td>
+                                <td>디자인팀</td>
+                                <td><a href="" class="default_a">1건</a></td>
                                 <td>
-                                    <a href="kmedi_member_local_detail.html" class="tablebtn">상세보기</a>
+                                    <a href="kmedi_member_creator_detail.html" class="tablebtn">상세보기</a>
                                 </td>
                             </tr>
                         </tbody>
