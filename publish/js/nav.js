@@ -5,7 +5,7 @@ $(function () {
     $(".sub_gnb > li > a").click(function () {
         $(".sub_2depth").slideUp();
         $(".sub_gnb > li > a").removeClass("on");
-        $(this).siblings(".sub_2depth").slideToggle();
+        $(this).siblings(".sub_2depth").slideToggle(); 
         $(this).toggleClass("on");
     });
     $(".sub_2depth > li > a").click(function () {
