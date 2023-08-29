@@ -53,6 +53,10 @@ function navList(listName) {
             location.href = "kmedi_member_creator.html";
             break;
 
+        case "kMediContent":
+            location.href = "kmedi_content.html";
+            break;
+
         default:
             break;
     }

@@ -142,40 +142,20 @@
                     </div>
                 </div>
                 <div class="adm_statistics">
-                    <table class="table_a inner_table">
-                        <colgroup>
-                            <col width="33%" />
-                            <col width="33%" />
-                            <col width="*" />
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th rowspan="5">회원</th>
-                                <th>개인의사</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>병원그룹</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>영업사원</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>한국 크리에이터</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                            <tr>
-                                <th>전체</th>
-                                <td><a href="">00</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div>
+                        <h5>회원</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00</strong></a></li>
+                            <li><a href="">병원그룹 <strong>00</strong></a></li>
+                            <li><a href="">병원그룹 <strong>00</strong></a></li>
+                            <li><a href="">영업사원 <strong>00</strong></a></li>
+                            <li><a href="">한국 크리에이터 <strong>00</strong></a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="kmedi_add_btn">
                     <div>
-                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open();">회원등록</a>
+                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(1);">회원등록</a>
                         <a href="" class="subbtn on">엑셀 다운로드</a>
                     </div>
                 </div>
@@ -227,7 +207,7 @@
     </div>
 
     
-    <div class="modal_wrap" id="modal_wrap" style="display:none;">
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
         <div class="modal w800" id="memberInsert">
             <!-- modal content - 회원등록 //S -->
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>

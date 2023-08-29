@@ -148,55 +148,46 @@
                     </div>
                     <div class="kmedi_member_box">
                         <div class="kmedi_member_sub">
-                            <h5>이용중인 구독권</h5>
-                            <p>3개월 이용권 (23.05.30 ~ 23.08.30) <a href="javascript:alert('정말 강제종료 하시겠습니까?')" class="tablebtn red">구독권 강제종료</a> </p>
-                            <p class="hold">3개월 이용권 (23.01.30 ~ 23.03.30) <a href="javascript:alert('정말 복구 하시겠습니까?')" class="tablebtn">구독권 복구</a></p>
+                            <h5>프로필 정보</h5>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kmedi_member_box">
+                        <div class="kmedi_member_sub">
+                            <div class="title_flex_wrap">
+                                <h5>정산계좌</h5>
+                                <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(2)">계좌 등록</a>
+                            </div>
+                            <table class="table_a member_table">
+                                <thead>
+                                    <tr>
+                                        <th>은행명</th>
+                                        <th>계좌번호</th>
+                                        <th>예금주</th>
+                                        <th>수정</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>하나은행</td>
+                                        <td>000-00-000000</td>
+                                        <td>서지은</td>
+                                        <td>
+                                            <a href="javascript:void(0)" class="tablebtn" onclick="modal_open(2)">수정</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="kmedi_member_box">
                         <ul class="kmedi_member_datail_tab">
-                            <li id="tab01" class="on">결제이력(38)</li>
-                            <li id="tab02" class="">의료Q&A(00)</li>
-                            <li id="tab03" class="">1:1문의(00)</li>
-                            <li id="tab04" class="">초대한 회원(00)</li>
+                            <li id="tab01" class="on">의료Q&A(00)</li>
+                            <li id="tab02" class="">등록된 컨텐츠(00)</li>
                         </ul>
                         <div class="kmedi_member_datail_tabbox">
                             <div class="tabbox tab01_box">
-                                <h5>결제이력 <span>총 38건</span></h5>
-                                <table class="table_a member_table">
-                                    <thead>
-                                        <tr>
-                                            <th>주문번호</th>
-                                            <th>결제일</th>
-                                            <th>항목</th>
-                                            <th>금액</th>
-                                            <th>결제취소</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#3422133</td>
-                                            <td>23.04.03 18:35</td>
-                                            <td>3개월 구독권</td>
-                                            <td>$2,500</td>
-                                            <td>
-                                                <a href="kmedi_member_local_detail.html" class="tablebtn red">결제취소</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#3422133</td>
-                                            <td>23.04.03 18:35</td>
-                                            <td>충치 마취 수술진료</td>
-                                            <td>$500</td>
-                                            <td>
-                                                <a href="javascript:alert('이미 사용한 상품입니다.')" class="tablebtn">결제취소</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="tabbox tab02_box">
                                 <h5>의료Q&A <span>총 38건</span></h5>
                                 <table class="table_a member_table">
                                     <thead>
@@ -204,7 +195,7 @@
                                             <th>등록일시</th>
                                             <th>답변상태</th>
                                             <th>질문제목</th>
-                                            <th>담당크리에이터</th>
+                                            <th>등록자</th>
                                             <th>컨텐츠 제목</th>
                                         </tr>
                                     </thead>
@@ -218,7 +209,7 @@
                                                 <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
                                             </td>
                                             <td>
-                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                                olivia
                                             </td>
                                             <td>
                                                 <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
@@ -233,7 +224,7 @@
                                                 <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
                                             </td>
                                             <td>
-                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                                olivia
                                             </td>
                                             <td>
                                                 <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
@@ -248,12 +239,85 @@
                                                 <a href="kmedi_qna_detail.html" class="default_a">수술영상에 대해서 문의 드립니다.</a>
                                             </td>
                                             <td>
-                                                <a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a>
+                                                olivia
                                             </td>
                                             <td>
                                                 <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
                                             </td>
                                         </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tabbox tab02_box">
+                                <h5>등록된컨텐츠 <span>총 38건</span></h5>
+                                <table class="table_a member_table">
+                                    <thead>
+                                        <tr>
+                                            <th>등록일</th>
+                                            <th>컨텐츠 구분</th>
+                                            <th>컨텐츠 상태</th>
+                                            <th>컨텐츠 이름</th>
+                                            <th>카테고리</th>
+                                            <th>의료Q&A</th>
+                                            <th>판매가격</th>
+                                            <th>조회수</th>
+                                            <th>판매수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>23.04.03</td>
+                                            <td>일반</td>
+                                            <td>
+                                                <span>판매승인대기</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                            <td>#치과</td>
+                                            <td>
+                                                <a href="" class="default_a">1건</a>
+                                            </td>
+                                            <td>23,000원</td>
+                                            <td>324</td>
+                                            <td>45건</td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03</td>
+                                            <td>일반</td>
+                                            <td>
+                                                <span class="wait">판매중단</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                            <td>#치과</td>
+                                            <td>
+                                                <a href="" class="default_a">1건</a>
+                                            </td>
+                                            <td>-</td>
+                                            <td>324</td>
+                                            <td>45건</td>
+                                        </tr>
+                                        <tr>
+                                            <td>23.04.03</td>
+                                            <td>일반</td>
+                                            <td>
+                                                <span class="sucsess">판매승인</span>
+                                            </td>
+                                            <td>
+                                                <a href="kmedi_content_detail.html" class="default_a">액상 세포 검사</a>
+                                            </td>
+                                            <td>#치과</td>
+                                            <td>
+                                                <a href="" class="default_a">1건</a>
+                                            </td>
+                                            <td>23,000원</td>
+                                            <td>324</td>
+                                            <td>45건</td>
+                                        </tr>
+                                    
                                     </tbody>
                                 </table>
                             </div>
@@ -456,6 +520,42 @@
         </div>
     </div>
     <!-- 모달 - 포인트등록 //E -->
+
+    <!-- modal content - 계좌등록 //S -->
+    <div class="modal_wrap" id="modal_wrap2" style="display:none;">
+        <div class="modal w600" > <!-- modal1 -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">정산계좌 정보 수정</h4>
+                <table class="table_bb">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>은행명</th>
+                            <td><input type="text" class="input"></td>
+                        </tr>
+                        <tr>
+                            <th>계좌번호</th>
+                            <td><input type="text" class="input"></td>
+                        </tr>
+                        <tr>
+                            <th>예금주</th>
+                            <td><input type="text" class="input"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="btn_box">
+                    <a href="" class="mainbtn btn01">등록</a>
+                    <a href="" class="mainbtn btn02">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 계좌등록 //E -->
 
 
 </body>
