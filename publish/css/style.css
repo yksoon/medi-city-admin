@@ -254,8 +254,8 @@ h5.mo_stitle {font-size: 18px;font-weight: 700;margin:0 0 10px;color: #111;}
 .fac_icon_box span {display: inline-block;width: 30px;}
 .fac_icon_box span img{width: 30px;cursor:pointer;}
 .fac_icon_box .fac_btn {margin:10px 0 0;text-align: right;}
-.fac_icon_box.on {display:block;}
-.fac_icon_box p {font-size: 14px;}
+.fac_icon_box.on {display:block;} 
+.fac_icon_box p {font-size: 14px;} 
 
 
 
