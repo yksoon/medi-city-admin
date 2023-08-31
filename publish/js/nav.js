@@ -57,6 +57,18 @@ function navList(listName) {
             location.href = "kmedi_content.html";
             break;
 
+        case "kMediCategory":
+            location.href = "kmedi_category.html";
+            break;
+
+        case "kMediPayment":
+            location.href = "kmedi_payment.html";
+            break;
+
+        case "kMediCharges":
+            location.href = "kmedi_charge.html";
+            break;
+
         default:
             break;
     }

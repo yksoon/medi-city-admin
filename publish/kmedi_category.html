@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>카테고리 관리</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(1)">신규 카테고리 추가</a>
+                        <!-- <a href="" class="subbtn on">엑셀 다운로드</a> -->
+                    </div>
+                </div>
+                <div class="kmedi_content">
+                    <div class="adm_table">
+                        <table class="table_a">
+                            <colgroup>
+                                <col width="5%" />
+                                <col width="10%" />
+                                <col width="20%" />
+                                <col width="*" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>메인노출여부</th>
+                                    <th>카테고리명</th>
+                                    <th>2차카테고리</th>
+                                    <th>수정</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>03</td>
+                                    <td>노출</td>
+                                    <td>성형외과</td>
+                                    <td>
+                                        <div class="category_2depth category_2depth_none">
+                                            <p>-</p>
+                                        </div>
+                                    </td>
+                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                </tr>
+                                <tr>
+                                    <td>02</td>
+                                    <td>노출</td>
+                                    <td>치과</td>
+                                    <td>
+                                        <div class="category_2depth">
+                                            <p>충치</p>
+                                            <p>신경치료</p>
+                                            <p>마취통증</p>
+                                            <p>임플란트</p>
+                                        </div>
+                                    </td>
+                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                </tr>
+                                <tr>
+                                    <td>01</td>
+                                    <td>노출</td>
+                                    <td>신경외과</td>
+                                    <td>
+                                        <div class="category_2depth category_2depth_none">
+                                            <p>-</p>
+                                        </div>
+                                    </td>
+                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagenation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- modal content - 신규 카테고리 추가 //S -->
+     <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" > <!-- modal1 -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">신규 카테고리 추가</h4>
+                <table class="table_bb">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>카테고리명 (국문)</th>
+                            <td>
+                                <input type="text" class="input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>카테고리명 (영문)</th>
+                            <td>
+                                <input type="text" class="input">
+                            </td>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <th>카테고리명 (인니어)</th>
+                            <td>
+                                <input type="text" class="input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>메인 노출 여부</th>
+                            <td>
+                                <select name="" id="">
+                                    <option value="">노출</option>
+                                    <option value="">미노출</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>카테고리이미지</th>
+                            <td>
+                                <input type="file">
+                                <div class="category_icon_box">
+                                    <span class="material-symbols-outlined thumb_delete" onclick="thumb_delete()">
+                                        cancel
+                                    </span>
+                                    <div><img src="img/main/quick02.png" alt="이미지미리보기"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2차카테고리</th>
+                            <td>
+                                <div class="category_2depth_insert">
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="dental"><input type="name" class="input w120" value="iidnfbsyu"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a> </div>
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
+                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
+                                    <div><input type="name" class="input w120" placeholder="국문"><input type="name" class="input w120" placeholder="영문"><input type="name" class="input w120" placeholder="인니어"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a> <a href="" class="tablebtn line">+</a></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="subbtn_box">
+                    <a href="javascript:alert('카테고리에 컨텐츠가 있어 삭제가 불가합니다.')" class="subbtn del">삭제</a>
+                    <a href="javascript:alert('등록이 완료되었습니다.')" class="subbtn on">등록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 한국 의료 크리에이터 회원찾기 //E -->
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>

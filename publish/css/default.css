@@ -117,5 +117,7 @@ button {background:none;border:none;}
 #default_size {width:100%; text-align:center;}
 
 input[type="checkbox"]{vertical-align:middle;}
+input[type="radio"]{vertical-align:middle;}
 label{cursor:pointer;vertical-align:middle;}
+select, input, textarea {font-family: inherit;}
 

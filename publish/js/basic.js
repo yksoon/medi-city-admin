@@ -16,3 +16,11 @@ $('.kmedi_member_datail_tab li').click(function(){
     var tabbox = $(this).attr('id')  + "_box"
     $("." + tabbox).show();
 });
+
+
+// 썸네일 이미지 삭제
+function thumb_delete(){
+    $('.thumb_box').css('display','none');
+    $('.category_icon_box').css('display','none');
+}
+
