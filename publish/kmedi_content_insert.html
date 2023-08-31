@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>컨텐츠 수정</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi kmedi_content">
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="15%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>컨텐츠 상태</th>
+                                <td>
+                                    <select name="" id="" class="w180">
+                                        <option value="">판매승인 대기</option>
+                                        <option value="">판매승인</option>
+                                        <option value="">판매중단</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>
+                                    <input type="text" class="input">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>컨텐츠 구분</th>
+                                <td>
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="radio" id="content_gubun2" name="content_gubun">
+                                            <label for="content_gubun2">무료</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="content_gubun3" name="content_gubun">
+                                            <label for="content_gubun3">유료</label>
+                                            <input type="text" class="input w180">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>추천영상</th>
+                                <td>
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="radio" id="content_recommend2" name="content_recommend">
+                                            <label for="content_recommend2">추천</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="content_recommend3" name="content_recommend">
+                                            <label for="content_recommend3">일반</label>
+                                        </div>
+                                    </div>
+                                    <p>추천영상으로 등록되면 메인화면에 노출 됩니다.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>카테고리1</th>
+                                <td class="radio_wrap">
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="1" name="">
+                                            <label for="1">치과</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="2" name="">
+                                            <label for="2">피부과</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="3" name="">
+                                            <label for="3">성형외과</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="4" name="">
+                                            <label for="4">안과</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="5" name="">
+                                            <label for="5">산부인과</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>카테고리2</th>
+                                <td class="radio_wrap">
+                                    <!-- 카테고리1 체크시 각 카테고리에 맞는 .radio_box만 노출 -->
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="1-1" name="">
+                                            <label for="1-1">충치</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="1-2" name="">
+                                            <label for="1-2">신경치료</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="1-3" name="">
+                                            <label for="1-3">마취통증</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="1-4" name="">
+                                            <label for="1-4">임플란트</label>
+                                        </div>
+                                    </div>
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="2-1" name="">
+                                            <label for="2-1">피부습진</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="2-2" name="">
+                                            <label for="2-2">잡티제거</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="2-3" name="">
+                                            <label for="2-3">마취통증</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="2-4" name="">
+                                            <label for="2-4">피부미용</label>
+                                        </div>
+                                    </div>
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="3-1" name="">
+                                            <label for="3-1">백내장</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="3-2" name="">
+                                            <label for="3-2">신경치료</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="3-3" name="">
+                                            <label for="3-3">마취통증</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="3-4" name="">
+                                            <label for="3-4">시력교정</label>
+                                        </div>
+                                    </div>
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="4-1" name="">
+                                            <label for="4-1">제왕절개</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="4-2" name="">
+                                            <label for="4-2">임신중독</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="4-3" name="">
+                                            <label for="4-3">마취통증</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>섬네일 이미지</th>
+                                <td>
+                                    <input type="file">
+                                    <span class="thumb"><img src="" alt="썸네일미리보기"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>영상언어/자막</th>
+                                <td class="radio_wrap">
+                                    <div class="radio_box">
+                                        <div>
+                                            <input type="checkbox" id="content_lang_kr" name="">
+                                            <label for="content_lang_kr">한국어</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="content_lang_en" name="">
+                                            <label for="content_lang_en">영어자막</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>영상 재생시간</th>
+                                <td>
+                                    <input type="text" class="input w120">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>등록자 정보</th>
+                                <td>
+                                    <input type="text" class="input w180">
+                                    <a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">등록자 변경</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>원본 영상설명</th>
+                                <td class="video_description">
+                                    <p>0 / 3,000</p>
+                                    <textarea name="" id=""></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>편집 영상설명</th>
+                                <td class="video_description">
+                                    <p>0 / 3,000</p>
+                                    <textarea name="" id=""></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>편집 동영상</th>
+                                <td>
+                                    <input type="file">
+                                    <p></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>원본 동영상</th>
+                                <td>
+                                    <div class="video_history">
+                                        <div>
+                                            <p>파일명</p>
+                                            <span>23.05.30 18:45</span>
+                                            <a href="">
+                                                <span class="material-symbols-outlined download_btn">
+                                                    download
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="btn_box">
+                    <a href="kmedi_member_local.html" class="modal_btn subbtn off">목록으로</a>
+                    <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- modal content - 한국 의료 크리에이터 회원찾기 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" > <!-- modal1 -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">한국 의료 크리에이터 회원찾기</h4>
+                <div class="kmedi_top">
+                    <select name="" id="">
+                        <option value="">구분</option>
+                        <option value="">이름</option>
+                        <option value="">소속</option>
+                    </select>
+                    <input type="text" class="input">
+                    <a href="" class="subbtn off">검색</a>
+                </div><br/>
+                <table class="table_a">
+                    <thead>
+                        <tr> 
+                            <th><input type="checkbox"></th>
+                            <th>이름</th>
+                            <th>직급</th>
+                            <th>소속병원</th>
+                            <th>진료과목</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox">
+                            </td>
+                            <td>홍길동</td>
+                            <td>원장</td>
+                            <td>강남차병원</td>
+                            <td>신경의학과</td>
+                        </tr>
+                    </tbody>
+                </table><br/>
+                <div class="pagenation">
+                    페이지네이션 여기에
+                </div>
+
+                <div class="subbtn_box">
+                    <a href="" class="subbtn on">등록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 포인트등록 //E -->
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
+
