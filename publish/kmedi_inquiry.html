@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>1:1문의</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <h5>상태</h5>
+                            <div>
+                                <input type="radio" id="inquiry_status1" name="inquiry_status">
+                                <label for="inquiry_status1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="inquiry_status2" name="inquiry_status">
+                                <label for="inquiry_status2">답변대기</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="inquiry_status3" name="inquiry_status">
+                                <label for="inquiry_status3">답변완료</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">제목</option>
+                                <option value="">회원이름</option>
+                                <option value="">병원이름</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="adm_statistics">
+                    <div>
+                        <h5>1:1문의</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00개</strong></a></li>
+                            <li><a href="">답변대기 <strong>00개</strong></a></li>
+                            <li><a href="">답변완료 <strong>00개</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="" class="subbtn on">엑셀 다운로드</a>
+                    </div>
+                </div>
+                <div class="kmedi_content">
+                    <div class="adm_table">
+                        <table class="table_a">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>등록일시</th>
+                                    <th>상태</th>
+                                    <th>답변완료 일시</th>
+                                    <th>제목</th>
+                                    <th>구분</th>
+                                    <th>이름</th>
+                                    <th>소속병원</th>
+                                    <th>상세보기</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30 18:31</td>
+                                    <td><span class="red">답변대기</span></td>
+                                    <td>-</td>
+                                    <td>포인트를 복구할 수 있을까요?</td>
+                                    <td>개인의사</td>
+                                    <td>구나완</td>
+                                    <td>Bali International Medical  center</td>
+                                    <td><a href="javascript:void(0)" class="tablebtn blue" onclick="modal_open(1)">답변하기</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30 18:31</td>
+                                    <td>답변완료</td>
+                                    <td>2023-03-20 18:32</td>
+                                    <td>포인트를 복구할 수 있을까요?</td>
+                                    <td>개인의사</td>
+                                    <td>구나완</td>
+                                    <td>Bali International Medical  center</td>
+                                    <td><a href="javascript:void(0)" class="tablebtn" onclick="modal_open(2)">상세보기</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagenation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- modal content - 문의내용 답변 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" id="memberInsert">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">1:1문의 답변하기</h4>
+                <div class="inquiry_box">
+                    <h4 class="mo_subtitle">문의 내용</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>답변상태</th>
+                                <td><span class="red">답변대기</span></td>
+                            </tr>
+                            <tr>
+                                <th>등록일시</th>
+                                <td>2023-03-20 18:32</td>
+                            </tr>
+                            <tr>
+                                <th>회원이름</th>
+                                <td>구나완</td>
+                            </tr>
+                            <tr>
+                                <th>회원구분</th>
+                                <td>개인의사</td>
+                            </tr>
+                            <tr>
+                                <th>소속병원</th>
+                                <td>Bali International Medical Center</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>푸시 알람이 오지 않습니다!</td>
+                            </tr>
+                            <tr>
+                                <th>내용</th>
+                                <td>안드로이드 OS를 업데이트 하고 나서부터 푸시 알람이 오지 않습니다. 어떻게 해야할지 자세한 방법을 알려주세요. 감사합니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="inquiry_box">
+                    <h4 class="mo_subtitle">답변</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea name="" id="">스마트에디터..?</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_box">
+                    <a href="" class="subbtn off">닫기</a>
+                    <a href="" class="subbtn on">등록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 문의내용 답변 //E -->
+    
+    <!-- modal content - 문의내용 답변 //S -->
+    <div class="modal_wrap" id="modal_wrap2" style="display:none;">
+        <div class="modal w800" id="memberInsert">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">1:1문의 상세보기</h4>
+                <div class="inquiry_box">
+                    <h4 class="mo_subtitle">문의 내용</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>답변상태</th>
+                                <td>답변완료</td>
+                            </tr>
+                            <tr>
+                                <th>등록일시</th>
+                                <td>2023-03-20 18:32</td>
+                            </tr>
+                            <tr>
+                                <th>회원이름</th>
+                                <td>구나완</td>
+                            </tr>
+                            <tr>
+                                <th>회원구분</th>
+                                <td>개인의사</td>
+                            </tr>
+                            <tr>
+                                <th>소속병원</th>
+                                <td>Bali International Medical Center</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>푸시 알람이 오지 않습니다!</td>
+                            </tr>
+                            <tr>
+                                <th>내용</th>
+                                <td>안드로이드 OS를 업데이트 하고 나서부터 푸시 알람이 오지 않습니다. 어떻게 해야할지 자세한 방법을 알려주세요. 감사합니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="inquiry_box">
+                    <h4 class="mo_subtitle">답변</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea name="" id="">이렇게 저렇게 요로쿵 저러쿵 하면 할 수 있습니다.</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_box">
+                    <a href="" class="subbtn off">닫기</a>
+                    <a href="" class="subbtn del">삭제</a>
+                    <a href="" class="subbtn on">수정</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 문의내용 답변 //E -->
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>

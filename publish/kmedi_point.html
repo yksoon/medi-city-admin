@@ -16,7 +16,6 @@
 
      <link rel="stylesheet" href="css/default.css">
      <link rel="stylesheet" href="css/style.css">
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
  
 </head>
 <body>
@@ -101,70 +100,63 @@
 
         <div class="content">
             <div class="title">
-                <h3>카테고리 관리</h3>
+                <h3>포인트 관리</h3>
             </div>
             <div class="con_area">
                 <div class="kmedi_add_btn">
                     <div>
-                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(1)">신규 카테고리 추가</a>
+                        <a href="javascipt:void(0)" class="subbtn on" onclick="modal_open(1)">포인트 정책 등록</a>
                         <!-- <a href="" class="subbtn on">엑셀 다운로드</a> -->
                     </div>
                 </div>
                 <div class="kmedi_content">
                     <div class="adm_table">
                         <table class="table_a">
-                            <colgroup>
-                                <col width="5%" />
-                                <col width="10%" />
-                                <col width="20%" />
-                                <col width="*" />
-                                <col width="10%" />
-                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>메인노출여부</th>
-                                    <th>카테고리명</th>
-                                    <th>2차카테고리</th>
+                                    <th><input type="checkbox"></th>
+                                    <th>항목</th>
+                                    <th>대상</th>
+                                    <th>포인트 적립(%)</th>
                                     <th>수정</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>03</td>
-                                    <td>노출</td>
-                                    <td>성형외과</td>
                                     <td>
-                                        <div class="category_2depth category_2depth_none">
-                                            <p>-</p>
-                                        </div>
+                                        <input type="checkbox">
                                     </td>
-                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                    <td>구매금액</td>
+                                    <td>현지의사회원</td>
+                                    <td><span class="green">+ 10%</span></td>
+                                    <td><a href="javascipt:void(0)" class="tablebtn" onclick="modal_open(1)">수정</a></td>
                                 </tr>
                                 <tr>
-                                    <td>02</td>
-                                    <td>노출</td>
-                                    <td>치과</td>
                                     <td>
-                                        <div class="category_2depth">
-                                            <p>충치</p>
-                                            <p>신경치료</p>
-                                            <p>마취통증</p>
-                                            <p>임플란트</p>
-                                        </div>
+                                        <input type="checkbox">
                                     </td>
-                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                    <td>회원 추가정보 입력</td>
+                                    <td>현지의사회원</td>
+                                    <td><span class="green">+ 100P</span></td>
+                                    <td><a href="javascipt:void(0)" class="tablebtn" onclick="modal_open(1)">수정</a></td>
                                 </tr>
                                 <tr>
-                                    <td>01</td>
-                                    <td>노출</td>
-                                    <td>신경외과</td>
                                     <td>
-                                        <div class="category_2depth category_2depth_none">
-                                            <p>-</p>
-                                        </div>
+                                        <input type="checkbox">
                                     </td>
-                                    <td><a href="javascript:void(0);" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                    <td>친구초대 가입 후 결제 시 결제금액</td>
+                                    <td>현지의사회원 / 영업사원</td>
+                                    <td><span class="green">+ 10%</span></td>
+                                    <td><a href="javascipt:void(0)" class="tablebtn" onclick="modal_open(1)">수정</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>의료질문 등록</td>
+                                    <td>현지의사회원</td>
+                                    <td><span class="red">- 100P</span></td>
+                                    <td><a href="javascipt:void(0)" class="tablebtn" onclick="modal_open(1)">수정</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -175,12 +167,13 @@
             </div>
         </div>
     </div>
-     <!-- modal content - 신규 카테고리 추가 //S -->
+
+     <!-- modal content - 포인트 정책 추가 //S -->
      <div class="modal_wrap" id="modal_wrap1" style="display:none;">
         <div class="modal w800" > <!-- modal1 -->
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
             <div class="form">
-                <h4 class="mo_title">신규 카테고리 추가</h4>
+                <h4 class="mo_title">포인트 정책 추가</h4>
                 <table class="table_bb">
                     <colgroup>
                         <col width="30%">
@@ -188,70 +181,67 @@
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th>카테고리명 (국문)</th>
+                            <th>항목</th>
                             <td>
                                 <input type="text" class="input">
                             </td>
                         </tr>
                         <tr>
-                            <th>카테고리명 (영문)</th>
+                            <th>대상</th>
                             <td>
-                                <input type="text" class="input">
+                                <div class="radio_box">
+                                    <div>
+                                        <input type="checkbox" id="pointer_target1" name="pointer_target">
+                                        <label for="pointer_target1">전체</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="pointer_target2" name="pointer_target">
+                                        <label for="pointer_target2">현지회원</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="pointer_target3" name="pointer_target">
+                                        <label for="pointer_target3">영업사원</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="pointer_target4" name="pointer_target">
+                                        <label for="pointer_target4">한국크리에이터</label>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
-                        </tr>
                         <tr>
-                            <th>카테고리명 (인니어)</th>
-                            <td>
-                                <input type="text" class="input">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>메인 노출 여부</th>
+                            <th>포인트 적립</th>
                             <td>
                                 <select name="" id="">
-                                    <option value="">노출</option>
-                                    <option value="">미노출</option>
+                                    <option value="">결제금액에</option>
+                                    <option value="">금액과 관련없이</option>
+                                </select>
+                                <select name="" id="">
+                                    <option value="">+</option>
+                                    <option value="">-</option>
+                                </select>
+                                <input type="text" class="input w80">
+                                <select name="" id="">
+                                    <option value="">%</option>
+                                    <option value="">P</option>
                                 </select>
                             </td>
                         </tr>
-                        <tr>
-                            <th>카테고리이미지</th>
-                            <td>
-                                <input type="file">
-                                <div class="category_icon_box">
-                                    <span class="material-symbols-outlined thumb_delete" onclick="thumb_delete()">
-                                        cancel
-                                    </span>
-                                    <div><img src="img/main/quick02.png" alt="이미지미리보기"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>2차카테고리</th>
-                            <td>
-                                <div class="category_2depth_insert">
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="dental"><input type="name" class="input w120" value="iidnfbsyu"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a> </div>
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
-                                    <div><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><input type="name" class="input w120" value="충치"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a></div>
-                                    <div><input type="name" class="input w120" placeholder="국문"><input type="name" class="input w120" placeholder="영문"><input type="name" class="input w120" placeholder="인니어"><a href="" class="tablebtn">수정</a> <a href="" class="tablebtn red">삭제</a> <a href="" class="tablebtn line">+</a></div>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
-                </table>
+                </table><br/>
+                <div class="linebox">
+                    (항목)을 (대상)에게 (포인트적립)만큼 합니다.
+                </div>
 
                 <div class="subbtn_box">
-                    <a href="javascript:alert('카테고리에 컨텐츠가 있어 삭제가 불가합니다.')" class="subbtn del">삭제</a>
+                    <a href="javascript:alert('정말 삭제하시겠습니까?')" class="subbtn del">삭제</a>
                     <a href="javascript:alert('등록이 완료되었습니다.')" class="subbtn on">등록</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 모달 - 신규 카테고리 추가 //E -->
+    <!-- 모달 - 포인트 정책 추가 //E -->
+
 </body>
 </html>
 <script src="js/nav.js"></script>
