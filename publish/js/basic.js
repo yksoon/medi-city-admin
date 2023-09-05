@@ -1,19 +1,26 @@
 // modal
-function modal_close(){
-    document.getElementById('modal_wrap').style.display = "none";
+
+function modal_open(modalNum){
+    let modalWrapNum = 'modal_wrap' + String(modalNum);
+    document.getElementById(modalWrapNum).style.display = "block";
 }
 
-//document.querySelectorAll('.modal_content').style.display = "none";
-//
-//function modal_open(content){
-//    console.log(content);
-//    document.getElementById('modal_wrap').style.display = "block";
-//    const modalContent = content;
-//    modalContent.classList.add('block');
-//}
+function modal_close(){
+    $('.modal_wrap').css('display','none');
+}
 
-$('.modal_btn').click(function(){
-    $('#modal_wrap').show();
-    $('.modal_content').hide();
-    $($(this).attr('title')).show();
-})
+$('.kmedi_member_datail_tab li').click(function(){
+    $(this).addClass('on');
+    $(this).siblings('li').removeClass('on');
+    $('.tabbox').hide();
+    var tabbox = $(this).attr('id')  + "_box"
+    $("." + tabbox).show();
+});
+
+
+// 썸네일 이미지 삭제
+function thumb_delete(){
+    $('.thumb_box').css('display','none');
+    $('.category_icon_box').css('display','none');
+}
+

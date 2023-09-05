@@ -50,7 +50,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="javascript:void(0)" class="on">회원 관리</a>
+                    <li><a href="javascript:void(0)">회원 관리</a>
                         <ul class="sub_2depth">
                             <li><a onclick="navList('memberList')">회원 리스트</a></li>
                             <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
@@ -67,7 +67,7 @@
                     <li><a onclick="navList('mediArt')">MEDI ART</a></li>
                     <li><a onclick="navList('mediTax')">세무/회계</a></li>
                     <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
-                    <li><a>K-MEDI</a>
+                    <li><a class="on">K-MEDI</a>
                         <ul class="sub_2depth">
                             <li><a>회원 관리</a>
                                 <ul class="sub_3depth">
@@ -100,86 +100,94 @@
 
         <div class="content">
             <div class="title">
-                <h3>회원 리스트</h3>
+                <h3>공지사항</h3>
             </div>
             <div class="con_area">
-                <div class="adm_search">
-                    <div>
-                        <select name="" id="">
-                            <option value="">구분</option>
-                            <option value="">이름</option>
-                            <option value="">소속</option>
-                        </select>
-                        <input type="text" class="input">
-                        <a href="" class="subbtn off">검색</a>
-                    </div>
-                    <div>
-                        <a href="javascript:void(0)" class="subbtn on" title="#memberInsert" onclick="modal_open(1);">회원등록</a>
-                        <a href="" class="subbtn on">엑셀 다운로드</a>
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">컨텐츠 이름</option>
+                                <option value="">등록자</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
                     </div>
                 </div>
-                <div class="adm_table">
-                    <table class="table_a">
-                        <colgroup>
-                            <col width="5%">
-                            <col width="5%">
-                            <col width="5%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                            <col width="10%">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox"></th>
-                                <th>고유번호</th>
-                                <th>구분</th>
-                                <th>아이디</th>
-                                <th>이름</th>
-                                <th>연락처</th>
-                                <th>소속</th>
-                                <th>전공과</th>
-                                <th>전공분야</th>
-                                <th>정보수정</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input type="checkbox">
-                                </td>
-                                <td>1</td>
-                                <td>관리자</td>
-                                <td>ej.lim@hicomp.net</td>
-                                <td>임은지</td>
-                                <td>010-0000-0000</td>
-                                <td>하이컴프아이엔티</td>
-                                <td>디자인</td>
-                                <td>웹디자인</td>
-                                <td>
-                                    <a href="" class="tablebtn">정보 수정</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="javascipt:void(0)" class="subbtn on" onclick="modal_open(1)">글쓰기</a>
+                        <a href="javascipt:void(0)" class="subbtn off">삭제</a>
+                        <!-- <a href="" class="subbtn on">엑셀 다운로드</a> -->
+                    </div>
                 </div>
-                <div class="pagenation">
-
+                <div class="kmedi_content">
+                    <div class="kmedi_notice">
+                        <div class="adm_table">
+                            <table class="table_a">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="5%">
+                                    <col width="*">
+                                    <col width="20%">
+                                    <col width="10%">
+                                    <col width="10%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>파일</th>
+                                        <th>조회수</th>
+                                        <th>등록일</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>1</td>
+                                        <td>
+                                            공지사항 제목
+                                        </td>
+                                        <td>
+                                            <div class="file_wrap">
+                                                <a href="">
+                                                    <img src="img/common/file.svg" alt=""> 파일이름1.docx
+                                                </a>
+                                                <a href="">
+                                                    <img src="img/common/file.svg" alt=""> 파일이름2.pdf
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="viewer_wrap">
+                                                <img src="img/common/user_icon.png" alt=""> 16
+                                            </div>
+                                        </td>
+                                        <td>
+                                            2023-08-16
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pagenation">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
-    <div class="modal_wrap" id="modal_wrap1">
-        <div class="modal w800" id="memberInsert">
-            <!-- modal content - 회원등록 //S -->
+     <!-- modal content - 글쓰기 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w1400">
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
             <div class="form">
-                <h4 class="mo_title">회원등록</h4>
+                <h4 class="mo_title">글쓰기</h4>
                 <table class="table_bb">
                     <colgroup>
                         <col width="30%">
@@ -187,79 +195,52 @@
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th>구분</th>
+                            <th>제목</th>
+                            <td><input type="email" class="input wp100" autofocus></td>
+                        </tr>
+                        <tr>
+                            <th>중요공지 푸쉬</th>
                             <td>
-                                <select name="" id="" class="w180">
-                                    <option value="">일반</option>
-                                    <option value="">관리자</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>아이디 <span class="red">*</span></th>
-                            <td><input type="email" class="input w180" autofocus></td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호 <span class="red">*</span></th>
-                            <td><input type="password" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호 확인 <span class="red">*</span></th>
-                            <td><input type="password" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>성명 (국문) <span class="red">*</span></th>
-                            <td>
-                                <input type="name" class="input w120" placeholder="성">
-                                <input type="name" class="input w120" placeholder="이름">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>성명 (영문) <span class="red">*</span></th>
-                            <td>
-                                <input type="name" class="input w120" placeholder="First name">
-                                <input type="name" class="input w120" placeholder="Last name">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>휴대전화 <span class="red">*</span></th>
-                            <td>
-                                <div id="phone_num" class="m0">
-                                    <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
-                                    <input type="tel" class="input w120" id="phone_num2">
-                                    <input type="tel" class="input w120" id="phone_num3">
+                                <div class="radio_box">
+                                    <div>
+                                        <input type="radio" id="pointer_target1" name="notice_push">
+                                        <label for="pointer_target1">발송안함</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="pointer_target2" name="notice_push">
+                                        <label for="pointer_target2">발송</label>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <th>면허번호</th>
-                            <td><input type="text" class="input w180"></td>
+                            <th>파일첨부</th>
+                            <td>
+                                <div style="margin-bottom: 5px;"><b>여러 파일 선택이 가능합니다. 여러 파일 선택 시 ctrl 누른 후 선택하시면 됩니다.</b></div>
+                                <input type="file">
+                            </td>
                         </tr>
                         <tr>
-                            <th>소속 기관</th>
-                            <td><input type="text" class="input w180"></td>
+                            <td colspan="2">
+                                <textarea name="" id="" class="input"></textarea>
+                            </td>
                         </tr>
                         <tr>
-                            <th>전공과</th>
-                            <td><input type="text" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>전공분야</th>
-                            <td><input type="text" class="input w180"></td>
+                            <th>자동등록방지</th>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="subbtn_box">
-                    <a href="" class="subbtn on">등록</a>
+                <div class="btn_box">
                     <a href="" class="subbtn off">취소</a>
+                    <a href="" class="subbtn on">등록</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 모달 - 회원등록 //E -->
+    <!-- modal content - 글쓰기 //E -->
 
 </body>
 </html>
 <script src="js/nav.js"></script>
 <script src="js/basic.js"></script>
-

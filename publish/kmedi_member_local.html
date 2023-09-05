@@ -50,7 +50,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="javascript:void(0)" class="on">회원 관리</a>
+                    <li><a href="javascript:void(0)">회원 관리</a>
                         <ul class="sub_2depth">
                             <li><a onclick="navList('memberList')">회원 리스트</a></li>
                             <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
@@ -67,7 +67,7 @@
                     <li><a onclick="navList('mediArt')">MEDI ART</a></li>
                     <li><a onclick="navList('mediTax')">세무/회계</a></li>
                     <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
-                    <li><a>K-MEDI</a>
+                    <li><a class="on">K-MEDI</a>
                         <ul class="sub_2depth">
                             <li><a>회원 관리</a>
                                 <ul class="sub_3depth">
@@ -100,21 +100,101 @@
 
         <div class="content">
             <div class="title">
-                <h3>회원 리스트</h3>
+                <h3>회원 관리 - 현지회원</h3>
             </div>
             <div class="con_area">
-                <div class="adm_search">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <h5>기간조회</h5>
+                            <a href="" class="kmedi_top_btn">7일</a>
+                            <a href="" class="kmedi_top_btn">14일</a>
+                            <a href="" class="kmedi_top_btn">30일</a>
+                            <a href="" class="kmedi_top_btn">3개월</a>
+                            <input type="date" class="input"> ~ <input type="date" class="input">
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>회원상태</h5>
+                            <div>
+                                <input type="radio" id="member_state1" name="member_state">
+                                <label for="member_state1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_state2" name="member_state">
+                                <label for="member_state2">정상</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_state3" name="member_state">
+                                <label for="member_state3">탈퇴</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>회원구분</h5>
+                            <div>
+                                <input type="radio" id="member_division1" name="member_division">
+                                <label for="member_division1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_division2" name="member_division">
+                                <label for="member_division2">개인의사</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_division3" name="member_division">
+                                <label for="member_division3">영업사원</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>상세정보</h5>
+                            <div>
+                                <input type="radio" id="member_detail1" name="member_detail">
+                                <label for="member_detail1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_detail2" name="member_detail">
+                                <label for="member_detail2">입력</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_detail3" name="member_detail">
+                                <label for="member_detail3">미입력</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top"> 
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">회원이름</option>
+                                <option value="">병원이름</option>
+                                <option value="">핸드폰</option>
+                                <option value="">customer ID</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="adm_statistics">
                     <div>
-                        <select name="" id="">
-                            <option value="">구분</option>
-                            <option value="">이름</option>
-                            <option value="">소속</option>
-                        </select>
-                        <input type="text" class="input">
-                        <a href="" class="subbtn off">검색</a>
+                        <h5>회원</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00</strong></a></li>
+                            <li><a href="">개인의사 <strong>00</strong></a></li>
+                            <li><a href="">영업사원 <strong>00</strong></a></li>
+                            <li><a href="">한국 크리에이터 <strong>00</strong></a></li>
+                        </ul>
                     </div>
                     <div>
-                        <a href="javascript:void(0)" class="subbtn on" title="#memberInsert" onclick="modal_open(1);">회원등록</a>
+                        <h5>1:1문의</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00</strong></a></li>
+                            <li><a href="">답변대기 <strong>00</strong></a></li>
+                            <li><a href="">답변완료 <strong>00</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open();">회원등록</a>
                         <a href="" class="subbtn on">엑셀 다운로드</a>
                     </div>
                 </div>
@@ -122,8 +202,7 @@
                     <table class="table_a">
                         <colgroup>
                             <col width="5%">
-                            <col width="5%">
-                            <col width="5%">
+                            <col width="10%">
                             <col width="10%">
                             <col width="10%">
                             <col width="10%">
@@ -135,15 +214,14 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox"></th>
-                                <th>고유번호</th>
+                                <th>가입일</th>
+                                <th>상태</th>
                                 <th>구분</th>
-                                <th>아이디</th>
                                 <th>이름</th>
                                 <th>연락처</th>
-                                <th>소속</th>
-                                <th>전공과</th>
-                                <th>전공분야</th>
-                                <th>정보수정</th>
+                                <th>이메일</th>
+                                <th>소속병원</th>
+                                <th>상세보기</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -151,16 +229,15 @@
                                 <td>
                                     <input type="checkbox">
                                 </td>
-                                <td>1</td>
-                                <td>관리자</td>
-                                <td>ej.lim@hicomp.net</td>
+                                <td>23-05-30</td>
+                                <td>정상</td>
+                                <td>개인의사</td>
                                 <td>임은지</td>
                                 <td>010-0000-0000</td>
-                                <td>하이컴프아이엔티</td>
-                                <td>디자인</td>
-                                <td>웹디자인</td>
+                                <td>ej.lim@hicomp.net</td>
+                                <td>hicompint</td>
                                 <td>
-                                    <a href="" class="tablebtn">정보 수정</a>
+                                    <a href="kmedi_member_local_detail.html" class="tablebtn">상세보기</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -174,7 +251,7 @@
     </div>
 
     
-    <div class="modal_wrap" id="modal_wrap1">
+    <div class="modal_wrap" id="modal_wrap" style="display:none;">
         <div class="modal w800" id="memberInsert">
             <!-- modal content - 회원등록 //S -->
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
@@ -190,39 +267,28 @@
                             <th>구분</th>
                             <td>
                                 <select name="" id="" class="w180">
-                                    <option value="">일반</option>
-                                    <option value="">관리자</option>
+                                    <option value="">개인의사</option>
+                                    <option value="">영업사원</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <th>아이디 <span class="red">*</span></th>
-                            <td><input type="email" class="input w180" autofocus></td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호 <span class="red">*</span></th>
-                            <td><input type="password" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호 확인 <span class="red">*</span></th>
-                            <td><input type="password" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>성명 (국문) <span class="red">*</span></th>
+                            <th>성명</th>
                             <td>
                                 <input type="name" class="input w120" placeholder="성">
                                 <input type="name" class="input w120" placeholder="이름">
                             </td>
                         </tr>
                         <tr>
-                            <th>성명 (영문) <span class="red">*</span></th>
-                            <td>
-                                <input type="name" class="input w120" placeholder="First name">
-                                <input type="name" class="input w120" placeholder="Last name">
-                            </td>
+                            <th>이메일</th>
+                            <td><input type="email" class="input w180" autofocus></td>
                         </tr>
                         <tr>
-                            <th>휴대전화 <span class="red">*</span></th>
+                            <th>비밀번호</th>
+                            <td><input type="password" class="input w180"></td>
+                        </tr>
+                        <tr>
+                            <th>휴대전화</th>
                             <td>
                                 <div id="phone_num" class="m0">
                                     <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
@@ -232,26 +298,18 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>면허번호</th>
+                            <th>소속병원</th>
                             <td><input type="text" class="input w180"></td>
                         </tr>
                         <tr>
-                            <th>소속 기관</th>
-                            <td><input type="text" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>전공과</th>
-                            <td><input type="text" class="input w180"></td>
-                        </tr>
-                        <tr>
-                            <th>전공분야</th>
+                            <th>진단과목</th>
                             <td><input type="text" class="input w180"></td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="subbtn_box">
-                    <a href="" class="subbtn on">등록</a>
-                    <a href="" class="subbtn off">취소</a>
+                <div class="btn_box">
+                    <a href="" class="mainbtn btn01">등록</a>
+                    <a href="" class="mainbtn btn02">취소</a>
                 </div>
             </div>
         </div>

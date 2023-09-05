@@ -73,17 +73,20 @@
                     <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
                     <li><a>K-MEDI</a>
                         <ul class="sub_2depth">
-                            <li><a onclick="navList('kMediMember')">회원 관리</a></li>
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
                             <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
                             <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
-                        </ul>
-                    </li>
-                    <li><a>게시판 관리</a>
-                        <ul class="sub_2depth">
-                            <li><a onclick="navList('boardConf')">학회소식</a></li>
-                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
-                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
-                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
                         </ul>
                     </li>
                     <li><a onclick="navList('menu')">메뉴관리</a></li>
@@ -140,7 +143,6 @@
                                 <li><img src="img/icon/BREAKFAST.svg" alt="">조식 제공/미제공/제공(유료)</li>
                                 <li><img src="img/icon/FITNESS.svg" alt="">휘트니스 있음/없음/있음(유료)</li>
                                 <li><img src="img/icon/POWER.svg" alt="">전원 110V</li>
-                                <li class="hotel_servie_plus">+</li>
                             </ul>
                         </div>
                     </div>
@@ -150,51 +152,89 @@
     </div>
 
     <div class="modal_wrap" id="modal_wrap">
-        <div class="modal w800">
+        <div class="modal w1000 hotelSettingModal">
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
             <div id="hotelSetting" class="form hotel_fac_insert">
                 <h4 class="mo_title">부대시설 등록</h4>
-                <table class="table_bb">
-                    <colgroup>
-                        <col width="10%">
-                        <col width="*">
-                        <col width="12%">
-                        <col width="12%">
-                        <col width="12%">
-                        <col width="12%">
-                        <col width="12%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>아이콘</th>
-                            <th>부대시설명</th>
-                            <th>항목1</th>
-                            <th>항목2</th>
-                            <th>항목3</th>
-                            <th>항목4</th>
-                            <th>항목5</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="javascript:void(0)" class="fac_icon_btn"><img src="img/icon/ac_unit.svg" alt=""></a>
-                                <div class="fac_icon_box">
-                                    <span><img src="img/icon/ac_unit.svg" alt=""></span>
-                                    <span><img src="img/icon/ADD_BED.svg" alt=""></span>
-                                    <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
-                                    <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
-                                </div>
-                            </td>
-                            <td><input type="text" class="input"></td>
-                            <td><input type="text" class="input w80"></td>
-                            <td><input type="text" class="input w80"></td>
-                            <td><input type="text" class="input w80"></td>
-                            <td><input type="text" class="input w80"></td>
-                            <td><input type="text" class="input w80"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="flex">
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="*">
+                            <col width="12%">
+                            <col width="12%">
+                            <col width="12%">
+                            <col width="12%">
+                            <col width="12%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>아이콘</th>
+                                <th>부대시설명</th>
+                                <th>항목1</th>
+                                <th>항목2</th>
+                                <th>항목3</th>
+                                <th>항목4</th>
+                                <th>항목5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fac_icon_wrap">
+                                    <a href="javascript:void(0)" class="fac_icon_btn"><img src="img/icon/ac_unit.svg" alt="" class="fac_icon"></a>
+                                    <div class="fac_icon_box">
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <span><img src="img/icon/ac_unit.svg" alt=""></span>
+                                        <span><img src="img/icon/ADD_BED.svg" alt=""></span>
+                                        <span><img src="img/icon/AIR_CONDITIONER.svg" alt=""></span>
+                                        <span><img src="img/icon/airline_seat_flat.svg" alt=""></span>
+                                        <div class="fac_btn">
+                                            <a href="javascript:alert('저장되었습니다.')" class="subbtn on">저장</a>
+                                            <a href="javascript:void(0);" class="subbtn off"onclick="fac_box_close();">취소</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><input type="text" class="input"></td>
+                                <td><input type="text" class="input w80"></td>
+                                <td><input type="text" class="input w80"></td>
+                                <td><input type="text" class="input w80"></td>
+                                <td><input type="text" class="input w80"></td>
+                                <td><input type="text" class="input w80"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -204,3 +244,11 @@
 <script src="js/basic.js"></script>
 <script src="js/hotel.js"></script>
 
+<script>
+    $('.fac_icon_box img').click(function(){
+        $('.fac_icon').attr('src',$(this).attr('src'));
+    })
+    function fac_box_close(){
+        $('.fac_icon_box').removeClass('on');
+    }
+</script>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>결제내역</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <h5>기간조회</h5>
+                            <a href="" class="kmedi_top_btn">7일</a>
+                            <a href="" class="kmedi_top_btn">14일</a>
+                            <a href="" class="kmedi_top_btn">30일</a>
+                            <a href="" class="kmedi_top_btn">3개월</a>
+                            <input type="date" class="input"> ~ <input type="date" class="input">
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>구매상품</h5>
+                            <div>
+                                <input type="radio" id="payment_product1" name="payment_product">
+                                <label for="payment_product1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="payment_product2" name="payment_product">
+                                <label for="payment_product2">구독권</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="payment_product3" name="payment_product">
+                                <label for="payment_product3">유료영상</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>결제구분</h5>
+                            <div>
+                                <input type="radio" id="payment_gubun1" name="payment_gubun">
+                                <label for="payment_gubun1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="payment_gubun2" name="payment_gubun">
+                                <label for="payment_gubun2">정상결제</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="payment_gubun3" name="payment_gubun">
+                                <label for="payment_gubun3">결제취소</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">회원이름</option>
+                                <option value="">상품명</option>
+                                <option value="">주문번호</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="adm_statistics">
+                    <table class="table_a inner_table">
+                        <tbody>
+                            <tr>
+                                <th>총 주문 금액 (건 수)</th>
+                                <th>총 정산 금액 (건 수)</th>
+                                <th>총 결제취소 금액 (건 수)</th>
+                                <th>수수료 (마진)</th>
+                                <th>부가세</th>
+                                <th>누적 매출 금액</th>
+                                <th>누적 순 이익</th>
+                            </tr>
+                            <tr>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="" class="subbtn on">엑셀 다운로드</a>
+                    </div>
+                </div>
+                <div class="kmedi_content">
+                    <div class="adm_table">
+                        <table class="table_a">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>결제일시</th>
+                                    <th>상품금액</th>
+                                    <th>주문번호</th>
+                                    <th>상품금액</th>
+                                    <th>결제상품명</th>
+                                    <th>구매자</th>
+                                    <th>상품금액</th>
+                                    <th>사용포인트</th>
+                                    <th>실 결제금액</th>
+                                    <th>상세보기</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30 18:31</td>
+                                    <td>구독권</td>
+                                    <td>AC4532</td>
+                                    <td>정상결제</td>
+                                    <td><a href="" class="default_a">3개월 구독권</a></td>
+                                    <td><a href="" class="default_a">sopia</a></td>
+                                    <td>Rp450,000</td>
+                                    <td>-1,000</td>
+                                    <td>Rp440,000</td>
+                                    <td><a href="javascript:void(0)" class="tablebtn" onclick="modal_open(1)">상세보기</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30 18:31</td>
+                                    <td>구독권</td>
+                                    <td>AC4532</td>
+                                    <td>정상결제</td>
+                                    <td><a href="" class="default_a">3개월 구독권</a></td>
+                                    <td><a href="" class="default_a">sopia</a></td>
+                                    <td>Rp450,000</td>
+                                    <td>-1,000</td>
+                                    <td>Rp440,000</td>
+                                    <td><a href="javascript:void(0)" class="tablebtn" onclick="modal_open(1)">상세보기</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagenation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- modal content - 결제내역 상세보기 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" id="memberInsert">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">결제내역</h4>
+                <div class="payment_box">
+                    <h4 class="mo_subtitle">구매자 정보</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>성명</th>
+                                <td>olivia</td>
+                            </tr>
+                            <tr>
+                                <th>휴대폰</th>
+                                <td>0813454443</td>
+                            </tr>
+                            <tr>
+                                <th>회원구분</th>
+                                <td>개인의사</td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td>abcd@gmail.com</td>
+                            </tr>
+                            <tr>
+                                <th>소속병원</th>
+                                <td>National General Hospital</td>
+                            </tr>
+                            <tr>
+                                <th>진단과목</th>
+                                <td>dentist</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="payment_box">
+                    <h4 class="mo_subtitle">결제 정보</h4>
+                    <table class="table_bb">
+                        <colgroup>
+                            <col width="30%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>결제일</th>
+                                <td>2023년 3월 10일 오후 2시 30분</td>
+                            </tr>
+                            <tr>
+                                <th>상품구분</th>
+                                <td>구독권</td>
+                            </tr>
+                            <tr>
+                                <th>주문번호</th>
+                                <td>A34233</td>
+                            </tr>
+                            <tr>
+                                <th>상품명</th>
+                                <td>3개월 구독권</td>
+                            </tr>
+                            <tr>
+                                <th>결제금액</th>
+                                <td>Rp450,000</td>
+                            </tr>
+                            <tr>
+                                <th>결제수단</th>
+                                <td>
+                                    BC card 34-****-******
+                                    <a href="javascript:alert('정말 결제를 취소하시겠습니까?')" class="tablebtn">결제취소</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>사용포인트</th>
+                                <td>-500P</td>
+                            </tr>
+                            <tr>
+                                <th>실 결제금액</th>
+                                <td>Rp 450,000</td>
+                            </tr>
+                            <tr>
+                                <th>적립된 포인트</th>
+                                <td>+45P</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn_box">
+                    <a href="" class="subbtn sub">영수증 발행</a>
+                    <a href="" class="subbtn off">닫기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 결제내역 상세보기 //E -->
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
