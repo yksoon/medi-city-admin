@@ -1,24 +1,38 @@
 import useAlert from "hook/useAlert";
-import { CommonConsole, CommonErrorCatch } from "common/js/Common";
-import { RestServer } from "common/js/Rest";
+import {
+    CommonConsole,
+    CommonErrModule,
+    CommonErrorCatch,
+    CommonRest,
+    CommonSpinner,
+    CommonSpinner2,
+} from "common/js/Common";
 import DashBoardMain from "components/dashboard/DashBoardMain";
 import HotelListMain from "components/hotel/hotelList/HotelListMain";
 import SideNav from "components/nav/SideNav";
 import UserList from "components/user/userList/UserList";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { set_spinner } from "redux/actions/commonAction";
-import { set_page } from "redux/actions/pageActios";
 import { apiPath, routerPath } from "webPath";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    isSpinnerAtom,
+    pageAtom,
+    userInfoAtom,
+    userTokenAtom,
+} from "recoils/atoms";
+import { successCode } from "common/js/resultCode";
 
 const Main = () => {
     const navigate = useNavigate();
-    let userInfo = useSelector((state) => state.userInfo.userInfo);
-    let userToken = useSelector((state) => state.userInfo.userToken);
-    let page = useSelector((state) => state.page.page);
-    const dispatch = useDispatch();
-    const { alert } = useAlert();
+    const err = CommonErrModule();
+    const isSpinner = useRecoilValue(isSpinnerAtom);
+
+    const userInfo = useRecoilValue(userInfoAtom);
+    const userToken = useRecoilValue(userTokenAtom);
+
+    const [page, setPage] = useRecoilState(pageAtom);
+    // const [isSpinner, setIsSpinner] = useRecoilState(isSpinnerAtom);
 
     const [menuList, setMenuList] = useState([]);
 
@@ -42,138 +56,29 @@ const Main = () => {
         // GET
         const url = apiPath.api_mng_menus;
         const data = {};
-        RestServer("get", url, data)
-            .then((response) => {
-                const res = response;
-                const result_code = res.headers.result_code;
-                let resData = [];
 
-                if (result_code === "0000") {
-                    resData = res.data.result_info;
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
 
-                    createMenuList(resData);
-                }
-            })
-            .catch((error) => {
-                CommonErrorCatch(error, dispatch, alert);
-            });
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            let resData = [];
+
+            if (result_code === successCode.success) {
+                resData = res.data.result_info;
+
+                createMenuList(resData);
+            }
+        };
     };
-
-    /*
-    const createMenuList = (menuData) => {
-        let menuArr = [];
-        let depth1 = [];
-        let depth2 = [];
-        let depth3 = [];
-
-        let menuDataLength = menuData.length;
-
-        for (let i = 0; i < menuDataLength; i++) {
-            let menuOnce = {};
-
-            // depth1
-            if (menuData[i].menu_depth === 0) {
-                menuOnce["title"] = menuData[i].menu_name_ko;
-                menuOnce["page"] = menuData[i].menu_path
-                    ? menuData[i].menu_path
-                    : "";
-                menuOnce["child"] = [];
-                menuOnce["menu_code"] = menuData[i].menu_code;
-
-                depth1.push(menuOnce);
-            }
-            // depth2
-            else if (menuData[i].menu_depth === 1) {
-                menuOnce["title"] = menuData[i].menu_name_ko;
-                menuOnce["page"] = menuData[i].menu_path
-                    ? menuData[i].menu_path
-                    : "";
-                menuOnce["child"] = [];
-                menuOnce["menu_code"] = menuData[i].menu_code;
-
-                depth2.push(menuOnce);
-            }
-            // depth3
-            else if (menuData[i].menu_depth === 2) {
-                menuOnce["title"] = menuData[i].menu_name_ko;
-                menuOnce["page"] = menuData[i].menu_path
-                    ? menuData[i].menu_path
-                    : "";
-                menuOnce["child"] = [];
-                menuOnce["menu_code"] = menuData[i].menu_code;
-
-                depth3.push(menuOnce);
-            } else {
-                return;
-            }
-        }
-
-        let depth3length = depth3.length;
-        let depth2length = depth2.length;
-        let depth1length = depth1.length;
-
-        for (let i = 0; i < depth3length; i++) {
-            for (let j = 0; j < depth2length; j++) {
-                if (
-                    depth3[i].menu_code.length === 4 &&
-                    depth2[j].menu_code.length === 4
-                ) {
-                    if (
-                        depth3[i].menu_code.slice(0, 2) ===
-                        depth2[j].menu_code.slice(0, 2)
-                    ) {
-                        depth2[j].child.push(depth3[i]);
-                    }
-                } else if (
-                    depth3[i].menu_code.length === 5 &&
-                    depth2[j].menu_code.length === 5
-                ) {
-                    if (
-                        depth3[i].menu_code.slice(0, 3) ===
-                        depth2[j].menu_code.slice(0, 3)
-                    ) {
-                        depth2[j].child.push(depth3[i]);
-                    }
-                }
-            }
-        }
-
-        for (let i = 0; i < depth2length; i++) {
-            for (let j = 0; j < depth1length; j++) {
-                if (
-                    depth2[i].menu_code.length === 4 &&
-                    depth1[j].menu_code.length === 4
-                ) {
-                    if (
-                        depth2[i].menu_code.slice(0, 1) ===
-                        depth1[j].menu_code.slice(0, 1)
-                    ) {
-                        depth1[j].child.push(depth2[i]);
-                    }
-                } else if (
-                    depth2[i].menu_code.length === 5 &&
-                    depth1[j].menu_code.length === 5
-                ) {
-                    if (
-                        depth2[i].menu_code.slice(0, 2) ===
-                        depth1[j].menu_code.slice(0, 2)
-                    ) {
-                        depth1[j].child.push(depth2[i]);
-                    }
-                }
-            }
-        }
-
-        menuArr = depth1;
-        setMenuList(menuArr);
-
-        dispatch(
-            set_spinner({
-                isLoading: false,
-            })
-        );
-    };
-    */
 
     const createMenuList = (menuData) => {
         let menuArr = [];
@@ -238,15 +143,11 @@ const Main = () => {
         menuArr = depth1;
         setMenuList(menuArr);
 
-        dispatch(
-            set_spinner({
-                isLoading: false,
-            })
-        );
+        // setIsSpinner(false);
     };
 
     const switchPage = (page) => {
-        dispatch(set_page(page));
+        setPage(page);
     };
 
     // 렌더링 페이지
@@ -267,15 +168,19 @@ const Main = () => {
     };
     return (
         <>
-            {userInfo && (
-                <SideNav
-                    userInfo={userInfo}
-                    switchPage={switchPage}
-                    menuList={menuList}
-                />
-            )}
-
-            {renderPage(page)}
+            <div className="wrap">
+                <div className="admin">
+                    {userInfo && (
+                        <SideNav
+                            userInfo={userInfo}
+                            switchPage={switchPage}
+                            menuList={menuList}
+                        />
+                    )}
+                    {renderPage(page)}
+                </div>
+            </div>
+            {isSpinner && <CommonSpinner2 />}
         </>
     );
 };

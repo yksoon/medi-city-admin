@@ -2,13 +2,16 @@
 const colon = ":";
 const slash = "/";
 
+const isDeveloping = process.env.REACT_APP_ISDEVELOPING;
+
 // 프로토콜
 // 호스트
 // 포트
 // 버전
 const protocol = "http://";
 
-const host = "dev-api.medi-city.co.kr";
+const host =
+    isDeveloping === "true" ? "dev-api.medi-city.co.kr" : "3.36.85.141";
 
 const port = "60000";
 
@@ -168,6 +171,29 @@ const apiPath = {
     api_admin_user_remove: `${
         base_api_url + slash + account + slash + version + slash
     }user`,
+
+    // -------------------- hotel ------------------
+
+    // 호텔 등록
+    // hotel/v1/meta/hotel
+    // post multi
+    api_admin_reg_hotel: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/hotel`,
+
+    // 호텔 리스트
+    // hotel/v1/meta/hotel
+    // post multi
+    api_admin_hotel_list: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/hotels`,
+
+    // 호텔 썸네일
+    // mng/v1/_file/000/${file_path_enc}
+    // get
+    api_admin_hotel_list_thumb: `${
+        base_api_url + slash + mng + slash + version + slash
+    }_file/000/`,
 };
 
 export { routerPath, apiPath };

@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     CommonConsole,
-    CommonErrorCatch,
+    CommonErrModule,
+    CommonModal,
     CommonNotify,
+    CommonRest,
 } from "common/js/Common";
-import { RestServer } from "common/js/Rest";
 import { apiPath } from "webPath";
-import { useDispatch } from "react-redux";
-import { set_spinner } from "redux/actions/commonAction";
-import RegUserModal from "./RegUserModal";
 import { Pagination } from "@mui/material";
 import useConfirm from "hook/useConfirm";
 import useAlert from "hook/useAlert";
+import { useSetRecoilState } from "recoil";
+import { isSpinnerAtom } from "recoils/atoms";
+import { successCode } from "common/js/resultCode";
 
 const UserList = () => {
+    const { alert } = useAlert();
+    const { confirm } = useConfirm();
+    const err = CommonErrModule();
+    const setIsSpinner = useSetRecoilState(isSpinnerAtom);
+
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [userList, setUserList] = useState([]);
@@ -22,10 +28,6 @@ const UserList = () => {
     const [isNeedUpdate, setIsNeedUpdate] = useState(false);
     const [checkItems, setCheckItems] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
-    const { confirm } = useConfirm();
-    const { alert } = useAlert();
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         reqUserList(1, 10);
@@ -47,11 +49,7 @@ const UserList = () => {
 
     // 유저 리스트
     const reqUserList = (pageNum, pageSize) => {
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
+        setIsSpinner(true);
 
         // account/v1/user/infos
         // POST
@@ -61,47 +59,43 @@ const UserList = () => {
             page_size: pageSize,
         };
 
-        RestServer("post", url, data)
-            .then((response) => {
-                let res = response;
-                let result_code = res.headers.result_code;
+        // 파라미터
+        const restParams = {
+            method: "post",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+        CommonRest(restParams);
 
-                // 성공
-                if (result_code === "0000") {
-                    let result_info = res.data.result_info;
-                    let page_info = res.data.page_info;
+        const responsLogic = (res) => {
+            let result_code = res.headers.result_code;
 
-                    setUserList(result_info);
-                    setPageInfo(page_info);
+            // 성공
+            if (
+                result_code === successCode.success ||
+                result_code === successCode.noData
+            ) {
+                let result_info = res.data.result_info;
+                let page_info = res.data.page_info;
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-                } else {
-                    // 에러
-                    CommonConsole("log", response);
+                setUserList(result_info);
+                setPageInfo(page_info);
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
-                }
-            })
-            .catch((error) => {
-                CommonErrorCatch(error, dispatch, alert);
-            });
+                setIsSpinner(false);
+            } else {
+                // 에러
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+            }
+        };
     };
 
     // 회원 정보 수정
     const modUser = (user_idx) => {
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
+        setIsSpinner(true);
 
         let userIdx = String(user_idx);
 
@@ -110,45 +104,43 @@ const UserList = () => {
         const url = apiPath.api_user_info + `/${userIdx}`;
         const data = {};
 
-        RestServer("get", url, data)
-            .then((response) => {
-                let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
 
-                // 성공
-                if (result_code === "0000") {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+        CommonRest(restParams);
 
-                    setModUserData(result_info);
+        const responsLogic = (res) => {
+            let result_code = res.headers.result_code;
+            let result_info = res.data.result_info;
 
-                    setModalTitle("회원수정");
-                    setIsOpen(true);
-                }
-                // 에러
-                else {
-                    CommonConsole("log", response);
+            // 성공
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+                setModUserData(result_info);
 
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: response.headers.result_message_ko,
-                    });
-                }
-            })
-            .catch((error) => {
-                CommonErrorCatch(error, dispatch, alert);
-            });
+                setModalTitle("회원수정");
+                setIsOpen(true);
+            }
+            // 에러
+            else {
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
+            }
+        };
     };
 
     // 회원 선택 삭제
@@ -164,7 +156,7 @@ const UserList = () => {
                   type: "confirm",
                   hook: confirm,
                   message: "선택된 사용자를 삭제 하시겠습니까?",
-                  callback: removeUser,
+                  callback: () => removeUser(),
               });
     };
 
@@ -172,59 +164,52 @@ const UserList = () => {
     const removeUser = () => {
         let checkItemsStr = checkItems.join();
 
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
+        setIsSpinner(true);
 
         // account/v1/user/user/{user_idx}
         // DELETE
         const url = apiPath.api_admin_user_remove + `/${checkItemsStr}`;
         const data = {};
 
-        RestServer("delete", url, data)
-            .then((response) => {
-                let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+        // 파라미터
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
 
-                // 성공
-                if (result_code === "0000") {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+        CommonRest(restParams);
 
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: response.headers.result_message_ko,
-                    });
+        const responsLogic = (res) => {
+            let result_code = res.headers.result_code;
 
-                    handleNeedUpdate();
-                }
-                // 에러
-                else {
-                    CommonConsole("log", response);
+            // 성공
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
 
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: response.headers.result_message_ko,
-                    });
-                }
-            })
-            .catch((error) => {
-                CommonErrorCatch(error, dispatch, alert);
-            });
+                handleNeedUpdate();
+            }
+            // 에러
+            else {
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
+            }
+        };
     };
 
     // 체크박스 단일 선택
@@ -309,8 +294,10 @@ const UserList = () => {
                                                 handleAllCheck(e.target.checked)
                                             }
                                             checked={
+                                                checkItems &&
+                                                userList &&
                                                 checkItems.length ===
-                                                userList.length
+                                                    userList.length
                                                     ? true
                                                     : false
                                             }
@@ -393,12 +380,14 @@ const UserList = () => {
                     )}
                 </div>
             </div>
-            <RegUserModal
+            <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
+                width={"800"}
                 handleModalClose={handleModalClose}
-                modUserData={modUserData}
+                component={"RegUserModal"}
                 handleNeedUpdate={handleNeedUpdate}
+                modUserData={modUserData}
             />
         </>
     );

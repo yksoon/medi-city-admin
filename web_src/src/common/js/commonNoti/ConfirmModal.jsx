@@ -7,14 +7,11 @@ const ConfirmModal = () => {
     if (confirmList.length <= 0) return null;
 
     return (
-        <div className="modal_wrap block">
+        <div className="alert_wrap block">
             {confirmList.map(
                 ({ id, message, buttons: { ok, close, cancel } }, idx) => {
                     return (
-                        <div
-                            className="modal noti_modal"
-                            key={`confirm_${idx}`}
-                        >
+                        <div className="alert" key={`confirm_${idx}`}>
                             <div>
                                 <span
                                     className="noti_icon"

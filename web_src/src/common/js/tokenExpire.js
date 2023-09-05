@@ -1,15 +1,20 @@
 import { RestServer } from "./Rest";
-import { init_user_info, set_user_info } from "redux/actions/userInfoAction";
-import { set_spinner } from "redux/actions/commonAction";
 import { apiPath, routerPath } from "webPath";
 import { CommonConsole, CommonNotify } from "./Common";
 
-const tokenExpire = (dispatch, alert) => {
-    dispatch(
-        set_spinner({
-            isLoading: true,
-        })
-    );
+const tokenExpire = (
+    // dispatch,
+    setIsSpinner,
+    alert,
+    resetUserInfo,
+    resetUserToken
+) => {
+    // dispatch(
+    //     set_spinner({
+    //         isLoading: true,
+    //     })
+    // );
+    setIsSpinner(true);
 
     // dispatch(
     //     set_alert({
@@ -18,11 +23,11 @@ const tokenExpire = (dispatch, alert) => {
     //     })
     // );
 
-    CommonNotify({
-        type: "alert",
-        hook: alert,
-        message: "잠시후 다시 시도해주세요",
-    });
+    // CommonNotify({
+    //     type: "alert",
+    //     hook: alert,
+    //     message: "잠시후 다시 시도해주세요",
+    // });
 
     // signout
     // url : /v1/signout
@@ -38,13 +43,18 @@ const tokenExpire = (dispatch, alert) => {
             if (result_code === "0000") {
                 // localStorage.removeItem("userInfo");
                 // dispatch(set_user_info(null));
-                dispatch(init_user_info(null));
+                // dispatch(init_user_info(null));
 
-                dispatch(
-                    set_spinner({
-                        isLoading: false,
-                    })
-                );
+                resetUserInfo();
+
+                resetUserToken();
+
+                // dispatch(
+                //     set_spinner({
+                //         isLoading: false,
+                //     })
+                // );
+                setIsSpinner(false);
 
                 window.location.replace(routerPath.login_url);
             }
@@ -55,21 +65,30 @@ const tokenExpire = (dispatch, alert) => {
             CommonConsole("decLog", error);
             // CommonConsole("alertMsg", error);
 
+            resetUserInfo();
+
+            resetUserToken();
+
             // Spinner
-            dispatch(
-                set_spinner({
-                    isLoading: false,
-                })
-            );
+            // dispatch(
+            //     set_spinner({
+            //         isLoading: false,
+            //     })
+            // );
+            setIsSpinner(false);
 
             CommonNotify({
                 type: "alert",
                 hook: alert,
                 message: error.response.headers.result_message_ko,
+                callback: () => goToSignIn(),
             });
 
             // dispatch(set_user_info(null));
-            dispatch(init_user_info(null));
+            // dispatch(init_user_info(null));
+            const goToSignIn = () => {
+                window.location.replace(routerPath.login_url);
+            };
         });
 };
 

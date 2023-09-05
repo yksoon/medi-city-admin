@@ -3,49 +3,39 @@ import { apiPath, routerPath } from "webPath";
 import { RestServer } from "common/js/Rest";
 import axios from "axios";
 import Router from "Router";
-import { useDispatch, useSelector } from "react-redux";
-import { CommonSpinner } from "common/js/Common";
-import {
-    set_codes,
-    set_result_code,
-    set_country_bank,
-} from "redux/actions/codesAction";
-import { set_ip_info } from "redux/actions/ipInfoAction";
 import { useLocation, useNavigate } from "react-router";
 import { ConfirmContextProvider } from "context/ContextProvider";
 import { AlertContextProvider } from "context/ContextProvider";
-import ConfirmModal from "common/js/ConfirmModal";
-import AlertModal from "common/js/AlertModal";
+import ConfirmModal from "common/js/commonNoti/ConfirmModal";
+import AlertModal from "common/js/commonNoti/AlertModal";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+    codesAtom,
+    countryBankAtom,
+    ipInfoAtom,
+    resultCodeAtom,
+} from "recoils/atoms";
 
 function App() {
-    let ipInfo = useSelector((state) => state.ipInfo.ipInfo);
+    const [ipInfo, setIpInfo] = useRecoilState(ipInfoAtom);
     const navigate = useNavigate();
     const location = useLocation();
-    const dispatch = useDispatch();
+
+    const setResultCode = useSetRecoilState(resultCodeAtom);
+    const setCodes = useSetRecoilState(codesAtom);
+    const setCountryBank = useSetRecoilState(countryBankAtom);
 
     useEffect(() => {
-        // localStorage.clear();
-
-        const ipCallback = (ip) => {
-            if (ip) {
-                dispatch(set_ip_info(ip));
-            }
-        };
-        if (!ipInfo) {
-            getIpInfo(ipCallback);
+        if (ipInfo === "") {
+            getIpInfo();
+        } else {
+            getResultCode();
+            getCodes();
+            getCountryBank();
+            setInterval(getResultCode, 3600000);
+            setInterval(getCodes, 3600000);
         }
-
-        getResultCode();
-        getCodes();
-        getCountryBank();
-        setInterval(getResultCode, 3600000);
-        setInterval(getCodes, 3600000);
-
-        // localStorage.clear();
     }, []);
-
-    // Spinner
-    let spinnerOption = useSelector((state) => state.common.spinner);
 
     // IP
     const getIpInfo = async (callback) => {
@@ -55,14 +45,22 @@ function App() {
             .get("https://geolocation-db.com/json/")
             .then((res) => {
                 ip = res.data.IPv4;
-                callback(ip);
-                // dispatch(set_ip_info(ip));
+                setIpInfo(ip);
+                sessionStorage.setItem("ipInfo", ip);
+
+                getResultCode();
+                getCodes();
+                getCountryBank();
+                setInterval(getResultCode, 3600000);
+                setInterval(getCodes, 3600000);
             })
             .catch((error) => {
                 ip = "";
-                callback(ip);
-                // dispatch(set_ip_info(ip));
+                setIpInfo(ip);
+                sessionStorage.setItem("ipInfo", ip);
             });
+
+        return ip;
     };
 
     // result code
@@ -71,9 +69,7 @@ function App() {
             .then((response) => {
                 console.log("result_code", response);
 
-                dispatch(
-                    set_result_code(JSON.stringify(response.data.result_info))
-                );
+                setResultCode(response.data.result_info);
             })
             .catch((error) => {
                 // 오류발생시 실행
@@ -85,12 +81,16 @@ function App() {
     const getCodes = () => {
         RestServer("post", apiPath.api_mng_codes, {
             code_types: [],
-            exclude_code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
+            exclude_code_types: [
+                "INTER_PHONE_TYPE",
+                "BANK_TYPE",
+                "LANGUAGE_TYPE",
+            ],
         })
             .then((response) => {
                 console.log("codes", response);
 
-                dispatch(set_codes(JSON.stringify(response.data.result_info)));
+                setCodes(response.data.result_info);
             })
             .catch((error) => {
                 // 오류발생시 실행
@@ -101,15 +101,13 @@ function App() {
     // codes
     const getCountryBank = () => {
         RestServer("post", apiPath.api_mng_codes, {
-            code_types: ["COUNTRY_TYPE", "BANK_TYPE"],
+            code_types: ["INTER_PHONE_TYPE", "BANK_TYPE", "LANGUAGE_TYPE"],
             exclude_code_types: [],
         })
             .then((response) => {
                 console.log("codesCountryBank", response);
 
-                dispatch(
-                    set_country_bank(JSON.stringify(response.data.result_info))
-                );
+                setCountryBank(response.data.result_info);
             })
             .catch((error) => {
                 // 오류발생시 실행
@@ -119,9 +117,7 @@ function App() {
 
     return (
         <>
-            <div className="wrap">
-                <CommonSpinner option={spinnerOption} />
-
+            <div className="wrapper">
                 <ConfirmContextProvider>
                     <AlertContextProvider>
                         <Router />

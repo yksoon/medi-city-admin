@@ -1,18 +1,9 @@
 import axios from "axios";
-import store from "redux/store/store";
 
 let ip;
 let token;
 
-// axios.get("https://geolocation-db.com/json/").then((res) => {
-//     ip = res.data.IPv4;
-//     localStorage.setItem("connIP", ip);
-// });
-
-//TMI 공식 문서에서 axios를 "인스턴스"라고 부른다.
-//timeout과 같은 네트워크 요청도 처리할 수 있다.
-// create메소드의 인자로 객체를 전달하고 이 객체 안에 설정값(config)를 설정할 수 있다.
-
+// application/json
 const Instance = axios.create({
     headers: {
         "Content-Type": "application/json",
@@ -22,11 +13,14 @@ const Instance = axios.create({
 
 Instance.interceptors.request.use(
     (config) => {
-        ip = store.getState().ipInfo.ipInfo;
-        token = store.getState().userInfo.userToken;
+        // ip = store.getState().ipInfo.ipInfo;
+        // token = store.getState().userInfo.userToken;
 
-        config.headers["Medicity-Src"] = ip ? ip : "";
-        config.headers["Medicity-Token"] = token ? token : "";
+        // config.headers["Medicity-Src"] = ip ? ip : "";
+        // config.headers["Medicity-Token"] = token ? token : "";
+        // return config;
+
+        setInterceptors(config);
         return config;
     },
     (err) => {
@@ -34,4 +28,51 @@ Instance.interceptors.request.use(
     }
 );
 
-export { Instance };
+// multipart/form-data
+const Instance_multi = axios.create({
+    headers: {
+        "Content-Type": "multipart/form-data",
+    },
+    timeout: 5000,
+});
+
+Instance_multi.interceptors.request.use(
+    (config) => {
+        // ip = store.getState().ipInfo.ipInfo;
+        // token = store.getState().userInfo.userToken;
+
+        // config.headers["Medicity-Src"] = ip ? ip : "";
+        // config.headers["Medicity-Token"] = token ? token : "";
+        // return config;
+
+        setInterceptors(config);
+        return config;
+    },
+    (err) => {
+        return Promise.reject(err);
+    }
+);
+
+const setInterceptors = (config) => {
+    // ip = store.getState().ipInfo.ipInfo;
+    // token = store.getState().userInfo.userToken;
+
+    // ip =
+    //     JSON.parse(sessionStorage.getItem("recoilSession")).ipInfo !== null
+    //         ? JSON.parse(sessionStorage.getItem("recoilSession")).ipInfo
+    //         : sessionStorage.getItem("ipInfo");
+    const recoilSession = JSON.parse(sessionStorage.getItem("recoilSession"));
+
+    ip =
+        recoilSession === null
+            ? sessionStorage.getItem("ipInfo")
+            : recoilSession.ipInfo;
+    token = recoilSession === null ? "" : recoilSession.userToken;
+
+    config.headers["Medicity-Src"] = ip ? ip : "";
+    config.headers["Medicity-Token"] = token ? token : "";
+
+    return config;
+};
+
+export { Instance, Instance_multi };
