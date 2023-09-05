@@ -38,7 +38,7 @@ const AlertModal = () => {
                             </div>
                             <div className="btn_box">
                                 <Link className="backbtn" onClick={ok.click}>
-                                    {ok.text}
+                                    {ok.text}{" "}
                                     <span>
                                         <img
                                             src="img/common/arrow.png"

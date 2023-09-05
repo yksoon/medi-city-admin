@@ -112,7 +112,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
         const nation = codes.filter((e) => e.code_type === "NATION_TYPE");
         setNationTypeState(nation);
 
-        console.log(nation);
+        // console.log(nation);
     }, []);
 
     function isFileImage(file) {

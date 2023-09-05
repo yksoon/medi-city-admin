@@ -194,6 +194,13 @@ const apiPath = {
     api_admin_hotel_list_thumb: `${
         base_api_url + slash + mng + slash + version + slash
     }_file/000/`,
+
+    // 호텔 부대시설 리스트
+    // hotel/v1/meta/additionals
+    // post
+    api_admin_hotel_additionals_list: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/additionals`,
 };
 
 export { routerPath, apiPath };

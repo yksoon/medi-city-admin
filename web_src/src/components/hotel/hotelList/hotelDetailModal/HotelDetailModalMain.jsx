@@ -345,7 +345,7 @@ const HotelDetailModalMain = (props) => {
 
             {/* <HotelDetailManager /> */}
 
-            {/* <HotelDetailAdditional /> */}
+            <HotelDetailAdditional />
 
             <div className="subbtn_box modal_btn_footer_box">
                 <Link
