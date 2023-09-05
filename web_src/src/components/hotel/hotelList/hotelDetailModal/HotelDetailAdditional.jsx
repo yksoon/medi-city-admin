@@ -8,7 +8,7 @@ import { isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
 import $ from "jquery";
 
-const HotelDetailAdditional = () => {
+const HotelDetailAdditional = (props) => {
     const { alert } = useAlert();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
@@ -16,6 +16,10 @@ const HotelDetailAdditional = () => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [additionalList, setAdditionalList] = useState([]);
+    // const [additionalCheckList, setAdditionalCheckList] = useState([]);
+
+    const additionalCheckList = props.additionalCheckList;
+    const handleAdditionalCheck = props.handleAdditionalCheck;
 
     useEffect(() => {
         getAdditionalList(0, 10);
@@ -77,24 +81,30 @@ const HotelDetailAdditional = () => {
         setAnchorEl(e.currentTarget);
     };
 
+    // const handleAdditionalCheck = (list) => {
+    //     setAdditionalCheckList(list);
+    // };
+
+    useEffect(() => {
+        console.log(additionalCheckList);
+    }, [additionalCheckList]);
+
     return (
         <>
             <div className="hotel_box hotel_service">
                 <h4 className="mo_subtitle">부대시설 설정</h4>
                 <div className="hotel_service_wrap">
                     <ul className="hotel_service_list">
-                        <li>
-                            <img src="img/additional/ADD_BED.svg" alt="" />
-                            베드 추가 가능
-                        </li>
-                        <li>
-                            <img src="img/additional/NO_SMOKING.svg" alt="" />
-                            금연
-                        </li>
-                        <li>
-                            <img src="img/additional/SAUNA.svg" alt="" />
-                            사우나 있음
-                        </li>
+                        {additionalCheckList.length !== 0 &&
+                            additionalCheckList.map((item, idx) => (
+                                <li key={`additional_checked_${idx}`}>
+                                    <img
+                                        src={`img/additional/${item.key_name}.svg`}
+                                        alt=""
+                                    />
+                                    {item.additional_name_ko}
+                                </li>
+                            ))}
                         <li
                             className="hotel_servie_plus"
                             aria-describedby="additional_plus"
@@ -117,6 +127,8 @@ const HotelDetailAdditional = () => {
                                 horizontal: "left",
                             }}
                             additionalList={additionalList}
+                            additionalCheckList={additionalCheckList}
+                            handleAdditionalCheck={handleAdditionalCheck}
                         />
                     </ul>
                 </div>
@@ -133,6 +145,100 @@ const CustomPopover = (props) => {
     const transformOrigin = props.transformOrigin;
 
     const additionalList = props.additionalList;
+
+    const additionalCheckList = props.additionalCheckList;
+    const handleAdditionalCheck = props.handleAdditionalCheck;
+
+    // 체크 여부 확인
+    const isChecked = (item) => {
+        if (
+            additionalCheckList.filter(
+                (e) => e.additional_idx === item.additional_idx
+            ).length !== 0
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    // 체크박스 핸들러
+    const handleCheck = (e, item) => {
+        let list = additionalCheckList;
+
+        if (e.target.checked) {
+            // console.log(item);
+            let insertItem = item;
+
+            const memoValue = document.getElementById(
+                `additional_memo_${item.additional_idx}`
+            ).value;
+
+            // insertItem = { ...insertItem, additional_memo: memoValue };
+            insertItem = {
+                ...insertItem,
+                additionalMemo: memoValue,
+                additional_memo: memoValue,
+                additionalIdx: item.additional_idx,
+            };
+            list = [...list, insertItem];
+
+            handleAdditionalCheck(list);
+        } else {
+            list = list.filter((e) => e.additional_idx !== item.additional_idx);
+
+            document.getElementById(
+                `additional_memo_${item.additional_idx}`
+            ).value = "";
+
+            handleAdditionalCheck(list);
+        }
+    };
+
+    const handleInput = (e, item) => {
+        let list = additionalCheckList;
+
+        const isChecked = document.getElementById(
+            `chk_${item.additional_idx}`
+        ).checked;
+
+        if (isChecked) {
+            let insertItem = list.filter(
+                (e) => e.additional_idx === item.additional_idx
+            );
+
+            list = list.filter((e) => e.additional_idx !== item.additional_idx);
+
+            insertItem = {
+                ...insertItem[0],
+                additionalMemo: e.target.value,
+                additional_memo: e.target.value,
+                additionalIdx: item.additional_id,
+            };
+            // insertItem[0].additional_memo = e.target.value;
+            // insertItem[0].additionalMemo = e.target.value;
+            // insertItem[0].additionalIdx = item.additional_idx;
+
+            list = [...list, insertItem];
+
+            handleAdditionalCheck(list);
+        }
+    };
+
+    // additional_memo 디폴트 세팅
+    const inputDefault = (item) => {
+        if (
+            additionalCheckList.filter(
+                (e) => e.additional_idx === item.additional_idx
+            ).length !== 0
+        ) {
+            return additionalCheckList.filter(
+                (e) => e.additional_idx === item.additional_idx
+            )[0].additional_memo;
+        } else {
+            return "";
+        }
+    };
 
     return (
         <Popover
@@ -154,7 +260,11 @@ const CustomPopover = (props) => {
                                     type="checkbox"
                                     name="fitness"
                                     id={`chk_${item.additional_idx}`}
-                                    hidden={true}
+                                    // hidden={true}
+                                    onChange={(e) => {
+                                        handleCheck(e, item);
+                                    }}
+                                    checked={isChecked(item)}
                                 />
                                 <label htmlFor={`chk_${item.additional_idx}`}>
                                     <img
@@ -163,7 +273,15 @@ const CustomPopover = (props) => {
                                     />
                                     {item.additional_name_ko}
                                     <div className="hotel_pay_box">
-                                        <input type="text" className="input" />
+                                        <input
+                                            type="text"
+                                            className="input"
+                                            id={`additional_memo_${item.additional_idx}`}
+                                            onChange={(e) => {
+                                                handleInput(e, item);
+                                            }}
+                                            defaultValue={inputDefault(item)}
+                                        />
                                     </div>
                                 </label>
                             </li>

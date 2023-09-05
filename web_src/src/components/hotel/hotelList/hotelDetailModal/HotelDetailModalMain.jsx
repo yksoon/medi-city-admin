@@ -28,12 +28,23 @@ const HotelDetailModalMain = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     // const [isNeedUpdate, setIsNeedUpdate] = useState(false);
+
+    // 홈페이지 노출여부 state
     const [homePageShowYn, setHomePageShowYn] = useState("Y");
+
+    // 호텔등급 state
     const [grade, setGrade] = useState(0);
+
+    // 국가코드 선택 state
     const [selectedCountry, setSelectedCountry] = useState("82");
+
+    // 미리보기 데이터 state
     const [previewData, setPreviewData] = useState({
         previewImg: "",
     });
+
+    // 부대시설 체크 리스트 state
+    const [additionalCheckList, setAdditionalCheckList] = useState([]);
 
     const handleNeedUpdate = props.handleNeedUpdate;
 
@@ -41,18 +52,26 @@ const HotelDetailModalMain = (props) => {
     //     previewImg: "",
     // };
 
+    //
     const handleModalClose = () => {
         setModalTitle("");
         setIsOpen(false);
     };
 
+    // 미리보기 열기
     const openPreview = () => {
         setModalTitle("미리보기");
         setIsOpen(true);
     };
 
+    // 국가코드 핸들러
     const handleSelectedCountry = (value) => {
         setSelectedCountry(value);
+    };
+
+    // 부대시설 핸들러
+    const handleAdditionalCheck = (list) => {
+        setAdditionalCheckList(list);
     };
 
     let hotelModel = { ...regHotelModel };
@@ -157,13 +176,23 @@ const HotelDetailModalMain = (props) => {
                 ruleKo: hotelRefs.ruleKo.current.value,
                 ruleEn: hotelRefs.ruleEn.current.value,
                 codeName: hotelRefs.codeName.current.value,
-                // additionalInfo: [],
+                additionalInfo: additionalCheckList,
             };
+
+            console.log(data);
 
             // 기본 formData append
             for (const key in data) {
                 formData.append(key, data[key]);
             }
+
+            // let addArr = [];
+            // // 파일 formData append
+            // addArr = Array.from(additionalCheckList);
+            // let addlen = addArr.length;
+            // for (let i = 0; i < addlen; i++) {
+            //     formData.append("additionalInfo", addArr[i]);
+            // }
 
             // 파일 formData append
             fileArr = Array.from(hotelRefs.attachmentThumbFile.current.files);
@@ -343,9 +372,12 @@ const HotelDetailModalMain = (props) => {
 
             <HotelDetailEtc ref={hotelRefs} handlePreview={handlePreview} />
 
-            {/* <HotelDetailManager /> */}
+            <HotelDetailManager />
 
-            <HotelDetailAdditional />
+            <HotelDetailAdditional
+                handleAdditionalCheck={handleAdditionalCheck}
+                additionalCheckList={additionalCheckList}
+            />
 
             <div className="subbtn_box modal_btn_footer_box">
                 <Link
