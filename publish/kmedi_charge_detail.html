@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>정산 관리 - 상세내역</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi kmedi_member_wrap kmedi_charge">
+                    <div class="kmedi_member_box">
+                        <h5>회원정보</h5>
+                        <table class="table_a member_table">
+                            <thead>
+                                <tr>
+                                    <th>회원상태</th>
+                                    <th>가입일</th>
+                                    <th>구분</th>
+                                    <th>이름</th>
+                                    <th>연락처</th>
+                                    <th>이메일</th>
+                                    <th>비밀번호</th>
+                                    <th>소속병원</th>
+                                    <th>진단과목</th>
+                                    <th>포인트</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>정상</td>
+                                    <td>23.05.30</td>
+                                    <td>개인의사</td>
+                                    <td>임은지</td>
+                                    <td>010-0000-0000</td>
+                                    <td>email</td>
+                                    <td>******</td>
+                                    <td>소속병원</td>
+                                    <td>진단과목</td>
+                                    <td>1,365,468</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="kmedi_member_box">
+                        <div class="kmedi_member_sub">
+                            <div class="title_flex_wrap">
+                                <h5>정산계좌</h5>
+                                <a href="javascript:void(0)" class="subbtn on" onclick="modal_open(2)">계좌 등록</a>
+                            </div>
+                            <table class="table_a member_table">
+                                <thead> 
+                                    <tr>
+                                        <th>은행명</th>
+                                        <th>계좌번호</th>
+                                        <th>예금주</th>
+                                        <th>수수료율</th>
+                                        <th>수정</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>하나은행</td>
+                                        <td>000-00-000000</td>
+                                        <td>서지은</td>
+                                        <td>20%</td>
+                                        <td>
+                                            <a href="javascript:void(0)" class="tablebtn" onclick="modal_open(2)">수정</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="kmedi_member_box"> 
+                        <div class="adm_statistics">
+                            <div>
+                                <ul>
+                                    <li><a href="">전체 <strong>00개</strong></a></li>
+                                    <li><a href="">정산대기 <strong>00개</strong></a></li>
+                                    <li><a href="">정산예정금액 <strong>00개</strong></a></li>
+                                    <li><a href="">정산완료 <strong>00개</strong></a></li>
+                                    <li><a href="">정산금액 <strong>00개</strong></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <table class="table_a member_table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>정산상태</th>
+                                    <th>주문번호</th>
+                                    <th>결제일</th>
+                                    <th>판매상품명</th>
+                                    <th>구매자</th>
+                                    <th>결제상태</th>
+                                    <th>상품금액</th>
+                                    <th>실 결제금액</th>
+                                    <th>수수료율</th>
+                                    <th>정산금액</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>05</td>
+                                    <td><span class="red">정산대기</span></td>
+                                    <td>#34734</td>
+                                    <td>2023-03-20</td>
+                                    <td><a href="kmedi_content_modify.html" class="default_a">관상동맥 수술</a></td>
+                                    <td>sophia</td>
+                                    <td>결제완료</td>
+                                    <td>-1,000원</td>
+                                    <td>12,000원</td>
+                                    <td>1,000원</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>05</td>
+                                    <td><span class="red">정산대기</span></td>
+                                    <td>#34734</td>
+                                    <td>2023-03-20</td>
+                                    <td><a href="kmedi_content_modify.html" class="default_a">관상동맥 수술</a></td>
+                                    <td>sophia</td>
+                                    <td>결제완료</td>
+                                    <td>-1,000원</td>
+                                    <td>12,000원</td>
+                                    <td>1,000원</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagenation">
+                            페이지네이션
+                        </div>
+                    </div>
+                </div>
+                <div class="subbtn_box">
+                    <a href="kmedi_member_local.html" class="modal_btn subbtn off">목록으로</a>
+                    <a href="" class="subbtn del">정산대기</a>
+                    <a href="" class="subbtn on">정산완료</a>
+                    <a href="javascript:alert('저장되었습니다.');" class="subbtn on">저장</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- modal content - 포인트 등록 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w800" > <!-- modal1 -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">포인트 내역</h4>
+                <table class="table_bb modal_table">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>포인트 추가</th>
+                            <td>
+                                <input type="text" class="input w180">
+                                <a href="" class="tablebtn">추가</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>포인트 차감</th>
+                            <td>
+                                <input type="text" class="input w180">
+                                <a href="" class="tablebtn">추가</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br/>
+                <h5 class="mo_stitle">Olivia님의 포인트</h5>
+                <table class="table_a modal_table">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>+/-</th>
+                            <th>날짜</th>
+                            <th>내용</th>
+                            <th>포인트</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>23.11.23 18:23</td>
+                            <td>추천코드 가입 (회원명 : 수르야나)</td>
+                            <td>+1,000P</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagenation">
+                    페이지네이션 여기에
+                </div>
+
+                <div class="btn_box">
+                    <a href="" class="mainbtn btn01">등록</a>
+                    <a href="" class="mainbtn btn02">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 포인트등록 //E -->
+
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
+

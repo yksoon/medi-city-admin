@@ -1,10 +1,13 @@
 import { routerPath } from "webPath";
 import { RestServer } from "./Rest";
-import { set_user_info } from "redux/actions/userInfoAction";
 import { CommonConsole } from "./Common";
-import { set_alert, set_spinner } from "redux/actions/commonAction";
+import { useSetRecoilState } from "recoil";
+import { userInfoAtom, userTokenAtom } from "recoils/atoms";
 
 export default function Login(url, data, resultCode, dispatch) {
+    const setUserInfo = useSetRecoilState(userInfoAtom);
+    const setUserToken = useSetRecoilState(userTokenAtom);
+
     RestServer("post", url, data)
         .then(function (response) {
             // response
@@ -30,13 +33,13 @@ export default function Login(url, data, resultCode, dispatch) {
                     delete user_info[deleteKey[i]];
                 }
 
-                dispatch(set_user_info(JSON.stringify(user_info)));
+                setUserInfo(user_info);
 
-                dispatch(
-                    set_spinner({
-                        isLoading: false,
-                    })
-                );
+                // dispatch(
+                //     set_spinner({
+                //         isLoading: false,
+                //     })
+                // );
 
                 window.location.replace(routerPath.main_url);
             } else if (result_code === "1003") {
@@ -45,21 +48,21 @@ export default function Login(url, data, resultCode, dispatch) {
                 CommonConsole("decLog", response);
                 // CommonConsole("alertMsg", response);
 
-                dispatch(
-                    set_alert({
-                        isAlertOpen: true,
-                        alertTitle: response.headers.result_message_ko
-                            ? response.headers.result_message_ko
-                            : "",
-                        alertContent: "",
-                    })
-                );
+                // dispatch(
+                //     set_alert({
+                //         isAlertOpen: true,
+                //         alertTitle: response.headers.result_message_ko
+                //             ? response.headers.result_message_ko
+                //             : "",
+                //         alertContent: "",
+                //     })
+                // );
 
-                dispatch(
-                    set_spinner({
-                        isLoading: false,
-                    })
-                );
+                // dispatch(
+                //     set_spinner({
+                //         isLoading: false,
+                //     })
+                // );
             }
         })
         .catch(function (error) {
@@ -67,20 +70,20 @@ export default function Login(url, data, resultCode, dispatch) {
             CommonConsole("decLog", error);
             // CommonConsole("alertMsg", error);
 
-            dispatch(
-                set_alert({
-                    isAlertOpen: true,
-                    alertTitle: error.response.headers.result_message_ko
-                        ? error.response.headers.result_message_ko
-                        : "",
-                    alertContent: "",
-                })
-            );
+            // dispatch(
+            //     set_alert({
+            //         isAlertOpen: true,
+            //         alertTitle: error.response.headers.result_message_ko
+            //             ? error.response.headers.result_message_ko
+            //             : "",
+            //         alertContent: "",
+            //     })
+            // );
 
-            dispatch(
-                set_spinner({
-                    isLoading: false,
-                })
-            );
+            // dispatch(
+            //     set_spinner({
+            //         isLoading: false,
+            //     })
+            // );
         });
 }

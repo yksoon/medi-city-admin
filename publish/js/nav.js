@@ -5,7 +5,7 @@ $(function () {
     $(".sub_gnb > li > a").click(function () {
         $(".sub_2depth").slideUp();
         $(".sub_gnb > li > a").removeClass("on");
-        $(this).siblings(".sub_2depth").slideToggle();
+        $(this).siblings(".sub_2depth").slideToggle(); 
         $(this).toggleClass("on");
     });
     $(".sub_2depth > li > a").click(function () {
@@ -39,6 +39,50 @@ function navList(listName) {
 
         case "hotelFacilities":
             location.href = "hotel_facilities.html";
+            break;
+
+        case "hotelFacilities":
+            location.href = "hotel_facilities.html";
+            break;
+
+        case "kMediMemberLocal":
+            location.href = "kmedi_member_local.html";
+            break;
+
+        case "kMediMemberKorea":
+            location.href = "kmedi_member_creator.html";
+            break;
+
+        case "kMediContent":
+            location.href = "kmedi_content.html";
+            break;
+
+        case "kMediCategory":
+            location.href = "kmedi_category.html";
+            break;
+
+        case "kMediPayment":
+            location.href = "kmedi_payment.html";
+            break;
+
+        case "kMediCharges":
+            location.href = "kmedi_charge.html";
+            break;
+
+        case "kMediPoint":
+            location.href = "kmedi_point.html";
+            break;
+
+        case "kMediNotice":
+            location.href = "kmedi_notice.html";
+            break;
+
+        case "kMediInquiry":
+            location.href = "kmedi_inquiry.html";
+            break;
+
+        case "kMediQna":
+            location.href = "kmedi_qna.html";
             break;
 
         default:

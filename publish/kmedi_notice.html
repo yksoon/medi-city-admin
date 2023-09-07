@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>공지사항</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">컨텐츠 이름</option>
+                                <option value="">등록자</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="javascipt:void(0)" class="subbtn on" onclick="modal_open(1)">글쓰기</a>
+                        <a href="javascipt:void(0)" class="subbtn off">삭제</a>
+                        <!-- <a href="" class="subbtn on">엑셀 다운로드</a> -->
+                    </div>
+                </div>
+                <div class="kmedi_content">
+                    <div class="kmedi_notice">
+                        <div class="adm_table">
+                            <table class="table_a">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="5%">
+                                    <col width="*">
+                                    <col width="20%">
+                                    <col width="10%">
+                                    <col width="10%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>파일</th>
+                                        <th>조회수</th>
+                                        <th>등록일</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>1</td>
+                                        <td>
+                                            공지사항 제목
+                                        </td>
+                                        <td>
+                                            <div class="file_wrap">
+                                                <a href="">
+                                                    <img src="img/common/file.svg" alt=""> 파일이름1.docx
+                                                </a>
+                                                <a href="">
+                                                    <img src="img/common/file.svg" alt=""> 파일이름2.pdf
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="viewer_wrap">
+                                                <img src="img/common/user_icon.png" alt=""> 16
+                                            </div>
+                                        </td>
+                                        <td>
+                                            2023-08-16
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pagenation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- modal content - 글쓰기 //S -->
+    <div class="modal_wrap" id="modal_wrap1" style="display:none;">
+        <div class="modal w1400">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">글쓰기</h4>
+                <table class="table_bb">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>제목</th>
+                            <td><input type="email" class="input wp100" autofocus></td>
+                        </tr>
+                        <tr>
+                            <th>중요공지 푸쉬</th>
+                            <td>
+                                <div class="radio_box">
+                                    <div>
+                                        <input type="radio" id="pointer_target1" name="notice_push">
+                                        <label for="pointer_target1">발송안함</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="pointer_target2" name="notice_push">
+                                        <label for="pointer_target2">발송</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>파일첨부</th>
+                            <td>
+                                <div style="margin-bottom: 5px;"><b>여러 파일 선택이 가능합니다. 여러 파일 선택 시 ctrl 누른 후 선택하시면 됩니다.</b></div>
+                                <input type="file">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <textarea name="" id="" class="input"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>자동등록방지</th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn_box">
+                    <a href="" class="subbtn off">취소</a>
+                    <a href="" class="subbtn on">등록</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal content - 글쓰기 //E -->
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>

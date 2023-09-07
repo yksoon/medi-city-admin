@@ -69,9 +69,20 @@
                     <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
                     <li><a>K-MEDI</a>
                         <ul class="sub_2depth">
-                            <li><a onclick="navList('kMediMember')">회원 관리</a></li>
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
                             <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
                             <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
                         </ul>
                     </li>
                     <li><a>게시판 관리</a>
@@ -103,7 +114,7 @@
                         <a href="" class="subbtn off">검색</a>
                     </div>
                     <div>
-                        <a href="javascript:void(0)" class="subbtn on" title="#memberInsert" onclick="modal_open(memberInsert);">회원등록</a>
+                        <a href="javascript:void(0)" class="subbtn on" title="#memberInsert" onclick="modal_open(1);">회원등록</a>
                         <a href="" class="subbtn on">엑셀 다운로드</a>
                     </div>
                 </div>
@@ -163,7 +174,7 @@
     </div>
 
     
-    <div class="modal_wrap" id="modal_wrap">
+    <div class="modal_wrap" id="modal_wrap1">
         <div class="modal w800" id="memberInsert">
             <!-- modal content - 회원등록 //S -->
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
@@ -238,9 +249,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="btn_box">
-                    <a href="" class="mainbtn btn01">등록</a>
-                    <a href="" class="mainbtn btn02">취소</a>
+                <div class="subbtn_box">
+                    <a href="" class="subbtn on">등록</a>
+                    <a href="" class="subbtn off">취소</a>
                 </div>
             </div>
         </div>

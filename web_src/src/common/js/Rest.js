@@ -1,30 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Instance } from "./Instance";
-import store from "redux/store/store";
-
-let ip;
-let userInfo;
+import { Instance, Instance_multi } from "./Instance";
 
 const RestServer = (method, url, data) => {
-    // userInfo = useSelector((state) => state.userInfo.userInfo);
-
-    // // const userInfo;
-    // Instance.interceptors.request.use(
-    //     (config) => {
-    //         // userInfo = store.getState().userInfo.userInfo;
-    //         ip = store.getState().ipInfo.ipInfo;
-
-    //         console.log("token", userInfo ? userInfo.token : "");
-
-    //         config.headers["Medicity-Src"] = ip ? ip : "";
-    //         config.headers["Medicity-Token"] = userInfo ? userInfo.token : "";
-    //         return config;
-    //     },
-    //     (err) => {
-    //         return Promise.reject(err);
-    //     }
-    // );
-
     switch (method) {
         case "get":
             return Instance.get(url, data);
@@ -38,6 +14,11 @@ const RestServer = (method, url, data) => {
         case "delete":
             return Instance.delete(url, data);
 
+        case "post_multi":
+            return Instance_multi.post(url, data);
+
+        case "put_multi":
+            return Instance_multi.put(url, data);
         default:
             break;
     }

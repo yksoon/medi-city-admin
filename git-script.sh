@@ -13,6 +13,7 @@ gitRepository=""
 gitAction=""
 dirName=""
 branchName=""
+envFile=""
 
 echo "-------------------------------------------- PARAMETERS CHECK START --------------------------------------"
 ## for loop 를 파라미터 갯수만큼 돌리기 위해 three-parameter loop control 사용
@@ -33,6 +34,10 @@ do
 	if [ "$c" == 3 ]; then
 		branchName=${args[$c]}
 	fi
+
+	if [ "$c" == 4 ]; then
+                envFile=${args[$c]}
+    	fi
 
 
 	echo "$c th parameter = ${args[$c]}"
@@ -69,7 +74,7 @@ else
 		fi
 	else
 		subDirName="medi-city/kmedi"
-		if [ "$gitRepository" == "test-web" ] || [ "$gitRepository" == "dev-web" ]; then
+		if [ "$gitRepository" == "test-web" ] || [ "$gitRepository" == "dev-web" ] || [ "$gitRepository" == "prd-web" ]; then
 			gitUrl="$gitProtocol$medicityToken@$gitPublicUrl/$subDirName/client.git"
 		else 
 			gitUrl="$gitProtocol$medicityToken@$gitPublicUrl/$subDirName/admin-client.git"
@@ -80,6 +85,7 @@ fi
 
 echo "gitUrl : $gitUrl" 
 echo "targetSubDir : $targetSubDir"
+echo "envFile : $envFile"
 
 if [ -z $branchName ]; then
         branchName="main"
@@ -152,7 +158,7 @@ if [ "$dirName" == "jobara" ]; then
 		echo "jenkins workspace dir : `ls -l /home/jenkins-data/workspace/jobara-back/jobara-service`"
         else
 		echo "git sync dir : `ls -al /home/hicomp/jobara-front`"
-                cp -rf /home/hicomp/jobara-font/* /home/jenkins-data/workspace/jobara-front
+                cp -rf /home/hicomp/jobara-front/* /home/jenkins-data/workspace/jobara-front
                 echo "copying..."
 		rm -rf /home/jenkins-data/workspace/jobara-front/web_src
 		echo "web_src remove..."

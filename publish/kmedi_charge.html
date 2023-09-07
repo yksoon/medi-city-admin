@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>결제내역</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <h5>기간조회</h5>
+                            <a href="" class="kmedi_top_btn">7일</a>
+                            <a href="" class="kmedi_top_btn">14일</a>
+                            <a href="" class="kmedi_top_btn">30일</a>
+                            <a href="" class="kmedi_top_btn">3개월</a>
+                            <input type="date" class="input"> ~ <input type="date" class="input">
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>정산상태</h5>
+                            <div>
+                                <input type="radio" id="charge_status1" name="charge_status">
+                                <label for="charge_status1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="charge_status2" name="charge_status">
+                                <label for="charge_status2">구독권</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="charge_status3" name="charge_status">
+                                <label for="charge_status3">유료영상</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">회원이름</option>
+                                <option value="">병원이름</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="adm_statistics">
+                    <table class="table_a inner_table">
+                        <tbody>
+                            <tr>
+                                <th>총 주문 금액 (건 수)</th>
+                                <th>총 정산 금액 (건 수)</th>
+                                <th>수수료 (마진)</th>
+                                <th>부가세</th>
+                                <th>누적 매출 금액</th>
+                                <th>누적 순 이익</th>
+                            </tr>
+                            <tr>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                                <td><a href="">000</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="adm_statistics">
+                    <div>
+                        <ul>
+                            <li><a href="">전체 <strong>00개</strong></a></li>
+                            <li><a href="">정산대기 <strong>00개</strong></a></li>
+                            <li><a href="">정산예정금액 <strong>00개</strong></a></li>
+                            <li><a href="">정산완료 <strong>00개</strong></a></li>
+                            <li><a href="">정산금액 <strong>00개</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="" class="subbtn del">정산대기</a>
+                        <a href="" class="subbtn on">정산완료</a>
+                        <a href="" class="subbtn on">엑셀 다운로드</a>
+                    </div>
+                </div>
+                <div class="kmedi_content">
+                    <div class="adm_table">
+                        <table class="table_a">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th>정산 요청일</th>
+                                    <th>정산상태</th>
+                                    <th>회원이름</th>
+                                    <th>실판매금액</th>
+                                    <th>수수료</th>
+                                    <th>부가세</th>
+                                    <th>정산금액</th>
+                                    <th>예금주</th>
+                                    <th>은행</th>
+                                    <th>계좌번호</th>
+                                    <th>상세보기</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30</td>
+                                    <td><span class="red">정산대기</span></td>
+                                    <td><a href="" class="default_a">서지은</a></td>
+                                    <td>83,000원</td>
+                                    <td>-8,300원</td>
+                                    <td>-830원</td>
+                                    <td>75,530원</td>
+                                    <td>서지은</td>
+                                    <td>IBK기업</td>
+                                    <td>213142366</td>
+                                    <td><a href="kmedi_charge_detail.html" class="tablebtn">상세보기</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                    <td>23.05.30</td>
+                                    <td><span class="red">정산대기</span></td>
+                                    <td><a href="" class="default_a">서지은</a></td>
+                                    <td>83,000원</td>
+                                    <td>-8,300원</td>
+                                    <td>-830원</td>
+                                    <td>75,530원</td>
+                                    <td>서지은</td>
+                                    <td>IBK기업</td>
+                                    <td>213142366</td>
+                                    <td><a href="kmedi_charge_detail.html" class="tablebtn">상세보기</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagenation">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>

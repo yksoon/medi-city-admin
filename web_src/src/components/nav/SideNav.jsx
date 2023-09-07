@@ -1,31 +1,43 @@
 import {
     CommonConsole,
-    CommonErrorCatch,
+    CommonErrModule,
     CommonNotify,
+    CommonRest,
 } from "common/js/Common";
-import { RestServer } from "common/js/Rest";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { set_spinner } from "redux/actions/commonAction";
-import { init_user_info } from "redux/actions/userInfoAction";
 import { apiPath, routerPath } from "webPath";
 
 import $ from "jquery";
-import RegUserModal from "components/user/userList/RegUserModal";
+// import RegUserModal from "components/user/userList/RegUserModal";
 import useAlert from "hook/useAlert";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+    isSpinnerAtom,
+    pageAtom,
+    userInfoAtom,
+    userTokenAtom,
+} from "recoils/atoms";
+import { successCode } from "common/js/resultCode";
 
 const SideNav = (props) => {
+    const resetUserInfoAdmin = useResetRecoilState(userInfoAtom);
+    const resetUserTokenAdmin = useResetRecoilState(userTokenAtom);
+
+    const { alert } = useAlert();
+    const err = CommonErrModule();
+    const setIsSpinner = useSetRecoilState(isSpinnerAtom);
+
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modUserData, setModUserData] = useState(null);
+    const [isNeedUpdate, setIsNeedUpdate] = useState(false);
     const navigate = useNavigate();
-    const { alert } = useAlert();
 
     let userInfo;
     const switchPage = props.switchPage;
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     (() => {
         userInfo = props.userInfo;
@@ -33,13 +45,26 @@ const SideNav = (props) => {
 
     const navList = props.menuList;
 
-    let page = useSelector((state) => state.page.page);
+    // let page = useSelector((state) => state.page.page);
+    const page = useRecoilValue(pageAtom);
 
     // console.log($(`#${page}`).parents());
 
     useEffect(() => {
-        $(".depth1").first().addClass("on");
-    }, []);
+        // 새로고침 하더라도 현재 메뉴 활성화
+        if (page) {
+            $(".sub_2depth").hide();
+            $(".sub_3depth").hide();
+
+            $(".depth1").removeClass("on");
+            $(".depth2").removeClass("on");
+
+            $(`#${page}`).parents("li").children(".depth1").addClass("on");
+            $(`#${page}`).parents("li").children(".depth2").addClass("on");
+            $(`#${page}`).parents("li").children(".sub_2depth").slideToggle();
+            $(`#${page}`).parents("li").children(".sub_3depth").slideToggle();
+        }
+    }, [navList]);
 
     // 모달창 닫기
     const handleModalClose = () => {
@@ -49,11 +74,7 @@ const SideNav = (props) => {
 
     // 회원 정보 수정
     const modUser = (user_idx) => {
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
+        setIsSpinner(false);
 
         let userIdx = String(user_idx);
 
@@ -62,54 +83,47 @@ const SideNav = (props) => {
         const url = apiPath.api_user_info + `/${userIdx}`;
         const data = {};
 
-        RestServer("get", url, data)
-            .then((response) => {
-                let res = response;
-                let result_code = res.headers.result_code;
-                let result_info = res.data.result_info;
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+        CommonRest(restParams);
 
-                // 성공
-                if (result_code === "0000") {
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+        const responsLogic = (res) => {
+            let result_code = res.headers.result_code;
+            let result_info = res.data.result_info;
 
-                    setModUserData(result_info);
+            // 성공
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
 
-                    setModalTitle("회원수정");
-                    setIsOpen(true);
-                }
-                // 에러
-                else {
-                    CommonConsole("log", response);
+                setModUserData(result_info);
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+                setModalTitle("회원수정");
+                setIsOpen(true);
+            }
+            // 에러
+            else {
+                CommonConsole("log", res);
 
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: response.headers.result_message_ko,
-                    });
-                }
-            })
-            .catch((error) => {
-                CommonErrorCatch(error, dispatch, alert);
-            });
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
+            }
+        };
     };
 
     // 로그아웃
     const signOut = () => {
-        dispatch(
-            set_spinner({
-                isLoading: true,
-            })
-        );
+        setIsSpinner(true);
 
         // signout
         // url : /v1/signout
@@ -117,62 +131,34 @@ const SideNav = (props) => {
         const url = apiPath.api_auth_signout;
         let data = {};
 
-        RestServer("post", url, data)
-            .then(function (response) {
-                // response
-                let result_code = response.headers.result_code;
+        // 파라미터
+        const restParams = {
+            method: "post",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+        CommonRest(restParams);
 
-                if (result_code === "0000") {
-                    // localStorage.removeItem("userInfo");
-                    dispatch(init_user_info(null));
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
 
-                    dispatch(
-                        set_spinner({
-                            isLoading: false,
-                        })
-                    );
+            if (result_code === successCode.success) {
+                // localStorage.removeItem("userInfo");
+                // dispatch(init_user_info_admin(null));
 
-                    // dispatch(
-                    //     set_page({
-                    //         page: "dashboard",
-                    //     })
-                    // );
-                    navigate(routerPath.login_url);
-                }
-            })
-            .catch(function (error) {
-                // 오류발생시 실행
-                CommonConsole("log", error);
-                CommonConsole("decLog", error);
-                // CommonConsole("alertMsg", error);
+                resetUserInfoAdmin();
+                resetUserTokenAdmin();
 
-                // Spinner
-                dispatch(
-                    set_spinner({
-                        isLoading: false,
-                    })
-                );
-
-                CommonNotify({
-                    type: "alert",
-                    hook: alert,
-                    message: error.response.headers.result_message_ko,
-                });
-
-                // dispatch(
-                //     set_page({
-                //         page: "dashboard",
-                //     })
-                // );
-                // dispatch(set_user_info(null));
-                dispatch(init_user_info);
+                setIsSpinner(false);
 
                 navigate(routerPath.login_url);
-            });
+            }
+        };
     };
 
     const depth1click = (e) => {
-        console.log(e.target);
         $(".sub_2depth").hide();
         $(".sub_3depth").hide();
 
@@ -298,12 +284,12 @@ const SideNav = (props) => {
                     </ul>
                 </div>
             </header>
-            <RegUserModal
+            {/* <RegUserModal
                 isOpen={isOpen}
                 title={modalTitle}
                 handleModalClose={handleModalClose}
                 modUserData={modUserData}
-            />
+            /> */}
         </>
     );
 };

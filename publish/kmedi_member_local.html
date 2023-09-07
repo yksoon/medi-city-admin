@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디씨티 - 관리자</title> 
+    <script src="js/jquery-3.7.0.min.js"></script>
+
+     <!-- 플러그인 -->
+     <script src="js/jquery.bxslider.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.bxslider.css">
+     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+     <script type="text/javascript" src="js/slick.min.js"></script>
+
+     <link rel="stylesheet" href="css/default.css">
+     <link rel="stylesheet" href="css/style.css">
+ 
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="gnb">
+                <div class="adm_profile">
+                    <p>관리자 (admin)</p>
+                    <div>
+                        <a href="login.html" class="font-12">로그아웃</a>
+                        <a href="http://dev-web.medi-city.co.kr/publish/index.html" target="_blank" class="font-12">HOMEPAGE</a>
+                    </div>
+                </div>
+                <ul class="sub_gnb">
+                    <li id="all_gnb">전체 메뉴 보기</li>
+                    <li><a onclick="navList('dash')">대시보드</a></li>
+                    <li><a>홈페이지 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a>메인노출관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeVisual')">메인비주얼 관리</a></li>
+                                    <li><a onclick="navList('homeBanner')">배너 관리</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('homePop')">팝업 관리</a></li>
+                            <li><a>이용약관 관리 <img src="img/common/arrow_drop.png" alt=""></a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('homeTermsCon')">이용약관</a></li>
+                                    <li><a onclick="navList('homeTermsPri')">개인정보처리방침</a></li>
+                                    <li><a onclick="navList('homeTermsMar')">마케팅 수신 동의</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0)">회원 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('memberList')">회원 리스트</a></li>
+                            <li><a onclick="navList('memberMail')">단체 메일 발송</a></li>
+                        </ul>
+                    </li>
+                    <li><a>호텔 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('hotelList')">호텔 리스트</a></li>
+                            <li><a onclick="navList('hotelRoom')">객실 관리</a></li>
+                            <li><a onclick="navList('hotelReservation')">예약 관리</a></li>
+                            <li><a onclick="navList('hotelFacilities')">전체 부대시설 관리</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('mediArt')">MEDI ART</a></li>
+                    <li><a onclick="navList('mediTax')">세무/회계</a></li>
+                    <li><a onclick="navList('mediMice')">MICE/PCO</a></li>
+                    <li><a class="on">K-MEDI</a>
+                        <ul class="sub_2depth">
+                            <li><a>회원 관리</a>
+                                <ul class="sub_3depth">
+                                    <li><a onclick="navList('kMediMemberLocal')">현지회원</a></li>
+                                    <li><a onclick="navList('kMediMemberKorea')">한국 크리에이터</a></li>
+                                </ul>
+                            </li>
+                            <li><a onclick="navList('kMediContent')">컨텐츠 관리</a></li>
+                            <li><a onclick="navList('kMediCategory')">카테고리</a></li>
+                            <li><a onclick="navList('kMediPayment')">결제내역</a></li>
+                            <li><a onclick="navList('kMediCharges')">정산관리</a></li>
+                            <li><a onclick="navList('kMediPoint')">포인트 관리</a></li>
+                            <li><a onclick="navList('kMediNotice')">공지사항</a></li>
+                            <li><a onclick="navList('kMediInquiry')">1:1문의</a></li>
+                            <li><a onclick="navList('kMediQna')">의료Q&A</a></li>
+                        </ul>
+                    </li>
+                    <li><a>게시판 관리</a>
+                        <ul class="sub_2depth">
+                            <li><a onclick="navList('boardConf')">학회소식</a></li>
+                            <li><a onclick="navList('boardNotice')">공지사항</a></li>
+                            <li><a onclick="navList('boardEvent')">EVENT</a></li>
+                            <li><a onclick="navList('boardFaq')">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li><a onclick="navList('menu')">메뉴관리</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="title">
+                <h3>회원 관리 - 현지회원</h3>
+            </div>
+            <div class="con_area">
+                <div class="kmedi_top_wrap">
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top">
+                            <h5>기간조회</h5>
+                            <a href="" class="kmedi_top_btn">7일</a>
+                            <a href="" class="kmedi_top_btn">14일</a>
+                            <a href="" class="kmedi_top_btn">30일</a>
+                            <a href="" class="kmedi_top_btn">3개월</a>
+                            <input type="date" class="input"> ~ <input type="date" class="input">
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>회원상태</h5>
+                            <div>
+                                <input type="radio" id="member_state1" name="member_state">
+                                <label for="member_state1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_state2" name="member_state">
+                                <label for="member_state2">정상</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_state3" name="member_state">
+                                <label for="member_state3">탈퇴</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>회원구분</h5>
+                            <div>
+                                <input type="radio" id="member_division1" name="member_division">
+                                <label for="member_division1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_division2" name="member_division">
+                                <label for="member_division2">개인의사</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_division3" name="member_division">
+                                <label for="member_division3">영업사원</label>
+                            </div>
+                        </div>
+                        <div class="kmedi_top">
+                            <h5>상세정보</h5>
+                            <div>
+                                <input type="radio" id="member_detail1" name="member_detail">
+                                <label for="member_detail1">전체</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_detail2" name="member_detail">
+                                <label for="member_detail2">입력</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="member_detail3" name="member_detail">
+                                <label for="member_detail3">미입력</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kmedi_top_box">
+                        <div class="kmedi_top"> 
+                            <select name="" id="">
+                                <option value="">구분</option>
+                                <option value="">회원이름</option>
+                                <option value="">병원이름</option>
+                                <option value="">핸드폰</option>
+                                <option value="">customer ID</option>
+                            </select>
+                            <input type="text" class="input">
+                            <a href="" class="subbtn off">검색</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="adm_statistics">
+                    <div>
+                        <h5>회원</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00</strong></a></li>
+                            <li><a href="">개인의사 <strong>00</strong></a></li>
+                            <li><a href="">영업사원 <strong>00</strong></a></li>
+                            <li><a href="">한국 크리에이터 <strong>00</strong></a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>1:1문의</h5>
+                        <ul>
+                            <li><a href="">전체 <strong>00</strong></a></li>
+                            <li><a href="">답변대기 <strong>00</strong></a></li>
+                            <li><a href="">답변완료 <strong>00</strong></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kmedi_add_btn">
+                    <div>
+                        <a href="javascript:void(0)" class="subbtn on" onclick="modal_open();">회원등록</a>
+                        <a href="" class="subbtn on">엑셀 다운로드</a>
+                    </div>
+                </div>
+                <div class="adm_table">
+                    <table class="table_a">
+                        <colgroup>
+                            <col width="5%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>가입일</th>
+                                <th>상태</th>
+                                <th>구분</th>
+                                <th>이름</th>
+                                <th>연락처</th>
+                                <th>이메일</th>
+                                <th>소속병원</th>
+                                <th>상세보기</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td>23-05-30</td>
+                                <td>정상</td>
+                                <td>개인의사</td>
+                                <td>임은지</td>
+                                <td>010-0000-0000</td>
+                                <td>ej.lim@hicomp.net</td>
+                                <td>hicompint</td>
+                                <td>
+                                    <a href="kmedi_member_local_detail.html" class="tablebtn">상세보기</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagenation">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal_wrap" id="modal_wrap" style="display:none;">
+        <div class="modal w800" id="memberInsert">
+            <!-- modal content - 회원등록 //S -->
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="form">
+                <h4 class="mo_title">회원등록</h4>
+                <table class="table_bb">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>구분</th>
+                            <td>
+                                <select name="" id="" class="w180">
+                                    <option value="">개인의사</option>
+                                    <option value="">영업사원</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>성명</th>
+                            <td>
+                                <input type="name" class="input w120" placeholder="성">
+                                <input type="name" class="input w120" placeholder="이름">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td><input type="email" class="input w180" autofocus></td>
+                        </tr>
+                        <tr>
+                            <th>비밀번호</th>
+                            <td><input type="password" class="input w180"></td>
+                        </tr>
+                        <tr>
+                            <th>휴대전화</th>
+                            <td>
+                                <div id="phone_num" class="m0">
+                                    <input type="tel" class="input w120" id="phone_num1" value="010" readonly>
+                                    <input type="tel" class="input w120" id="phone_num2">
+                                    <input type="tel" class="input w120" id="phone_num3">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>소속병원</th>
+                            <td><input type="text" class="input w180"></td>
+                        </tr>
+                        <tr>
+                            <th>진단과목</th>
+                            <td><input type="text" class="input w180"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn_box">
+                    <a href="" class="mainbtn btn01">등록</a>
+                    <a href="" class="mainbtn btn02">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 - 회원등록 //E -->
+
+</body>
+</html>
+<script src="js/nav.js"></script>
+<script src="js/basic.js"></script>
+
