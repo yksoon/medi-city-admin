@@ -40,6 +40,7 @@ const CommonModal = (props) => {
                     <HotelDetailModalMain
                         handleNeedUpdate={handleNeedUpdate}
                         handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
                     />
                 );
 

@@ -22,6 +22,7 @@ import {
     userTokenAtom,
 } from "recoils/atoms";
 import { successCode } from "common/js/resultCode";
+import RoomManage from "components/hotel/roomManage/RoomManage";
 
 const Main = () => {
     const navigate = useNavigate();
@@ -153,14 +154,21 @@ const Main = () => {
     // 렌더링 페이지
     const renderPage = (page) => {
         switch (page) {
+            // 대시보드
             case "dashboard":
                 return <DashBoardMain />;
 
+            // 회원리스트
             case "userList":
                 return <UserList />;
 
+            // 호텔리스트
             case "hotelList":
                 return <HotelListMain />;
+
+            // 객실관리
+            case "roomMng":
+                return <RoomManage />;
 
             default:
                 return <DashBoardMain />;

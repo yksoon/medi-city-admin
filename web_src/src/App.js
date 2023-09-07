@@ -67,7 +67,7 @@ function App() {
     const getResultCode = () => {
         RestServer("get", apiPath.api_mng_result, {})
             .then((response) => {
-                console.log("result_code", response);
+                // console.log("result_code", response);
 
                 setResultCode(response.data.result_info);
             })
@@ -88,7 +88,7 @@ function App() {
             ],
         })
             .then((response) => {
-                console.log("codes", response);
+                // console.log("codes", response);
 
                 setCodes(response.data.result_info);
             })
@@ -105,7 +105,7 @@ function App() {
             exclude_code_types: [],
         })
             .then((response) => {
-                console.log("codesCountryBank", response);
+                // console.log("codesCountryBank", response);
 
                 setCountryBank(response.data.result_info);
             })

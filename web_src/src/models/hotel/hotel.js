@@ -134,6 +134,10 @@ const hotel_static = {
             100: "해외",
         },
     },
+    file_origin_type_cd: {
+        thumb: "100",
+        origin: "000",
+    },
 };
 
 export { regHotelModel, hotel_static };

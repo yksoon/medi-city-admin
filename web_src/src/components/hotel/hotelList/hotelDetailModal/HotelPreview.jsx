@@ -1,33 +1,24 @@
+import { apiPath } from "webPath";
+
 const HotelPreview = (props) => {
     const previewData = props.previewData;
 
-    console.log(previewData);
+    // console.log(previewData);
     return (
         <>
             {Object.keys(previewData).length !== 0 && (
                 <>
-                    {/* <div>
-                        <div>이미지</div>
-                        <div>
-                            <img src={previewData.previewImg} alt="" />
-                        </div>
-                        <br />
-                        <div>호텔명(국문)</div>
-                        <div>{previewData.nameKo}</div>
-                        <div>호텔명(영문)</div>
-                        <div>{previewData.nameEn}</div>
-                        <div>주소(국문)</div>
-                        <div>{`${previewData.addr1Ko} ${previewData.addr2Ko}`}</div>
-                        <div>주소(국문)</div>
-                        <div>{`${previewData.addr1En} ${previewData.addr2En}`}</div>
-                        <div>연락처 (국내)</div>
-                        <div>{`${previewData.phone1}-${previewData.phone2}-${previewData.phone3}`}</div>
-                    </div> */}
                     <div className="hotel_preview">
                         <ul>
                             <li>
                                 <span className="hotel_preview_thumb">
-                                    {previewData.previewImg && (
+                                    {previewData.previewImg &&
+                                    previewData.isListPage ? (
+                                        <img
+                                            src={`${apiPath.api_admin_hotel_list_thumb}${previewData.previewImg}`}
+                                            alt=""
+                                        />
+                                    ) : (
                                         <img
                                             src={previewData.previewImg}
                                             alt=""

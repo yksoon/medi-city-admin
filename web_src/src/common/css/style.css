@@ -230,6 +230,18 @@ div.mo_title > h4{font-size: 24px;font-weight: 700;}
 
 .hotel_thumb_td img{max-width:100px;}
 
+/* 광순이가 추가함 */
+.hotel_preview ul li {border: 1px solid #ddd;padding: 40px;display:flex;border-radius: 50px;}
+.hotel_preview ul li span.hotel_preview_thumb {width: 745px;height: 450px;overflow:hidden;border-radius: 50px;}
+.hotel_preview ul li span.hotel_preview_thumb img {width: 100%;}
+.hotel_preview ul li .hotel_preview_txt {width: calc( 100% - 745px ) ;padding:0 0 0 30px;}
+.hotel_preview ul li .hotel_preview_txt h3 {font-size: 32px;font-weight: 700;color: #000;}
+.hotel_preview ul li .hotel_preview_txt h5 {font-size: 21px;font-weight: 600;color: #616161;margin:10px 0 20px;}
+.hotel_preview ul li .hotel_preview_txt .hotel_venue p{font-size: 21px;font-weight: 500;}
+.hotel_preview ul li .hotel_preview_txt .hotel_venue p span{display:inline-block;vertical-align:middle;margin:0 10px 0 0;}
+.hotel_preview ul li .hotel_preview_txt .hotel_intro {color: #333;margin:10px 0 20px;margin:28px 0 40px;}
+.hotel_preview ul li .hotel_list_txt .hotel_intro .hotel_intro_more {display:inline-block;color: #818181;cursor:pointer;}
+
 
 /* 호텔등록 */
 .hotel label {margin:0 10px 0 0;}

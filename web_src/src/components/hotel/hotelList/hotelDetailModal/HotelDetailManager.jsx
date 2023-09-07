@@ -5,12 +5,15 @@ import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 
-const HotelDetailManager = () => {
+const HotelDetailManager = (props) => {
     const { alert } = useAlert();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
     const [managerCount, setManagerCount] = useState(1);
+
+    const managerList = props.managerList;
+    const handleManagerList = props.handleManagerList;
 
     const handelManagerCount = (params) => {
         if (params === "add") {
@@ -19,6 +22,12 @@ const HotelDetailManager = () => {
             }
         } else if (params === "remove") {
             if (managerCount > 0) {
+                let list = managerList;
+                list = list.filter((e) => e.idx !== managerCount);
+
+                console.log("111111111", list);
+                handleManagerList(list);
+
                 setManagerCount(managerCount - 1);
             }
         } else {
@@ -29,7 +38,14 @@ const HotelDetailManager = () => {
     const managerRender = () => {
         let result = [];
         for (let i = 0; i < managerCount; i++) {
-            result.push(<ManagerTable key={`manager_${i + 1}`} idx={i + 1} />);
+            result.push(
+                <ManagerTable
+                    key={`manager_${i + 1}`}
+                    idx={i + 1}
+                    managerList={managerList}
+                    handleManagerList={handleManagerList}
+                />
+            );
         }
         return result;
     };
@@ -70,6 +86,74 @@ const HotelDetailManager = () => {
 
 const ManagerTable = (props) => {
     const idx = props.idx;
+    let managerData = { idx: idx };
+
+    const managerList = props.managerList;
+    const handleManagerList = props.handleManagerList;
+
+    const handleInput = (e) => {
+        const id = e.target.id;
+
+        let list = managerList;
+        list = list.filter((e) => e.idx !== idx);
+
+        let insertData = managerList.filter((e) => e.idx === idx)[0];
+
+        // const setInsertData = (insertData, param, e) => {
+        //     insertData = {
+        //         ...insertData,
+        //         `${param}`: e.target.value,
+        //     };
+
+        //     return insertData
+        // }
+
+        switch (id) {
+            case "person_name":
+                insertData = {
+                    ...insertData,
+                    personName: e.target.value,
+                };
+                break;
+
+            case "position":
+                insertData = {
+                    ...insertData,
+                    position: e.target.value,
+                };
+                break;
+
+            case "email":
+                insertData = {
+                    ...insertData,
+                    email: e.target.value,
+                };
+                break;
+
+            case "phone":
+                insertData = {
+                    ...insertData,
+                    phone: e.target.value,
+                };
+                break;
+
+            case "memo":
+                insertData = {
+                    ...insertData,
+                    memo: e.target.value,
+                };
+                break;
+
+            default:
+                break;
+        }
+
+        managerData = { ...managerData, ...insertData };
+        list = [...list, managerData];
+
+        // console.log(list);
+        handleManagerList(list);
+    };
 
     return (
         <table className="table_bb">
@@ -80,34 +164,69 @@ const ManagerTable = (props) => {
                 <col width="30%" />
             </colgroup>
             <tbody>
-                <tr>
+                {/* <tr>
                     <th>번호</th>
                     <td>{idx}</td>
-                </tr>
+                </tr> */}
                 <tr>
                     <th>이름</th>
                     <td>
-                        <input type="text" className="input wp100" />
+                        <input
+                            type="text"
+                            className="input wp100"
+                            id="person_name"
+                            onChange={(e) => {
+                                handleInput(e);
+                            }}
+                        />
                     </td>
                     <th>직급·직책</th>
                     <td>
-                        <input type="text" className="input wp100" />
+                        <input
+                            type="text"
+                            className="input wp100"
+                            id="position"
+                            onChange={(e) => {
+                                handleInput(e);
+                            }}
+                        />
                     </td>
                 </tr>
                 <tr>
                     <th>이메일</th>
                     <td>
-                        <input type="text" className="input wp100" />
+                        <input
+                            type="text"
+                            className="input wp100"
+                            id="email"
+                            onChange={(e) => {
+                                handleInput(e);
+                            }}
+                        />
                     </td>
                     <th>연락처</th>
                     <td>
-                        <input type="text" className="input wp100" />
+                        <input
+                            type="text"
+                            className="input wp100"
+                            id="phone"
+                            onChange={(e) => {
+                                handleInput(e);
+                            }}
+                        />
                     </td>
                 </tr>
                 <tr>
                     <th>메모</th>
                     <td colSpan="3">
-                        <input type="text" className="input wp100" />
+                        <input
+                            type="text"
+                            className="input wp100"
+                            id="memo"
+                            onChange={(e) => {
+                                handleInput(e);
+                            }}
+                        />
                     </td>
                 </tr>
             </tbody>

@@ -25,6 +25,9 @@ const HotelDetailModalMain = (props) => {
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
+    // 상세보기 데이터
+    const modData = props.modData;
+
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     // const [isNeedUpdate, setIsNeedUpdate] = useState(false);
@@ -46,13 +49,16 @@ const HotelDetailModalMain = (props) => {
     // 부대시설 체크 리스트 state
     const [additionalCheckList, setAdditionalCheckList] = useState([]);
 
+    // 부대시설 체크 리스트 state
+    const [managerList, setManagerList] = useState([]);
+
     const handleNeedUpdate = props.handleNeedUpdate;
 
-    // let previewData = {
-    //     previewImg: "",
-    // };
+    useEffect(() => {
+        console.log(modData);
+    }, []);
 
-    //
+    // 미리보기 닫기
     const handleModalClose = () => {
         setModalTitle("");
         setIsOpen(false);
@@ -72,6 +78,11 @@ const HotelDetailModalMain = (props) => {
     // 부대시설 핸들러
     const handleAdditionalCheck = (list) => {
         setAdditionalCheckList(list);
+    };
+
+    // 담당자 핸들러
+    const handleManagerList = (list) => {
+        setManagerList(list);
     };
 
     let hotelModel = { ...regHotelModel };
@@ -135,117 +146,145 @@ const HotelDetailModalMain = (props) => {
 
     // 저장
     const clickSave = () => {
-        if (validation()) {
-            setIsSpinner(true);
+        // if (validation()) {
+        setIsSpinner(true);
 
-            const formData = new FormData();
+        const formData = new FormData();
 
-            let data = {};
+        let data = {};
 
-            let fileArr = [];
-            let fileArrOrg = [];
+        let fileArr = [];
+        let fileArrOrg = [];
 
-            data = {
-                ...hotelModel,
-                nationType: hotelRefs.nationType.current.value,
-                nameKo: hotelRefs.nameKo.current.value,
-                nameEn: hotelRefs.nameEn.current.value,
-                addr1Ko: hotelRefs.addr1Ko.current.value,
-                addr2Ko: hotelRefs.addr2Ko.current.value,
-                addr1En: hotelRefs.addr1En.current.value,
-                addr2En: hotelRefs.addr2En.current.value,
-                latitude: hotelRefs.latitude.current.value,
-                longitude: hotelRefs.longitude.current.value,
-                hotelStatus: hotelRefs.hotelStatus.current.value,
-                homePage: hotelRefs.homePage.current.value,
-                homePageShowYn: hotelRefs.homePage.current.value
-                    ? homePageShowYn
-                    : "N",
-                grade: grade,
-                positionType: hotelRefs.positionType.current.value,
-                checkInTime: hotelRefs.checkInTime.current.value,
-                checkOutTime: hotelRefs.checkOutTime.current.value,
-                phone1: hotelRefs.phone1.current.value,
-                phone2: hotelRefs.phone2.current.value,
-                phone3: hotelRefs.phone3.current.value,
-                nameKey: hotelRefs.nameKey.current.value,
-                interPhoneNumber: selectedCountry,
-                zipcode: hotelRefs.zipcode.current.value,
-                infoKo: hotelRefs.infoKo.current.value,
-                infoEn: hotelRefs.infoEn.current.value,
-                ruleKo: hotelRefs.ruleKo.current.value,
-                ruleEn: hotelRefs.ruleEn.current.value,
-                codeName: hotelRefs.codeName.current.value,
-                additionalInfo: additionalCheckList,
-            };
+        data = {
+            ...hotelModel,
+            nationType: hotelRefs.nationType.current.value,
+            nameKo: hotelRefs.nameKo.current.value,
+            nameEn: hotelRefs.nameEn.current.value,
+            addr1Ko: hotelRefs.addr1Ko.current.value,
+            addr2Ko: hotelRefs.addr2Ko.current.value,
+            addr1En: hotelRefs.addr1En.current.value,
+            addr2En: hotelRefs.addr2En.current.value,
+            latitude: hotelRefs.latitude.current.value,
+            longitude: hotelRefs.longitude.current.value,
+            hotelStatus: hotelRefs.hotelStatus.current.value,
+            homePage: hotelRefs.homePage.current.value,
+            homePageShowYn: hotelRefs.homePage.current.value
+                ? homePageShowYn
+                : "N",
+            grade: grade,
+            positionType: hotelRefs.positionType.current.value,
+            checkInTime: hotelRefs.checkInTime.current.value,
+            checkOutTime: hotelRefs.checkOutTime.current.value,
+            phone1: hotelRefs.phone1.current.value,
+            phone2: hotelRefs.phone2.current.value,
+            phone3: hotelRefs.phone3.current.value,
+            nameKey: hotelRefs.nameKey.current.value,
+            interPhoneNumber: selectedCountry,
+            zipcode: hotelRefs.zipcode.current.value,
+            infoKo: hotelRefs.infoKo.current.value,
+            infoEn: hotelRefs.infoEn.current.value,
+            ruleKo: hotelRefs.ruleKo.current.value,
+            ruleEn: hotelRefs.ruleEn.current.value,
+            codeName: hotelRefs.codeName.current.value,
+            // additionalInfo: additionalCheckList,
+            // personInfo: managerList,
+        };
 
-            console.log(data);
+        console.log(data);
 
-            // 기본 formData append
-            for (const key in data) {
-                formData.append(key, data[key]);
-            }
-
-            // let addArr = [];
-            // // 파일 formData append
-            // addArr = Array.from(additionalCheckList);
-            // let addlen = addArr.length;
-            // for (let i = 0; i < addlen; i++) {
-            //     formData.append("additionalInfo", addArr[i]);
-            // }
-
-            // 파일 formData append
-            fileArr = Array.from(hotelRefs.attachmentThumbFile.current.files);
-            let len = fileArr.length;
-            for (let i = 0; i < len; i++) {
-                formData.append("attachmentThumbFile", fileArr[i]);
-            }
-
-            // 파일 formData append
-            fileArrOrg = Array.from(hotelRefs.attachmentOrgFile.current.files);
-            let len2 = fileArrOrg.length;
-            for (let i = 0; i < len2; i++) {
-                formData.append("attachmentOrgFile", fileArrOrg[i]);
-            }
-
-            // console.log(data);
-
-            const restParams = {
-                method: "post_multi",
-                url: apiPath.api_admin_reg_hotel, // hotel/v1/meta/hotel
-                data: formData,
-                err: err,
-                callback: (res) => responsLogic(res),
-            };
-
-            CommonRest(restParams);
-
-            const responsLogic = (res) => {
-                const result_code = res.headers.result_code;
-                if (result_code === successCode.success) {
-                    setIsSpinner(false);
-
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: "호텔등록이 완료 되었습니다",
-                        callback: () => pageUpdate(),
-                    });
-                } else {
-                    setIsSpinner(false);
-
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message: "잠시 후 다시 시도해주세요",
-                    });
-                }
-
-                const pageUpdate = () => {
-                    handleNeedUpdate();
-                };
-            };
+        // 기본 formData append
+        for (const key in data) {
+            formData.append(key, data[key]);
         }
+
+        additionalCheckList.forEach((item, idx) => {
+            formData.append(
+                `additionalInfo[${idx}].additionalIdx`,
+                item.additionalIdx
+            );
+            formData.append(
+                `additionalInfo[${idx}].additionalMemo`,
+                item.additionalMemo
+            );
+        });
+
+        managerList.forEach((item, idx) => {
+            formData.append(`personInfo[${idx}].personName`, item.personName);
+            formData.append(`personInfo[${idx}].position`, item.position);
+            formData.append(`personInfo[${idx}].email`, item.email);
+            formData.append(`personInfo[${idx}].phone`, item.phone);
+            formData.append(`personInfo[${idx}].memo`, item.memo);
+        });
+
+        // // 부대시설 formData append
+        // let additionalArr = [];
+        // additionalArr = Array.from(additionalCheckList);
+        // let addlen = additionalArr.length;
+        // for (let i = 0; i < addlen; i++) {
+        //     formData.append("additionalInfo", additionalArr[i]);
+        // }
+
+        // // 담당자 formData append
+        // let personInfoArr = [];
+        // personInfoArr = Array.from(additionalCheckList);
+        // let personlen = personInfoArr.length;
+        // for (let i = 0; i < personlen; i++) {
+        //     formData.append("personInfo", personInfoArr[i]);
+        // }
+
+        // 파일 formData append
+        fileArr = Array.from(hotelRefs.attachmentThumbFile.current.files);
+        let len = fileArr.length;
+        for (let i = 0; i < len; i++) {
+            formData.append("attachmentThumbFile", fileArr[i]);
+        }
+
+        // 파일 formData append
+        fileArrOrg = Array.from(hotelRefs.attachmentOrgFile.current.files);
+        let len2 = fileArrOrg.length;
+        for (let i = 0; i < len2; i++) {
+            formData.append("attachmentOrgFile", fileArrOrg[i]);
+        }
+
+        // console.log(data);
+
+        const restParams = {
+            method: "post_multi",
+            url: apiPath.api_admin_reg_hotel, // hotel/v1/meta/hotel
+            data: formData,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "호텔등록이 완료 되었습니다",
+                    callback: () => pageUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+
+            const pageUpdate = () => {
+                handleNeedUpdate();
+            };
+        };
+        // }
     };
 
     const validation = () => {
@@ -360,6 +399,7 @@ const HotelDetailModalMain = (props) => {
                 handlePreviewImg={handlePreviewImg}
                 handlePreview={handlePreview}
                 handleSelectedCountry={handleSelectedCountry}
+                modData={modData}
             />
 
             <HotelDetailBasic
@@ -372,7 +412,10 @@ const HotelDetailModalMain = (props) => {
 
             <HotelDetailEtc ref={hotelRefs} handlePreview={handlePreview} />
 
-            <HotelDetailManager />
+            <HotelDetailManager
+                managerList={managerList}
+                handleManagerList={handleManagerList}
+            />
 
             <HotelDetailAdditional
                 handleAdditionalCheck={handleAdditionalCheck}

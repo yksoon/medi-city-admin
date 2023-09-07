@@ -32,6 +32,7 @@ Instance.interceptors.request.use(
 const Instance_multi = axios.create({
     headers: {
         "Content-Type": "multipart/form-data",
+        // "Content-Type": "multipart/mixed",
     },
     timeout: 5000,
 });

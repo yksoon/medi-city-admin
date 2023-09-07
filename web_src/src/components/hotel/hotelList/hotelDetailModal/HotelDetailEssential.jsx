@@ -10,6 +10,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { codesAtom, countryBankAtom, isSpinnerAtom } from "recoils/atoms";
 import Select from "react-select";
 import { hotel_static } from "models/hotel/hotel";
+import { apiPath } from "webPath";
 
 const HotelDetailEssential = forwardRef((props, ref) => {
     const { alert } = useAlert();
@@ -30,6 +31,9 @@ const HotelDetailEssential = forwardRef((props, ref) => {
     const handleSelectedCountry = props.handleSelectedCountry;
     const handlePreviewImg = props.handlePreviewImg;
     const handlePreview = props.handlePreview;
+
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
 
     // const [hotelEssentialState, setHotelEssentialState] = useState({
     //     ...regHotelEssential,
@@ -61,6 +65,25 @@ const HotelDetailEssential = forwardRef((props, ref) => {
         // 국가번호
         selectboxCountry();
     }, [countryBank]);
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, [nationTypeState]);
+
+    const setDefaultValue = () => {
+        nationType.current.value = modData.nation_type_cd;
+        nameKo.current.value = modData.name_ko;
+        nameEn.current.value = modData.name_en;
+        nameKey.current.value = modData.name_key;
+        codeName.current.value = modData.code_name;
+
+        const thumbFileEnc = modData.attachment_file_info.filter(
+            (e) => e.origin_type_cd === hotel_static.file_origin_type_cd
+        );
+        console.log(thumbFileEnc);
+        // document.getElementById("preview").src = `${apiPath.api_admin_hotel_list_thumb}${file_path_enc}`
+    };
 
     // 국가번호 SELECT 가공
     const selectboxCountry = () => {
@@ -618,6 +641,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                             changeHotelHandler(e);
                                         }}
                                     />
+                                    {` - `}
                                     <input
                                         type="tel"
                                         className="input w120"
@@ -627,6 +651,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                             changeHotelHandler(e);
                                         }}
                                     />
+                                    {` - `}
                                     <input
                                         type="tel"
                                         className="input w120"

@@ -58,7 +58,7 @@ const HotelDetailAdditional = (props) => {
                 const result_info = res.data.result_info;
                 const page_info = res.data.page_info;
 
-                console.log(res);
+                // console.log(res);
 
                 setAdditionalList(result_info);
 
@@ -84,10 +84,6 @@ const HotelDetailAdditional = (props) => {
     // const handleAdditionalCheck = (list) => {
     //     setAdditionalCheckList(list);
     // };
-
-    useEffect(() => {
-        console.log(additionalCheckList);
-    }, [additionalCheckList]);
 
     return (
         <>
@@ -213,7 +209,7 @@ const CustomPopover = (props) => {
                 ...insertItem[0],
                 additionalMemo: e.target.value,
                 additional_memo: e.target.value,
-                additionalIdx: item.additional_id,
+                additionalIdx: item.additional_idx,
             };
             // insertItem[0].additional_memo = e.target.value;
             // insertItem[0].additionalMemo = e.target.value;

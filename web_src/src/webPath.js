@@ -201,6 +201,13 @@ const apiPath = {
     api_admin_hotel_additionals_list: `${
         base_api_url + slash + hotel + slash + version + slash
     }meta/additionals`,
+
+    // 호텔 상세보기
+    // hotel/v1/meta/hotel/${hotel_idx}
+    // get
+    api_admin_hotel_detail: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/hotel/`,
 };
 
 export { routerPath, apiPath };

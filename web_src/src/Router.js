@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Main from "components/main/Main";
 import LoginMain from "components/login/LoginMain";
+import HealthCheck from "components/HealthCheck";
 
 const Router = () => {
     // 레이지 로딩 추가
@@ -41,6 +42,10 @@ const Router = () => {
                         element={<LoginMain />}
                     />
 
+                    {/* 상태체크 */}
+                    <Route path="/health" element={<HealthCheck />} />
+
+                    {/* 404 */}
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Suspense>
