@@ -517,22 +517,33 @@ const HotelDetailModalMain = (props) => {
             return false;
         }
 
-        // 썸네일 이미지
-        if (!hotelRefs.attachmentThumbFile.current.value) {
-            hotelRefs.attachmentThumbFile.current.blur();
-            regAlert({
-                msg: "썸네일 이미지를 선택해주세요",
-                ref: hotelRefs.attachmentThumbFile,
-            });
-            return false;
+        if (!isModData) {
+            // 썸네일 이미지
+            if (!hotelRefs.attachmentThumbFile.current.value) {
+                hotelRefs.attachmentThumbFile.current.blur();
+                regAlert({
+                    msg: "썸네일 이미지를 선택해주세요",
+                    ref: hotelRefs.attachmentThumbFile,
+                });
+                return false;
+            }
+
+            // 호텔 이미지
+            if (!hotelRefs.attachmentOrgFile.current.value) {
+                hotelRefs.attachmentOrgFile.current.blur();
+                regAlert({
+                    msg: "호텔 이미지를 선택해주세요",
+                    ref: hotelRefs.attachmentOrgFile,
+                });
+                return false;
+            }
         }
 
-        // 호텔 이미지
-        if (!hotelRefs.attachmentOrgFile.current.value) {
-            hotelRefs.attachmentOrgFile.current.blur();
+        // 등급
+        if (grade === 0 || grade === null) {
             regAlert({
-                msg: "호텔 이미지를 선택해주세요",
-                ref: hotelRefs.attachmentOrgFile,
+                msg: "등급을 선택해주세요",
+                ref: hotelRefs.homePage,
             });
             return false;
         }

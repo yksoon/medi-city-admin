@@ -383,12 +383,12 @@ const HotelListMain = () => {
                                     <col width="5%" />
                                     <col width="10%" />
                                     <col width="10%" />
-                                    <col width="16%" />
+                                    <col width="*" />
                                     <col width="10%" />
                                     {/* <col width="10%" /> */}
                                     <col width="5%" />
                                     <col width="5%" />
-                                    <col width="5%" />
+                                    {/* <col width="5%" /> */}
                                 </colgroup>
                                 <thead>
                                     <tr>
@@ -420,7 +420,7 @@ const HotelListMain = () => {
                                         {/* <th>담당자</th> */}
                                         <th>상세보기</th>
                                         <th>미리보기</th>
-                                        <th>객실리스트</th>
+                                        {/* <th>객실리스트</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -494,11 +494,11 @@ const HotelListMain = () => {
                                                         미리보기
                                                     </Link>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <Link className="tablebtn">
                                                         객실리스트
                                                     </Link>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))
                                     ) : (

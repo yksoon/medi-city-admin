@@ -617,7 +617,12 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         key={selectedCountry}
                                         styles={customStyles}
                                         onChange={(e) => {
-                                            // setSelectedCountry(e.value);
+                                            setSelectedCountry(
+                                                selectCountryOptions.find(
+                                                    (event) =>
+                                                        event.value === e.value
+                                                )
+                                            );
                                             handleSelectedCountry(e.value);
                                         }}
                                         ref={interPhoneNumber}

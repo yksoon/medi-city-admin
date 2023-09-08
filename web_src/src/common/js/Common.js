@@ -11,6 +11,7 @@ import { isSpinnerAtom, userInfoAtom, userTokenAtom } from "recoils/atoms";
 import { errorCode } from "./resultCode";
 import RegUserModal from "components/user/userList/modal/RegUserModal";
 import HotelPreview from "components/hotel/hotelList/hotelDetailModal/HotelPreview";
+import RoomModalMain from "components/hotel/roomManage/roomDetailModal/RoomModalMain";
 
 // Alert (props)
 // isOpen = state 상태값
@@ -50,6 +51,15 @@ const CommonModal = (props) => {
                         handleNeedUpdate={handleNeedUpdate}
                         handleModalClose={modalOption.handleModalClose}
                         modUserData={props.modUserData}
+                    />
+                );
+
+            case "RoomModalMain":
+                return (
+                    <RoomModalMain
+                        handleNeedUpdate={handleNeedUpdate}
+                        handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
                     />
                 );
 
