@@ -10,8 +10,17 @@ const isDeveloping = process.env.REACT_APP_ISDEVELOPING;
 // 버전
 const protocol = "http://";
 
-const host =
-    isDeveloping === "true" ? "dev-api.medi-city.co.kr" : "3.36.85.141";
+let host = "";
+if (isDeveloping === "local" || isDeveloping === "dev") {
+    host = "dev-api.medi-city.co.kr";
+} else if (isDeveloping === "prd") {
+    host = "3.36.85.141";
+} else {
+    host = "dev-api.medi-city.co.kr";
+}
+
+// const host =
+//     isDeveloping === "local" || isDeveloping === "dev" ? "dev-api.medi-city.co.kr" : "3.36.85.141";
 // const host = "dev-api.medi-city.co.kr";
 
 const port = "60000";
