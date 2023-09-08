@@ -50,6 +50,7 @@ const RoomManage = () => {
 
     return (
         <>
+            <></>
             <div className="content">
                 <div className="title">
                     <h3>객실 관리</h3>
