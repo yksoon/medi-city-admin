@@ -12,6 +12,7 @@ const protocol = "http://";
 
 const host =
     isDeveloping === "true" ? "dev-api.medi-city.co.kr" : "3.36.85.141";
+// const host = "dev-api.medi-city.co.kr";
 
 const port = "60000";
 
