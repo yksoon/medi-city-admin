@@ -11,9 +11,9 @@ const isDeveloping = process.env.REACT_APP_ISDEVELOPING;
 const protocol = "http://";
 
 let host = "";
-if (isDeveloping === "local") {
+if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
-} else if (isDeveloping === "dev" || isDeveloping === "prd") {
+} else if (isDeveloping === "prd") {
     host = "3.36.85.141";
 } else {
     host = "dev-api.medi-city.co.kr";

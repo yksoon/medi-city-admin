@@ -38,6 +38,7 @@
     "scripts": {
         "start": "set PORT=3002 && env-cmd -f .env.development.local react-scripts start",
         "build": "set BUILD_PATH=../build&& env-cmd -f .env.development  react-scripts build",
+        "prd": "set BUILD_PATH=../build_prd&& env-cmd -f .env.production  react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
