@@ -193,9 +193,8 @@ const UserList = () => {
                     type: "alert",
                     hook: alert,
                     message: res.headers.result_message_ko,
+                    callback: () => pageUpdate(),
                 });
-
-                handleNeedUpdate();
             }
             // 에러
             else {
@@ -209,6 +208,10 @@ const UserList = () => {
                     message: res.headers.result_message_ko,
                 });
             }
+
+            const pageUpdate = () => {
+                handleNeedUpdate();
+            };
         };
     };
 

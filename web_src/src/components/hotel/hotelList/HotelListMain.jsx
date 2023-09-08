@@ -31,6 +31,7 @@ const HotelListMain = () => {
 
     const [hotelList, setHotelList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
+    const [checkItems, setCheckItems] = useState([]);
 
     // 미리보기 데이터 state
     const [previewData, setPreviewData] = useState({
@@ -67,6 +68,7 @@ const HotelListMain = () => {
 
         const close = () => {
             setModalTitle("");
+            setModData({});
             setIsOpen(false);
         };
     };
@@ -199,6 +201,137 @@ const HotelListMain = () => {
         };
     };
 
+    // 체크박스 단일 선택
+    const handleSingleCheck = (checked, id) => {
+        if (checked) {
+            // 단일 선택 시 체크된 아이템을 배열에 추가
+            setCheckItems((prev) => [...prev, id]);
+        } else {
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            setCheckItems(checkItems.filter((el) => el !== id));
+        }
+    };
+
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked) => {
+        if (checked) {
+            // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+            const idArray = [];
+            hotelList.forEach((el) => idArray.push(el.hotel_idx));
+            setCheckItems(idArray);
+        } else {
+            // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+            setCheckItems([]);
+        }
+    };
+
+    // 회원 선택 삭제
+    const clickRemove = () => {
+        //선택여부 확인
+        checkItems.length === 0
+            ? CommonNotify({
+                  type: "alert",
+                  hook: alert,
+                  message: "호텔을 선택해주세요",
+              })
+            : CommonNotify({
+                  type: "confirm",
+                  hook: confirm,
+                  message: "선택된 호텔을 삭제 하시겠습니까?",
+                  callback: () => removeHotel(),
+              });
+    };
+
+    // 삭제 버튼
+    const removeHotel = async () => {
+        let checkItemsStr = checkItems.join();
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_remove_hotel}${checkItemsStr}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => pageUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+
+            const pageUpdate = () => {
+                handleNeedUpdate();
+            };
+        };
+
+        // const responsLogic = (res, i) => {
+        //     const result_code = res.headers.result_code;
+        //     if (result_code === successCode.success) {
+        //         if (i + 1 === checkItems.length) {
+        //             setIsSpinner(false);
+
+        //             CommonNotify({
+        //                 type: "alert",
+        //                 hook: alert,
+        //                 message: "삭제가 완료 되었습니다",
+        //                 callback: () => pageUpdate(),
+        //             });
+        //         }
+        //     } else {
+        //         setIsSpinner(false);
+
+        //         CommonNotify({
+        //             type: "alert",
+        //             hook: alert,
+        //             message: "잠시 후 다시 시도해주세요",
+        //         });
+        //     }
+
+        //     const pageUpdate = () => {
+        //         handleNeedUpdate();
+        //     };
+        // };
+
+        // for (let i = 0; i < checkItems.length; i++) {
+        //     try {
+        //         const url = `${apiPath.api_admin_remove_hotel}${checkItems[i]}`;
+
+        //         const restParams = {
+        //             method: "delete",
+        //             url: url,
+        //             data: {},
+        //             err: err,
+        //             callback: (res) => responsLogic(res, i),
+        //         };
+
+        //         await CommonRest(restParams);
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // }
+    };
+
     return (
         <>
             <div className="content">
@@ -220,6 +353,12 @@ const HotelListMain = () => {
                                 </Link>
                             </div>
                             <div>
+                                <Link
+                                    className="subbtn del"
+                                    onClick={clickRemove}
+                                >
+                                    선택삭제
+                                </Link>{" "}
                                 <Link
                                     className="modal_btn subbtn on"
                                     title="#hotelInsert"
@@ -244,17 +383,33 @@ const HotelListMain = () => {
                                     <col width="5%" />
                                     <col width="10%" />
                                     <col width="10%" />
-                                    <col width="16%" />
+                                    <col width="*" />
                                     <col width="10%" />
                                     {/* <col width="10%" /> */}
                                     <col width="5%" />
                                     <col width="5%" />
-                                    <col width="5%" />
+                                    {/* <col width="5%" /> */}
                                 </colgroup>
                                 <thead>
                                     <tr>
                                         <th>
-                                            <input type="checkbox" />
+                                            <input
+                                                type="checkbox"
+                                                name="select-all"
+                                                onChange={(e) =>
+                                                    handleAllCheck(
+                                                        e.target.checked
+                                                    )
+                                                }
+                                                checked={
+                                                    checkItems &&
+                                                    hotelList &&
+                                                    checkItems.length ===
+                                                        hotelList.length
+                                                        ? true
+                                                        : false
+                                                }
+                                            />
                                         </th>
                                         <th>대표이미지</th>
                                         <th>고유번호</th>
@@ -265,7 +420,7 @@ const HotelListMain = () => {
                                         {/* <th>담당자</th> */}
                                         <th>상세보기</th>
                                         <th>미리보기</th>
-                                        <th>객실리스트</th>
+                                        {/* <th>객실리스트</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -273,7 +428,28 @@ const HotelListMain = () => {
                                         hotelList.map((item, idx) => (
                                             <tr key={`hotel_list_${idx}`}>
                                                 <td>
-                                                    <input type="checkbox" />
+                                                    <input
+                                                        type="checkbox"
+                                                        name={`hotelIdx_${item.hotel_idx}`}
+                                                        id={item.hotel_idx}
+                                                        defaultValue={
+                                                            item.hotel_idx
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleSingleCheck(
+                                                                e.target
+                                                                    .checked,
+                                                                item.hotel_idx
+                                                            )
+                                                        }
+                                                        checked={
+                                                            checkItems.includes(
+                                                                item.hotel_idx
+                                                            )
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
                                                 </td>
                                                 <td className="hotel_thumb_td">
                                                     <img
@@ -318,11 +494,11 @@ const HotelListMain = () => {
                                                         미리보기
                                                     </Link>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <Link className="tablebtn">
                                                         객실리스트
                                                     </Link>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))
                                     ) : (

@@ -22,15 +22,13 @@ const HotelDetailEssential = forwardRef((props, ref) => {
 
     const [nationTypeState, setNationTypeState] = useState([]);
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
-    // const [selectedCountry, setSelectedCountry] = useState("82");
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [isShowNation, setIsShowNation] = useState(false);
 
     const open = useDaumPostcodePopup();
     let geocoder = new kakao.maps.services.Geocoder();
 
     const handleSelectedCountry = props.handleSelectedCountry;
-    const handlePreviewImg = props.handlePreviewImg;
-    const handlePreview = props.handlePreview;
 
     const modData = props.modData;
     const isModData = Object.keys(modData).length !== 0 ? true : false;
@@ -71,18 +69,73 @@ const HotelDetailEssential = forwardRef((props, ref) => {
         isModData && setDefaultValue();
     }, [nationTypeState]);
 
+    // 수정일 경우 세팅
     const setDefaultValue = () => {
         nationType.current.value = modData.nation_type_cd;
+        modData.nation_type_cd === hotel_static.NATION_TYPE.overseas &&
+            setIsShowNation(true);
+
         nameKo.current.value = modData.name_ko;
         nameEn.current.value = modData.name_en;
         nameKey.current.value = modData.name_key;
         codeName.current.value = modData.code_name;
-
-        const thumbFileEnc = modData.attachment_file_info.filter(
-            (e) => e.origin_type_cd === hotel_static.file_origin_type_cd
+        zipcode.current.value = modData.zipcode;
+        zipcode_en.current.value = modData.zipcode;
+        addr1Ko.current.value = modData.addr1_ko;
+        addr2Ko.current.value = modData.addr2_ko;
+        addr1En.current.value = modData.addr1_en;
+        addr2En.current.value = modData.addr2_en;
+        phone1.current.value = modData.phone1;
+        phone2.current.value = modData.phone2;
+        phone3.current.value = modData.phone3;
+        setSelectedCountry(
+            selectCountryOptions.find(
+                (e) => e.value === modData.inter_phone_number
+            )
         );
-        console.log(thumbFileEnc);
-        // document.getElementById("preview").src = `${apiPath.api_admin_hotel_list_thumb}${file_path_enc}`
+
+        // 썸네일, 이미지 추가
+        setDefaultSingle();
+        setDefaultMulti();
+    };
+
+    // 수정일 시 썸네일 미리보기 추가
+    const setDefaultSingle = () => {
+        const thumbFileEnc = modData.attachment_file_info.filter(
+            (e) => e.origin_type_cd === hotel_static.file_origin_type_cd.thumb
+        );
+
+        if (thumbFileEnc.length !== 0) {
+            document.getElementById(
+                "preview"
+            ).src = `${apiPath.api_admin_hotel_list_thumb}${thumbFileEnc[0].file_path_enc}`;
+        }
+    };
+
+    // 수정일 시 이미지들 미리보기 추가
+    const setDefaultMulti = () => {
+        const orgFileEnc = modData.attachment_file_info.filter(
+            (e) => e.origin_type_cd === hotel_static.file_origin_type_cd.origin
+        );
+
+        if (orgFileEnc.length !== 0) {
+            document.querySelector("#imageContainer").replaceChildren();
+
+            orgFileEnc.forEach((e) => {
+                let span = document.createElement("span");
+                span.setAttribute("class", "hotel_img");
+
+                let img = document.createElement("img");
+                span.appendChild(img);
+
+                img.setAttribute(
+                    "src",
+                    `${apiPath.api_admin_hotel_list_thumb}${e.file_path_enc}`
+                );
+
+                document.querySelector("#imageContainer").appendChild(span);
+            });
+        }
     };
 
     // 국가번호 SELECT 가공
@@ -102,6 +155,10 @@ const HotelDetailEssential = forwardRef((props, ref) => {
         }
 
         setSelectCountryOptions(options);
+
+        // 기본
+        const defaultObj = options.find((e) => e.value === "82");
+        setSelectedCountry(defaultObj);
     };
 
     // 국적 SELECT 스타일
@@ -153,9 +210,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                 let reader = new FileReader();
                 reader.onload = function (e) {
                     document.getElementById("preview").src = e.target.result;
-
-                    // 미리보기쪽 데이터 전달
-                    handlePreviewImg(e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
             } else {
@@ -178,7 +232,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
     const readURLMulti = (input) => {
         const maxFileCnt = 5; // 첨부파일 최대 개수
 
-        console.log("1111111", input.files);
+        // console.log("1111111", input.files);
 
         if (isFileImage(input.files)) {
             if (input.files.length > maxFileCnt) {
@@ -256,13 +310,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
             addr1Ko.current.value = data.address;
             addr1En.current.value = data.addressEnglish;
 
-            handlePreview({
-                zipcode: zipcode.current.value,
-                zipcode_en: zipcode_en.current.value,
-                addr1Ko: addr1Ko.current.value,
-                addr1En: addr1En.current.value,
-            });
-
             // setHotel({
             //     essential: {
             //         ...hotel.essential,
@@ -296,30 +343,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
         }
     };
 
-    // TODO: key 방어코딩
-    const changeHotelHandler = (e) => {
-        const key = e.target.id
-            ? e.target.id
-            : `unknown_key_${e.target.nodeName}_${e.target.value}`;
-        const val = e.target.value
-            ? e.target.value
-            : `unknown_value_${e.target.nodeName}`;
-
-        handlePreview({ [key]: val });
-
-        // setHotel({
-        //     essential: {
-        //         ...hotel.essential,
-        //         [key]: val,
-        //     },
-        // });
-    };
-
-    // 미리보기 데이터 전달 국가코드
-    const changeInterHandler = (val) => {
-        handlePreview({ interPhoneNumber: val });
-    };
-
     // 국내 해외 구분에 따른 국가코드 노출 여부
     const handleIshowNation = (e) => {
         const val = e.target.value;
@@ -351,7 +374,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                     className="w120"
                                     ref={nationType}
                                     onChange={(e) => {
-                                        changeHotelHandler(e);
                                         handleIshowNation(e);
                                     }}
                                     defaultValue="100"
@@ -377,10 +399,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                     className="input w370"
                                     id="nameKo"
                                     ref={nameKo}
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
-                                    autoFocus
+                                    // autoFocus
                                     autoComplete="off"
                                 />
                             </td>
@@ -395,9 +414,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                     className="input w370"
                                     id="nameEn"
                                     ref={nameEn}
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
                                     autoComplete="off"
                                 />
                             </td>
@@ -487,9 +503,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         id="zipcode"
                                         ref={zipcode}
                                         onClick={handle.openPost}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                         readOnly
                                     />{" "}
                                     <Link
@@ -506,9 +519,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         id="addr1Ko"
                                         ref={addr1Ko}
                                         onClick={handle.openPost}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                         readOnly
                                     />
                                 </div>
@@ -519,9 +529,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         id="addr2Ko"
                                         ref={addr2Ko}
                                         placeholder="상세 주소 (선택사항)"
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                     />
                                 </div>
                             </td>
@@ -537,9 +544,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         className="input w120 hold"
                                         ref={zipcode_en}
                                         onClick={handle.openPost}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                         readOnly
                                     />{" "}
                                     <Link
@@ -556,9 +560,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         onClick={handle.openPost}
                                         id="addr1En"
                                         ref={addr1En}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                         readOnly
                                     />
                                 </div>
@@ -569,9 +570,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         id="addr2En"
                                         ref={addr2En}
                                         placeholder="상세 주소 (선택사항)"
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                     />
                                 </div>
                                 {/* 위도, 경도 */}
@@ -598,9 +596,10 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         //               (e) => e.value === "82"
                                         //           )
                                         // }
-                                        defaultValue={selectCountryOptions.find(
-                                            (e) => e.value === "82"
-                                        )}
+                                        // defaultValue={selectCountryOptions.find(
+                                        //     (e) => e.value === "82"
+                                        // )}
+                                        value={selectedCountry}
                                         // key={
                                         //     modUserData
                                         //         ? selectCountryOptions.find(
@@ -612,14 +611,19 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         //               (e) => e.value === "82"
                                         //           )
                                         // }
-                                        key={selectCountryOptions.find(
-                                            (e) => e.value === "82"
-                                        )}
+                                        // key={selectCountryOptions.find(
+                                        //     (e) => e.value === "82"
+                                        // )}
+                                        key={selectedCountry}
                                         styles={customStyles}
                                         onChange={(e) => {
-                                            // setSelectedCountry(e.value);
+                                            setSelectedCountry(
+                                                selectCountryOptions.find(
+                                                    (event) =>
+                                                        event.value === e.value
+                                                )
+                                            );
                                             handleSelectedCountry(e.value);
-                                            changeInterHandler(e.value);
                                         }}
                                         ref={interPhoneNumber}
                                     />
@@ -637,9 +641,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         className="input w120"
                                         id="phone1"
                                         ref={phone1}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                     />
                                     {` - `}
                                     <input
@@ -647,9 +648,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         className="input w120"
                                         id="phone2"
                                         ref={phone2}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                     />
                                     {` - `}
                                     <input
@@ -657,9 +655,6 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                         className="input w120"
                                         id="phone3"
                                         ref={phone3}
-                                        onChange={(e) => {
-                                            changeHotelHandler(e);
-                                        }}
                                     />
                                 </div>
                             </td>

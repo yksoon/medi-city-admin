@@ -1,25 +1,22 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 
 const HotelDetailEtc = forwardRef((props, ref) => {
     const { infoKo, infoEn, ruleKo, ruleEn } = ref;
-    const handlePreview = props.handlePreview;
 
-    const changeHotelHandler = (e) => {
-        const key = e.target.id
-            ? e.target.id
-            : `unknown_key_${e.target.nodeName}_${e.target.value}`;
-        const val = e.target.value
-            ? e.target.value
-            : `unknown_value_${e.target.nodeName}`;
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
 
-        handlePreview({ [key]: val });
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, []);
 
-        // setHotel({
-        //     essential: {
-        //         ...hotel.essential,
-        //         [key]: val,
-        //     },
-        // });
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        infoKo.current.value = modData.info_ko;
+        infoEn.current.value = modData.info_en;
+        ruleKo.current.value = modData.rule_ko;
+        ruleEn.current.value = modData.rule_en;
     };
 
     return (
@@ -40,9 +37,6 @@ const HotelDetailEtc = forwardRef((props, ref) => {
                                     id="infoKo"
                                     ref={infoKo}
                                     className="hotel_info"
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
                                 ></textarea>
                             </td>
                         </tr>
@@ -54,9 +48,6 @@ const HotelDetailEtc = forwardRef((props, ref) => {
                                     id="infoEn"
                                     ref={infoEn}
                                     className="hotel_info"
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
                                 ></textarea>
                             </td>
                         </tr>
@@ -68,9 +59,6 @@ const HotelDetailEtc = forwardRef((props, ref) => {
                                     id="ruleKo"
                                     ref={ruleKo}
                                     className="hotel_info"
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
                                 ></textarea>
                             </td>
                         </tr>
@@ -82,9 +70,6 @@ const HotelDetailEtc = forwardRef((props, ref) => {
                                     id="ruleEn"
                                     ref={ruleEn}
                                     className="hotel_info"
-                                    onChange={(e) => {
-                                        changeHotelHandler(e);
-                                    }}
                                 ></textarea>
                             </td>
                         </tr>

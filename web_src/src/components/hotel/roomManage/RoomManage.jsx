@@ -1,6 +1,53 @@
+import { CommonErrModule, CommonModal, CommonNotify } from "common/js/Common";
+import useAlert from "hook/useAlert";
+import useConfirm from "hook/useConfirm";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { isSpinnerAtom } from "recoils/atoms";
 
 const RoomManage = () => {
+    const { alert } = useAlert();
+    const { confirm } = useConfirm();
+    const err = CommonErrModule();
+    const setIsSpinner = useSetRecoilState(isSpinnerAtom);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [isNeedUpdate, setIsNeedUpdate] = useState(false);
+
+    // 객실 상세 데이터
+    const [modData, setModData] = useState({});
+
+    // 모달창 닫기
+    const handleModalClose = () => {
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: "입력된 정보가 초기화 됩니다. 창을 닫으시겠습니까?",
+            callback: () => close(),
+        });
+
+        const close = () => {
+            setModalTitle("");
+            setModData({});
+            setIsOpen(false);
+        };
+    };
+
+    // 리스트 새로고침
+    const handleNeedUpdate = () => {
+        setModalTitle("");
+        setIsOpen(false);
+        setIsNeedUpdate(!isNeedUpdate);
+    };
+
+    // 호텔 신규 등록
+    const regRoom = () => {
+        setModalTitle("객실 신규 등록");
+        setIsOpen(true);
+    };
+
     return (
         <>
             <div className="content">
@@ -25,7 +72,7 @@ const RoomManage = () => {
                                 <Link
                                     className="modal_btn subbtn on"
                                     title="#hotelInsert"
-                                    // onclick="modal_open(hotelInsert);"
+                                    onClick={(e) => regRoom()}
                                 >
                                     객실신규등록
                                 </Link>
@@ -105,6 +152,16 @@ const RoomManage = () => {
                     </div>
                 </div>
             </div>
+            <CommonModal
+                isOpen={isOpen}
+                title={modalTitle}
+                width={"1400"}
+                handleModalClose={handleModalClose}
+                component={"RoomModalMain"}
+                handleNeedUpdate={handleNeedUpdate}
+                modData={modData}
+                // modUserData={modUserData}
+            />
         </>
     );
 };
