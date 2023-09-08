@@ -21,9 +21,43 @@ const HotelDetailAdditional = (props) => {
     const additionalCheckList = props.additionalCheckList;
     const handleAdditionalCheck = props.handleAdditionalCheck;
 
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
+
     useEffect(() => {
-        getAdditionalList(0, 10);
+        getAdditionalList(0, 1);
     }, []);
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        additionalList.length !== 0 && isModData && setDefaultValue();
+    }, [additionalList]);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        const length = modData.additional_info.length;
+        let list = [];
+        for (let i = 0; i < length; i++) {
+            let isertItem = additionalList.filter(
+                (e) =>
+                    e.additional_name_ko ===
+                    modData.additional_info[i].additional_name_ko
+            )[0];
+
+            const additional_idx = isertItem.additional_idx;
+
+            isertItem = {
+                ...isertItem,
+                additionalIdx: additional_idx,
+                additionalMemo: modData.additional_info[i].additional_memo,
+                additional_memo: modData.additional_info[i].additional_memo,
+            };
+
+            list.push(isertItem);
+        }
+
+        handleAdditionalCheck(list);
+    };
 
     // 리스트 가져오기
     const getAdditionalList = (pageNum, pageSize) => {
@@ -56,9 +90,6 @@ const HotelDetailAdditional = (props) => {
                 result_code === successCode.noData
             ) {
                 const result_info = res.data.result_info;
-                const page_info = res.data.page_info;
-
-                // console.log(res);
 
                 setAdditionalList(result_info);
 
@@ -151,6 +182,9 @@ const CustomPopover = (props) => {
             additionalCheckList.filter(
                 (e) => e.additional_idx === item.additional_idx
             ).length !== 0
+            // additionalCheckList.filter(
+            //     (e) => e.additional_name_ko === item.additional_name_ko
+            // ).length !== 0
         ) {
             return true;
         } else {
@@ -227,9 +261,12 @@ const CustomPopover = (props) => {
             additionalCheckList.filter(
                 (e) => e.additional_idx === item.additional_idx
             ).length !== 0
+            // additionalCheckList.filter(
+            //     (e) => e.additional_name_ko === item.additional_name_ko
+            // ).length !== 0
         ) {
             return additionalCheckList.filter(
-                (e) => e.additional_idx === item.additional_idx
+                (e) => e.additional_name_ko === item.additional_name_ko
             )[0].additional_memo;
         } else {
             return "";

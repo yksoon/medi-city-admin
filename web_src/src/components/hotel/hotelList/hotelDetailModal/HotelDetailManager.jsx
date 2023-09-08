@@ -1,6 +1,6 @@
 import { CommonErrModule } from "common/js/Common";
 import useAlert from "hook/useAlert";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
@@ -14,6 +14,34 @@ const HotelDetailManager = (props) => {
 
     const managerList = props.managerList;
     const handleManagerList = props.handleManagerList;
+
+    const modData = props.modData;
+    const person_info =
+        Object.keys(modData).length !== 0 ? modData.person_info : [];
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, []);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        const length = person_info.length;
+
+        setManagerCount(length);
+
+        let list = [];
+
+        for (let i = 0; i < length; i++) {
+            let insertData = {
+                ...person_info[i],
+                personName: person_info[i].person_name,
+            };
+            list.push(insertData);
+        }
+        handleManagerList(list);
+    };
 
     const handelManagerCount = (params) => {
         if (params === "add") {
@@ -44,6 +72,7 @@ const HotelDetailManager = (props) => {
                     idx={i + 1}
                     managerList={managerList}
                     handleManagerList={handleManagerList}
+                    person_info={person_info[i]}
                 />
             );
         }
@@ -88,8 +117,31 @@ const ManagerTable = (props) => {
     const idx = props.idx;
     let managerData = { idx: idx };
 
+    const person_name = useRef(null);
+    const position = useRef(null);
+    const email = useRef(null);
+    const phone = useRef(null);
+    const memo = useRef(null);
+
     const managerList = props.managerList;
     const handleManagerList = props.handleManagerList;
+
+    const person_info = props.person_info ? props.person_info : {};
+    const isModData = Object.keys(person_info).length !== 0 ? true : false;
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, []);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        person_name.current.value = person_info.person_name;
+        position.current.value = person_info.position;
+        email.current.value = person_info.email;
+        phone.current.value = person_info.phone;
+        memo.current.value = person_info.memo;
+    };
 
     const handleInput = (e) => {
         const id = e.target.id;
@@ -178,6 +230,7 @@ const ManagerTable = (props) => {
                             onChange={(e) => {
                                 handleInput(e);
                             }}
+                            ref={person_name}
                         />
                     </td>
                     <th>직급·직책</th>
@@ -189,6 +242,7 @@ const ManagerTable = (props) => {
                             onChange={(e) => {
                                 handleInput(e);
                             }}
+                            ref={position}
                         />
                     </td>
                 </tr>
@@ -202,6 +256,7 @@ const ManagerTable = (props) => {
                             onChange={(e) => {
                                 handleInput(e);
                             }}
+                            ref={email}
                         />
                     </td>
                     <th>연락처</th>
@@ -213,6 +268,7 @@ const ManagerTable = (props) => {
                             onChange={(e) => {
                                 handleInput(e);
                             }}
+                            ref={phone}
                         />
                     </td>
                 </tr>
@@ -226,6 +282,7 @@ const ManagerTable = (props) => {
                             onChange={(e) => {
                                 handleInput(e);
                             }}
+                            ref={memo}
                         />
                     </td>
                 </tr>

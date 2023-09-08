@@ -181,6 +181,20 @@ const apiPath = {
         base_api_url + slash + hotel + slash + version + slash
     }meta/hotel`,
 
+    // 호텔 수정
+    // hotel/v1/meta/hotel
+    // put multi
+    api_admin_mod_hotel: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/hotel`,
+
+    // 호텔 삭제
+    // hotel/v1/meta/hotel
+    // put multi
+    api_admin_remove_hotel: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/hotel/`,
+
     // 호텔 리스트
     // hotel/v1/meta/hotel
     // post multi

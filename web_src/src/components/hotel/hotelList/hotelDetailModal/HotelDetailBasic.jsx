@@ -23,6 +23,9 @@ const HotelDetailBasic = forwardRef((props, ref) => {
     // 별 제어
     const handleStarChange = props.handleStarChange;
 
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
+
     useLayoutEffect(() => {
         setHotelStatusSelectList(
             codes.filter((e) => e.code_type === "HOTEL_STATUS")
@@ -33,7 +36,28 @@ const HotelDetailBasic = forwardRef((props, ref) => {
         );
 
         // setViewTypeSelectList(codes.filter((e) => e.code_type === "VIEW_TYPE"));
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
     }, []);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        hotelStatus.current.value = modData.hotel_status_cd;
+        positionType.current.value = modData.position_type_cd;
+        homePage.current.value = modData.home_page;
+        checkInTime.current.value = modData.check_in_time;
+        checkOutTime.current.value = modData.check_out_time;
+
+        modData.home_page && setShowHomepage(true);
+        handleRadioChange(modData.home_page_show_yn);
+        handleStarChange(modData.grade);
+
+        const grade = modData.grade !== null ? modData.grade : 0;
+        //$(".hotel_star_wrap").children(".on");
+        $(".hotel_star_wrap")
+            .children(`.star:nth-child(-n+${grade})`)
+            .addClass("on");
+    };
 
     // 홈페이지 노출/비노출 제어
     const handleShowHomepage = (e) => {
@@ -216,7 +240,9 @@ const HotelDetailBasic = forwardRef((props, ref) => {
                                             name="homepage"
                                             value="Y"
                                             onChange={(e) => {
-                                                handleRadioChange(e);
+                                                handleRadioChange(
+                                                    e.currentTarget.value
+                                                );
                                             }}
                                             checked={homePageShowYn === "Y"}
                                         />
@@ -229,7 +255,9 @@ const HotelDetailBasic = forwardRef((props, ref) => {
                                             name="homepage"
                                             value="N"
                                             onChange={(e) => {
-                                                handleRadioChange(e);
+                                                handleRadioChange(
+                                                    e.currentTarget.value
+                                                );
                                             }}
                                             checked={homePageShowYn === "N"}
                                         />
