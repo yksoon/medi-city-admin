@@ -138,6 +138,7 @@ const hotel_static = {
         thumb: "100",
         origin: "000",
     },
+    additional_type: "000",
 };
 
 export { regHotelModel, hotel_static };

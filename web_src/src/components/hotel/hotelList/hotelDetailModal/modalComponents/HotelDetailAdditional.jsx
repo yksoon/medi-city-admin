@@ -7,6 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
 import $ from "jquery";
+import { hotel_static } from "models/hotel/hotel";
 
 const HotelDetailAdditional = (props) => {
     const { alert } = useAlert();
@@ -25,7 +26,7 @@ const HotelDetailAdditional = (props) => {
     const isModData = Object.keys(modData).length !== 0 ? true : false;
 
     useEffect(() => {
-        getAdditionalList(0, 1);
+        getAdditionalList(1, 1, 1);
     }, []);
 
     useEffect(() => {
@@ -60,14 +61,15 @@ const HotelDetailAdditional = (props) => {
     };
 
     // 리스트 가져오기
-    const getAdditionalList = (pageNum, pageSize) => {
+    const getAdditionalList = (pageNum, pageSize, searchType) => {
         setIsSpinner(true);
 
         const url = apiPath.api_admin_hotel_additionals_list;
         const data = {
             page_num: pageNum,
             page_size: pageSize,
-            additional_type: "000",
+            additional_type: hotel_static.additional_type, // additional_type : "000"
+            search_type: searchType,
         };
 
         // 파라미터
