@@ -12,6 +12,8 @@ const successCode = {
     success: "0000", // 성공
     noData: "9997", // 데이터 없음
     duplication: "1000", // 아이디중복
+    duplicationRoom: "3001", // 객실 중복
+    duplicationHotel: "3000", // 호텔 중복
 };
 
 export { errorCode, successCode };

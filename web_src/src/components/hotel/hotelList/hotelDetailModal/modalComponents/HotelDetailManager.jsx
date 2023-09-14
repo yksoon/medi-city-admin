@@ -84,7 +84,14 @@ const HotelDetailManager = (props) => {
             <div className="hotel_box">
                 <h4 className="mo_subtitle">담당자 정보 </h4>
 
-                {managerCount > 0 && managerRender()}
+                {managerCount > 0 ? (
+                    managerRender()
+                ) : (
+                    <>
+                        담당자가 없습니다. (담당자 추가시 '담당자 추가' 버튼을
+                        누르세요)
+                    </>
+                )}
 
                 <div className="subbtn_box">
                     <Link
@@ -94,13 +101,16 @@ const HotelDetailManager = (props) => {
                     >
                         담당자 추가
                     </Link>
-                    <Link
-                        href=""
-                        className="subbtn del"
-                        onClick={() => handelManagerCount("remove")}
-                    >
-                        삭제
-                    </Link>
+                    {managerCount !== 0 && (
+                        <Link
+                            href=""
+                            className="subbtn del"
+                            onClick={() => handelManagerCount("remove")}
+                        >
+                            삭제
+                        </Link>
+                    )}
+
                     {/* <a
                         // href="javascript:alert('저장되었습니다.');"
                         className="subbtn on"

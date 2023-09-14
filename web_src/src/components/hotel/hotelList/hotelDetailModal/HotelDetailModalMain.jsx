@@ -3,11 +3,11 @@ import { Modal } from "@mui/material";
 import $ from "jquery";
 import { hotel_static, regHotelModel } from "models/hotel/hotel";
 import { Link } from "react-router-dom";
-import HotelDetailEssential from "./HotelDetailEssential";
-import HotelDetailBasic from "./HotelDetailBasic";
-import HotelDetailEtc from "./HotelDetailEtc";
-import HotelDetailManager from "./HotelDetailManager";
-import HotelDetailAdditional from "./HotelDetailAdditional";
+import HotelDetailEssential from "./modalComponents/HotelDetailEssential";
+import HotelDetailBasic from "./modalComponents/HotelDetailBasic";
+import HotelDetailEtc from "./modalComponents/HotelDetailEtc";
+import HotelDetailManager from "./modalComponents/HotelDetailManager";
+import HotelDetailAdditional from "./modalComponents/HotelDetailAdditional";
 import {
     CommonErrModule,
     CommonModalChild,

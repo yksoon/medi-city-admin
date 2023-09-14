@@ -239,10 +239,13 @@ const SideNav = (props) => {
                                                     {item2.title}{" "}
                                                     {item2.child.length !==
                                                         0 && (
-                                                        <img
-                                                            src="img/common/arrow_drop.png"
-                                                            alt=""
-                                                        />
+                                                        <>
+                                                            <img
+                                                                src="img/common/arrow_drop.png"
+                                                                alt=""
+                                                            />
+                                                            <div></div>
+                                                        </>
                                                     )}
                                                 </Link>
                                                 <ul className="sub_3depth">

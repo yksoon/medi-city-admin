@@ -14,7 +14,8 @@ let host = "";
 if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
-    host = "3.36.85.141";
+    // host = "3.36.85.141";
+    host = "api.medi-city.co.kr";
 } else {
     host = "dev-api.medi-city.co.kr";
 }
@@ -232,6 +233,28 @@ const apiPath = {
     api_admin_hotel_detail: `${
         base_api_url + slash + hotel + slash + version + slash
     }meta/hotel/`,
+
+    // -------------------- room ------------------
+    // 객실 등록
+    // hotel/v1/meta/room
+    // post
+    api_admin_reg_room: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/room`,
+
+    // 객실 리스트
+    // hotel/v1/meta/rooms
+    // post
+    api_admin_room_list: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/rooms`,
+
+    // 객실 상세보기
+    // hotel/v1/meta/room/{room_idx}
+    // get
+    api_admin_room_detail: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/room/`,
 };
 
 export { routerPath, apiPath };
