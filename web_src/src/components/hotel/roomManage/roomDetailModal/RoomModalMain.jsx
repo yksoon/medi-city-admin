@@ -74,6 +74,7 @@ const RoomModalMain = (props) => {
 
     // 가격정보 핸들러
     const handlePriceList = (list) => {
+        // console.log(list);
         setPriceList(list);
     };
 
@@ -141,6 +142,7 @@ const RoomModalMain = (props) => {
                 formData.append(`priceInfo[${idx}].saleEnd`, item.saleEnd);
                 formData.append(`priceInfo[${idx}].saleRate`, item.saleRate);
                 formData.append(`priceInfo[${idx}].priceMemo`, item.priceMemo);
+                formData.append(`priceInfo[${idx}].priceType`, item.priceType);
             });
 
             // 파일 formData append
@@ -287,6 +289,21 @@ const RoomModalMain = (props) => {
                 type: "alert",
                 hook: alert,
                 message: "최대인원을 입력 해주세요",
+                callback: () => roomRefs.maxPeople.current.focus(),
+            });
+
+            return false;
+        }
+
+        // 인원 확인
+        if (
+            Number(roomRefs.minPeople.current.value) >
+            Number(roomRefs.maxPeople.current.value)
+        ) {
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "최소인원은 최대인원보다 많을 수 없습니다",
                 callback: () => roomRefs.maxPeople.current.focus(),
             });
 
@@ -559,12 +576,18 @@ const RoomModalMain = (props) => {
                 >
                     미리보기
                 </Link>
-                {/* {isModData ? (
+                {isModData ? (
                     <>
-                        <Link className="subbtn del" onClick={clickRemove}>
+                        <Link
+                            className="subbtn del"
+                            // onClick={clickRemove}
+                        >
                             삭제
                         </Link>
-                        <Link className="subbtn on" onClick={clickMod}>
+                        <Link
+                            className="subbtn on"
+                            // onClick={clickMod}
+                        >
                             수정
                         </Link>
                     </>
@@ -572,10 +595,10 @@ const RoomModalMain = (props) => {
                     <Link className="subbtn on" onClick={clickSave}>
                         저장
                     </Link>
-                )} */}
-                <Link className="subbtn on" onClick={clickSave}>
+                )}
+                {/* <Link className="subbtn on" onClick={clickSave}>
                     저장
-                </Link>
+                </Link> */}
             </div>
         </>
     );

@@ -18,6 +18,9 @@ const RoomModalEssential = forwardRef((props, ref) => {
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
+
     const [hotelList, setHotelList] = useState([]);
     const [selectHotelOptions, setSelectHotelOptions] = useState([]);
     const [selectedHotel, setSelectedHotel] = useState(null);
@@ -73,6 +76,64 @@ const RoomModalEssential = forwardRef((props, ref) => {
             initRequireCheck();
         }
     }, [additionalList]);
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, [selectHotelOptions]);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        setSelectedHotel(
+            selectHotelOptions.find((e) => e.value === modData.hotel_idx)
+        );
+        nameKo.current.value = modData.room_name_ko;
+        nameEn.current.value = modData.room_name_en;
+        roomNumber.current.value = modData.room_number;
+
+        // 이미지 세팅
+        setDefaultMulti();
+
+        roomSize.current.value = modData.room_size;
+        minPeople.current.value = modData.min_people;
+        maxPeople.current.value = modData.max_people;
+
+        // 부대시설 세팅
+        let arr = [];
+        const additionalInfoLength = modData.additional_info.length;
+        for (let i = 0; i < additionalInfoLength; i++) {
+            arr.push(modData.additional_info[i].key_name);
+        }
+        setShowList(arr);
+
+        handleEssentialAdditionalCheck(modData.additional_info);
+    };
+
+    // 수정일 시 이미지들 미리보기 추가
+    const setDefaultMulti = () => {
+        const orgFileEnc = modData.attachment_file_info.filter(
+            (e) => e.origin_type_cd === room_static.file_origin_type_cd.origin
+        );
+
+        if (orgFileEnc.length !== 0) {
+            document.querySelector("#imageContainer").replaceChildren();
+
+            orgFileEnc.forEach((e) => {
+                let span = document.createElement("span");
+                span.setAttribute("class", "hotel_img");
+
+                let img = document.createElement("img");
+                span.appendChild(img);
+
+                img.setAttribute(
+                    "src",
+                    `${apiPath.api_admin_hotel_list_thumb}${e.file_path_enc}`
+                );
+
+                document.querySelector("#imageContainer").appendChild(span);
+            });
+        }
+    };
 
     // 호텔 리스트 가져오기
     const getHotelList = (pageNum, pageSize, searchKeyword, searchType) => {
@@ -711,6 +772,16 @@ const RoomModalEssential = forwardRef((props, ref) => {
                                                     onChange={(e) =>
                                                         handleInputText(e, item)
                                                     }
+                                                    defaultValue={
+                                                        Object.keys(modData)
+                                                            .length !== 0
+                                                            ? modData.additional_info.find(
+                                                                  (e) =>
+                                                                      e.key_name ===
+                                                                      item.key_name
+                                                              ).additional_memo
+                                                            : ""
+                                                    }
                                                 />
                                             </td>
                                         </tr>
@@ -751,12 +822,31 @@ const RoomModalEssential = forwardRef((props, ref) => {
                                                                     );
                                                                 }}
                                                                 defaultChecked={
-                                                                    item.key_name ===
-                                                                        "BED_TYPE" &&
-                                                                    item2.split(
-                                                                        " : "
-                                                                    )[0] ===
-                                                                        "800"
+                                                                    Object.keys(
+                                                                        modData
+                                                                    ).length !==
+                                                                    0
+                                                                        ? modData.additional_info
+                                                                              .filter(
+                                                                                  (
+                                                                                      e
+                                                                                  ) =>
+                                                                                      e.key_name ===
+                                                                                      item.key_name
+                                                                              )[0]
+                                                                              .additional_memo.includes(
+                                                                                  item2.split(
+                                                                                      " : "
+                                                                                  )[0]
+                                                                              )
+                                                                            ? true
+                                                                            : false
+                                                                        : item.key_name ===
+                                                                              "BED_TYPE" &&
+                                                                          item2.split(
+                                                                              " : "
+                                                                          )[0] ===
+                                                                              "800"
                                                                         ? true
                                                                         : false
                                                                 }
@@ -812,12 +902,32 @@ const RoomModalEssential = forwardRef((props, ref) => {
                                                                         );
                                                                     }}
                                                                     defaultChecked={
-                                                                        item.key_name ===
-                                                                            "BED_TYPE" &&
-                                                                        item2.split(
-                                                                            " : "
-                                                                        )[0] ===
-                                                                            "800"
+                                                                        Object.keys(
+                                                                            modData
+                                                                        )
+                                                                            .length !==
+                                                                        0
+                                                                            ? modData.additional_info
+                                                                                  .filter(
+                                                                                      (
+                                                                                          e
+                                                                                      ) =>
+                                                                                          e.key_name ===
+                                                                                          item.key_name
+                                                                                  )[0]
+                                                                                  .additional_memo.includes(
+                                                                                      item2.split(
+                                                                                          " : "
+                                                                                      )[0]
+                                                                                  )
+                                                                                ? true
+                                                                                : false
+                                                                            : item.key_name ===
+                                                                                  "BED_TYPE" &&
+                                                                              item2.split(
+                                                                                  " : "
+                                                                              )[0] ===
+                                                                                  "800"
                                                                             ? true
                                                                             : false
                                                                     }
@@ -851,14 +961,32 @@ const RoomModalEssential = forwardRef((props, ref) => {
                                                                         item.key_name
                                                                     }
                                                                     defaultChecked={
-                                                                        item2.split(
-                                                                            " : "
-                                                                        )[0] ===
-                                                                            "N" ||
-                                                                        item2.split(
-                                                                            " : "
-                                                                        )[0] ===
-                                                                            "900"
+                                                                        Object.keys(
+                                                                            modData
+                                                                        )
+                                                                            .length !==
+                                                                        0
+                                                                            ? modData.additional_info.filter(
+                                                                                  (
+                                                                                      e
+                                                                                  ) =>
+                                                                                      e.key_name ===
+                                                                                      item.key_name
+                                                                              )[0]
+                                                                                  .additional_memo ===
+                                                                              item2.split(
+                                                                                  " : "
+                                                                              )[0]
+                                                                                ? true
+                                                                                : false
+                                                                            : item2.split(
+                                                                                  " : "
+                                                                              )[0] ===
+                                                                                  "N" ||
+                                                                              item2.split(
+                                                                                  " : "
+                                                                              )[0] ===
+                                                                                  "900"
                                                                             ? true
                                                                             : false
                                                                     }
@@ -892,52 +1020,8 @@ const RoomModalEssential = forwardRef((props, ref) => {
                                     </tr>
                                 )
                             )}
-                        {/* <tr>
-                            <th>
-                                베드타입 <span className="red">*</span>
-                            </th>
-                            <td>
-                                <label>
-                                    <input type="checkbox" /> 싱글
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> 더블
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> 트윈
-                                </label>
-                                <label>
-                                    <input type="checkbox" /> 온돌
-                                </label>
-                            </td>
-                        </tr>
-                        <tr className="room_count">
-                            <th>
-                                베드개수 <span className="red">*</span>
-                            </th>
-                            <td>
-                                <div>
-                                    싱글{" "}
-                                    <input type="text" className="input w120" />{" "}
-                                    개
-                                </div>
-                                <div>
-                                    더블{" "}
-                                    <input type="text" className="input w120" />{" "}
-                                    개
-                                </div>
-                            </td>
-                        </tr> */}
                     </tbody>
                 </table>
-                {/* <div className="subbtn_box">
-                    <a
-                        href="javascript:alert('저장되었습니다.');"
-                        className="subbtn off"
-                    >
-                        저장
-                    </a>
-                </div> */}
             </div>
         </>
     );

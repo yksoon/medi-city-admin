@@ -44,6 +44,10 @@ const room_static = {
         800: "온돌",
         900: "기타",
     },
+    file_origin_type_cd: {
+        thumb: "100",
+        origin: "000",
+    },
 };
 
 export { roomModel, room_static };

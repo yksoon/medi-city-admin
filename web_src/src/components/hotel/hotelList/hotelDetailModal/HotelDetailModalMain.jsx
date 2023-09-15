@@ -57,9 +57,9 @@ const HotelDetailModalMain = (props) => {
 
     const handleNeedUpdate = props.handleNeedUpdate;
 
-    useEffect(() => {
-        console.log(modData);
-    }, []);
+    // useEffect(() => {
+    //     console.log(modData);
+    // }, []);
 
     // 미리보기 닫기
     const handleModalClose = () => {

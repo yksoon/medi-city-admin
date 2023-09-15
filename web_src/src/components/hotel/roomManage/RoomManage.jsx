@@ -52,6 +52,8 @@ const RoomManage = () => {
 
     useEffect(() => {
         getRoomList(1, 10, "");
+
+        setModData({});
     }, [isNeedUpdate]);
 
     // 객실 리스트
@@ -129,9 +131,15 @@ const RoomManage = () => {
         setIsNeedUpdate(!isNeedUpdate);
     };
 
-    // 호텔 신규 등록
+    // 객실 신규 등록
     const regRoom = () => {
         setModalTitle("객실 신규 등록");
+        setIsOpen(true);
+    };
+
+    // 객실 상세보기 모달
+    const modRoom = () => {
+        setModalTitle("객실 상세보기");
         setIsOpen(true);
     };
 
@@ -166,7 +174,7 @@ const RoomManage = () => {
                 console.log("111111111", result_info);
                 setModData(result_info);
 
-                // modHotel();
+                modRoom();
                 setIsSpinner(false);
             } else {
                 // 에러
@@ -203,9 +211,7 @@ const RoomManage = () => {
 
     const columns = useMemo(() => [
         {
-            // TODO: 내일해
-            // accessorKey: "room_idx",
-            id: "room_idx",
+            accessorKey: "room_idx",
             cell: (info) => (
                 <input
                     type="checkbox"
@@ -234,11 +240,14 @@ const RoomManage = () => {
                     }
                 />
             ),
+            enableSorting: false,
         },
         columnHelper.accessor((row) => row.hotel_name_ko, {
             id: "hotel_name_ko",
             cell: (info) => info.getValue(),
             header: "호텔명",
+            sortingFn: "alphanumericCaseSensitive",
+            sortDescFirst: true,
         }),
 
         {
@@ -271,24 +280,37 @@ const RoomManage = () => {
             id: "room_size",
             cell: (info) => info.getValue(),
             header: "객실크기",
+            sortingFn: "alphanumericCaseSensitive",
         }),
         columnHelper.accessor((row) => row.min_people, {
             id: "min_people",
             cell: (info) => info.getValue(),
             header: "최소인원",
+            sortingFn: "alphanumericCaseSensitive",
         }),
         columnHelper.accessor((row) => row.max_people, {
             id: "max_people",
             cell: (info) => info.getValue(),
             header: "최대인원",
+            sortingFn: "alphanumericCaseSensitive",
         }),
         columnHelper.accessor(
             (row) =>
-                room_static.bed_type[
-                    row.additional_info.filter(
-                        (e) => e.key_name === "BED_TYPE"
-                    )[0].additional_memo
-                ],
+                row.additional_info.filter((e) => e.key_name === "BED_TYPE")
+                    .length !== 0 &&
+                row.additional_info
+                    .filter((e) => e.key_name === "BED_TYPE")[0]
+                    .additional_memo.indexOf(",") === -1
+                    ? room_static.bed_type[
+                          row.additional_info.filter(
+                              (e) => e.key_name === "BED_TYPE"
+                          )[0].additional_memo
+                      ]
+                    : row.additional_info
+                          .filter((e) => e.key_name === "BED_TYPE")[0]
+                          .additional_memo.split(",")
+                          .map((item) => room_static.bed_type[item])
+                          .join(", "),
             {
                 id: "BED_TYPE",
                 cell: (info) => info.getValue(),
@@ -301,8 +323,8 @@ const RoomManage = () => {
                     .length !== 0
                     ? row.additional_info.filter(
                           (e) => e.key_name === "BED_COUNT"
-                      )[0].additional_memo
-                    : "0" + " 개",
+                      )[0].additional_memo + " 개"
+                    : "0 개",
             {
                 id: "BED_COUNT",
                 cell: (info) => info.getValue(),
@@ -322,6 +344,7 @@ const RoomManage = () => {
                 id: "viewDetail",
                 cell: (info) => info.getValue(),
                 header: "상세보기",
+                enableSorting: false,
             }
         ),
     ]);
@@ -337,7 +360,6 @@ const RoomManage = () => {
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        debugTable: true,
     });
 
     return (
@@ -376,137 +398,8 @@ const RoomManage = () => {
                                 </Link>
                             </div>
                         </div>
-                        {/* <div className="adm_table">
-                            <table className="table_a">
-                                <colgroup>
-                                    <col width="3%" />
-                                    <col width="12%" />
-                                    <col width="12%" />
-                                    <col width="12%" />
-                                    <col width="10%" />
-                                    <col width="10%" />
-                                    <col width="10%" />
-                                    <col width="10%" />
-                                    <col width="10%" />
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <input type="checkbox" />
-                                        </th>
-                                        <th>호텔명</th>
-                                        <th colSpan="2">객실명</th>
-                                        <th>객실크기</th>
-                                        <th>최소/최대인원</th>
-                                        <th>베드타입</th>
-                                        <th>베드개수</th>
-                                        <th>상세보기</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {roomList.length !== 0 ? (
-                                        roomList.map((item, idx) => (
-                                            <tr key={`room_list_${idx}`}>
-                                                <td>
-                                                    <input type="checkbox" />
-                                                </td>
-                                                <td>{item.hotel_name_ko}</td>
-                                                <td>{item.room_name_ko}</td>
-                                                <td>{item.room_name_en}</td>
-                                                <td>{`${item.room_size} ㎡`}</td>
-                                                <td>{`${item.min_people}/${item.max_people}`}</td>
-                                                <td>
-                                                    {item.additional_info &&
-                                                        (item.additional_info
-                                                            .filter(
-                                                                (e) =>
-                                                                    e.key_name ===
-                                                                    "BED_TYPE"
-                                                            )[0]
-                                                            .additional_memo.indexOf(
-                                                                ","
-                                                            ) === -1
-                                                            ? room_static
-                                                                  .bed_type[
-                                                                  item.additional_info.filter(
-                                                                      (e) =>
-                                                                          e.key_name ===
-                                                                          "BED_TYPE"
-                                                                  )[0]
-                                                                      .additional_memo
-                                                              ]
-                                                            : item.additional_info
-                                                                  .filter(
-                                                                      (e) =>
-                                                                          e.key_name ===
-                                                                          "BED_TYPE"
-                                                                  )[0]
-                                                                  .additional_memo.split(
-                                                                      ","
-                                                                  )
-                                                                  .map(
-                                                                      (item) =>
-                                                                          room_static
-                                                                              .bed_type[
-                                                                              item
-                                                                          ]
-                                                                  )
-                                                                  .join(", "))}
-                                                </td>
-                                                <td>
-                                                    {item.additional_info &&
-                                                    item.additional_info.filter(
-                                                        (e) =>
-                                                            e.key_name ===
-                                                            "BED_COUNT"
-                                                    ).length !== 0
-                                                        ? item.additional_info.filter(
-                                                              (e) =>
-                                                                  e.key_name ===
-                                                                  "BED_COUNT"
-                                                          )[0].additional_memo
-                                                        : "0"}{" "}
-                                                    개
-                                                </td>
-                                                <td>
-                                                    <Link
-                                                        className="tablebtn"
-                                                        onClick={() =>
-                                                            openDetail(
-                                                                item.room_idx
-                                                            )
-                                                        }
-                                                    >
-                                                        상세보기
-                                                    </Link>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="9"
-                                                style={{ height: "55px" }}
-                                            >
-                                                <b>데이터가 없습니다.</b>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                        {pageInfo && (
-                            <div className="pagenation">
-                                <Pagination
-                                    count={pageInfo.pages}
-                                    onChange={handleChange}
-                                    shape="rounded"
-                                    color="primary"
-                                />
-                            </div>
-                        )} */}
 
-                        {/* 테이블 테스트 */}
+                        {/* 테이블 start */}
                         <div className="adm_table">
                             <table className="table_a">
                                 <colgroup>
@@ -610,7 +503,7 @@ const RoomManage = () => {
                                 />
                             </div>
                         )}
-                        {/* 테이블 테스트 */}
+                        {/* 테이블 end */}
                     </div>
                 </div>
             </div>
