@@ -165,7 +165,7 @@ const PriceTable = (props) => {
 
     useEffect(() => {
         // 수정일 경우 세팅
-        isModData && selectPriceDiv !== "000" && setDefaultValue();
+        isModData && setDefaultValue();
     }, [selectPriceDiv]);
 
     // 수정일 경우 세팅
@@ -174,19 +174,24 @@ const PriceTable = (props) => {
         origin_price.current.value = price_info.origin_price;
         org_start.current.value = price_info.org_start;
         org_end.current.value = price_info.org_end;
-        sale_price.current.value = price_info.sale_price
-            ? price_info.sale_price
-            : "";
-        sale_start.current.value = price_info.sale_start
-            ? price_info.sale_start
-            : "";
-        sale_end.current.value = price_info.sale_end ? price_info.sale_end : "";
-        sale_rate.current.value = price_info.sale_rate
-            ? price_info.sale_rate
-            : "";
         price_memo.current.value = price_info.price_memo
             ? price_info.price_memo
             : "";
+
+        if (selectPriceDiv !== "000") {
+            sale_price.current.value = price_info.sale_price
+                ? price_info.sale_price
+                : "";
+            sale_start.current.value = price_info.sale_start
+                ? price_info.sale_start
+                : "";
+            sale_end.current.value = price_info.sale_end
+                ? price_info.sale_end
+                : "";
+            sale_rate.current.value = price_info.sale_rate
+                ? price_info.sale_rate
+                : "";
+        }
     };
 
     const handleInput = (e) => {
