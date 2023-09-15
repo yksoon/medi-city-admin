@@ -182,13 +182,16 @@ const HotelListMain = () => {
             const result_code = res.headers.result_code;
 
             // 성공
-            if (
-                result_code === successCode.success ||
-                result_code === successCode.noData
-            ) {
+            if (result_code === successCode.success) {
                 const result_info = res.data.result_info;
 
+                console.log(result_info);
                 setModData(result_info);
+
+                modHotel();
+                setIsSpinner(false);
+            } else if (result_code === successCode.noData) {
+                setModData({});
 
                 modHotel();
                 setIsSpinner(false);

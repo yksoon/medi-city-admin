@@ -1,6 +1,6 @@
 import { CommonErrModule } from "common/js/Common";
 import useAlert from "hook/useAlert";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 
@@ -10,6 +10,22 @@ const RoomModalDetail = forwardRef((props, ref) => {
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
     const { infoKo, infoEn, ruleKo, ruleEn } = ref;
+
+    const modData = props.modData;
+    const isModData = Object.keys(modData).length !== 0 ? true : false;
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, []);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        infoKo.current.value = modData.info_ko;
+        infoEn.current.value = modData.info_en;
+        ruleKo.current.value = modData.rule_ko;
+        ruleEn.current.value = modData.rule_en;
+    };
 
     return (
         <>

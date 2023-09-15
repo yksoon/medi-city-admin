@@ -444,3 +444,5 @@ div.select input:focus {outline:-webkit-focus-ring-color auto 1px;    border: 1p
 .pagenation ul li {border-radius:5px !important;}
 .pagenation ul li button {background:#f2f2f2;}
 .pagenation ul li:first-child button, .pagenation ul li:last-child button {background:none;}
+
+.cursor-pointer {cursor: pointer;}

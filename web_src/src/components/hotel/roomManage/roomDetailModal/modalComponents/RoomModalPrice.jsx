@@ -23,6 +23,30 @@ const RoomModalPrice = forwardRef((props, ref) => {
         Object.keys(modData).length !== 0 ? modData.price_info : [];
     const isModData = Object.keys(modData).length !== 0 ? true : false;
 
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && setDefaultValue();
+    }, []);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        const length = price_info.length;
+
+        setPriceCount(length);
+
+        let list = [];
+
+        for (let i = 0; i < length; i++) {
+            let insertData = {
+                ...price_info[i],
+                personName: price_info[i].person_name,
+            };
+            list.push(insertData);
+        }
+        handlePriceList(list);
+    };
+
+    // 추가 삭제 핸들러
     const handelPriceCount = (params) => {
         if (params === "add") {
             if (priceCount < 10) {
@@ -134,19 +158,36 @@ const PriceTable = (props) => {
     const price_info = props.price_info ? props.price_info : {};
     const isModData = Object.keys(price_info).length !== 0 ? true : false;
 
-    // useEffect(() => {
-    //     // 수정일 경우 세팅
-    //     isModData && setDefaultValue();
-    // }, []);
+    useEffect(() => {
+        price_info.price_div_cd !== "000" &&
+            setSelectPriceDiv(price_info.price_div_cd);
+    }, []);
+
+    useEffect(() => {
+        // 수정일 경우 세팅
+        isModData && selectPriceDiv !== "000" && setDefaultValue();
+    }, [selectPriceDiv]);
 
     // 수정일 경우 세팅
-    // const setDefaultValue = () => {
-    //     person_name.current.value = person_info.person_name;
-    //     position.current.value = person_info.position;
-    //     email.current.value = person_info.email;
-    //     phone.current.value = person_info.phone;
-    //     memo.current.value = person_info.memo;
-    // };
+    const setDefaultValue = () => {
+        price_div.current.value = price_info.price_div_cd;
+        origin_price.current.value = price_info.origin_price;
+        org_start.current.value = price_info.org_start;
+        org_end.current.value = price_info.org_end;
+        sale_price.current.value = price_info.sale_price
+            ? price_info.sale_price
+            : "";
+        sale_start.current.value = price_info.sale_start
+            ? price_info.sale_start
+            : "";
+        sale_end.current.value = price_info.sale_end ? price_info.sale_end : "";
+        sale_rate.current.value = price_info.sale_rate
+            ? price_info.sale_rate
+            : "";
+        price_memo.current.value = price_info.price_memo
+            ? price_info.price_memo
+            : "";
+    };
 
     const handleInput = (e) => {
         const id = e.target.id;
@@ -399,7 +440,7 @@ const PriceTable = (props) => {
 
                 <tr>
                     <th>메모</th>
-                    <td colSpan="2">
+                    <td colSpan="3">
                         <input
                             type="text"
                             className="input wp100"
@@ -410,7 +451,7 @@ const PriceTable = (props) => {
                             ref={price_memo}
                         />
                     </td>
-                    <td>
+                    {/* <td>
                         <Link
                             href=""
                             className="subbtn del"
@@ -418,7 +459,7 @@ const PriceTable = (props) => {
                         >
                             삭제
                         </Link>
-                    </td>
+                    </td> */}
                 </tr>
             </tbody>
         </table>

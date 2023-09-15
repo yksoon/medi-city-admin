@@ -27,6 +27,39 @@ const RoomModalAdditional = (props) => {
         getAdditionalList(1, 1, 1);
     }, []);
 
+    useEffect(() => {
+        // 수정일 경우 세팅
+        additionalList.length !== 0 && isModData && setDefaultValue();
+    }, [additionalList]);
+
+    // 수정일 경우 세팅
+    const setDefaultValue = () => {
+        const length = modData.additional_info.length;
+        let list = [];
+        for (let i = 0; i < length; i++) {
+            let isertItem = additionalList.filter(
+                (e) =>
+                    e.additional_name_ko ===
+                    modData.additional_info[i].additional_name_ko
+            )[0];
+
+            if (isertItem) {
+                const additional_idx = isertItem.additional_idx;
+
+                isertItem = {
+                    ...isertItem,
+                    additionalIdx: additional_idx,
+                    additionalMemo: modData.additional_info[i].additional_memo,
+                    additional_memo: modData.additional_info[i].additional_memo,
+                };
+
+                list.push(isertItem);
+            }
+        }
+
+        handleAdditionalCheck(list);
+    };
+
     // 리스트 가져오기
     const getAdditionalList = (pageNum, pageSize, searchType) => {
         setIsSpinner(true);
@@ -54,7 +87,7 @@ const RoomModalAdditional = (props) => {
         const responsLogic = (res) => {
             const result_code = res.headers.result_code;
 
-            console.log(res);
+            // console.log(res);
 
             // 성공
             if (
