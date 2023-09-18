@@ -10,9 +10,13 @@
      <!-- 플러그인 -->
      <script src="js/jquery.bxslider.min.js"></script>
      <link rel="stylesheet" href="css/jquery.bxslider.css">
-     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
-     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
-     <script type="text/javascript" src="js/slick.min.js"></script>
+     <script src="js/swiper.min.js"></script>
+     <link rel="stylesheet" href="css/swiper.min.css">
+     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+     
 
      <link rel="stylesheet" href="css/default.css">
      <link rel="stylesheet" href="css/style.css">
@@ -292,11 +296,11 @@
                                 <td>
                                     <input type="file" class="qna_thumb_file">
                                     <div class="qna_img_wrap">
-                                        <span class="qna_img"></span>
-                                        <span class="qna_img"></span>
-                                        <span class="qna_img"></span>
-                                        <span class="qna_img"></span>
-                                        <span class="qna_img"></span>
+                                        <span class="qna_img"><img src="img/main/hotel01.png" alt="" onclick="modal_open(2)"></span>
+                                        <span class="qna_img"><img src="img/main/hotel02.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel03.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel04.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel05.png" alt=""></span>
                                     </div>
                                 </td>
                             </tr>
@@ -353,8 +357,43 @@
             </div>
         </div>
     </div>
-    <!-- 모달 - 문의내용 답변 //E -->
-
+    <!-- modalcontent - 문의내용 답변 //E -->
+    <!-- modalcontent - 이미지 크게보기 //S -->
+    <div class="modal_wrap" id="modal_wrap2" style="display:none;">
+        <div class="modal img_view_wrap">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="img/main/hotel01.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel02.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel03.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel04.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel05.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modalcontent - 이미지 크게보기 //E -->
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        debugger: true,
+        mousewheel: true,
+        loop: true,
+        centeredSlides: true,
+        //방향표
+        navigation: {
+            //다음페이지 설정
+            nextEl: '.swiper-button-next',
+            //이전페이지 설정
+            prevEl: '.swiper-button-prev',
+        },
+        
+        });
+    </script>
 </body>
 </html>
 <script src="js/nav.js"></script>
