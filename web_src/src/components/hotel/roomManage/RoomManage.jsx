@@ -16,16 +16,12 @@ import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
 import {
-    ColumnDef,
     createColumnHelper,
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
-    Headers,
-    SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { useTable } from "react-table";
 
 const RoomManage = () => {
     const { alert } = useAlert();
@@ -209,6 +205,67 @@ const RoomManage = () => {
         }
     };
 
+    // 회원 선택 삭제
+    const clickRemove = () => {
+        //선택여부 확인
+        checkItems.length === 0
+            ? CommonNotify({
+                  type: "alert",
+                  hook: alert,
+                  message: "객실을 선택해주세요",
+              })
+            : CommonNotify({
+                  type: "confirm",
+                  hook: confirm,
+                  message: "선택된 객실을 삭제 하시겠습니까?",
+                  callback: () => removeRoom(),
+              });
+    };
+
+    // 삭제 버튼
+    const removeRoom = async () => {
+        let checkItemsStr = checkItems.join();
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_remove_room}${checkItemsStr}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => pageUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+
+            const pageUpdate = () => {
+                handleNeedUpdate();
+            };
+        };
+    };
+
     const columns = useMemo(() => [
         {
             accessorKey: "room_idx",
@@ -266,16 +323,6 @@ const RoomManage = () => {
             ],
         },
 
-        // columnHelper.accessor((row) => row.room_name_ko, {
-        //     id: "room_name_ko",
-        //     cell: (info) => <i>{info.getValue()}</i>,
-        //     header: "객실명(국문)",
-        // }),
-        // columnHelper.accessor((row) => row.room_name_en, {
-        //     id: "room_name_en",
-        //     cell: (info) => <i>{info.getValue()}</i>,
-        //     header: "객실명(영문)",
-        // }),
         columnHelper.accessor((row) => row.room_size, {
             id: "room_size",
             cell: (info) => info.getValue(),
@@ -384,6 +431,12 @@ const RoomManage = () => {
                             </div>
                             <div>
                                 <Link
+                                    className="subbtn del"
+                                    onClick={clickRemove}
+                                >
+                                    선택삭제
+                                </Link>{" "}
+                                <Link
                                     className="modal_btn subbtn on"
                                     title="#hotelInsert"
                                     onClick={(e) => regRoom()}
@@ -398,6 +451,24 @@ const RoomManage = () => {
                                 </Link>
                             </div>
                         </div>
+
+                        {/* 총 건수 */}
+                        {Object.keys(pageInfo).length !== 0 && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    marginBottom: "10px",
+                                }}
+                            >
+                                총 :{" "}
+                                <b>
+                                    &nbsp; {pageInfo && pageInfo.total} &nbsp;
+                                </b>{" "}
+                                건
+                            </div>
+                        )}
+                        {/* 총 건수 END */}
 
                         {/* 테이블 start */}
                         <div className="adm_table">

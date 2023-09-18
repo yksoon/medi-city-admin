@@ -39,10 +39,21 @@ const RoomModalPrice = forwardRef((props, ref) => {
         for (let i = 0; i < length; i++) {
             let insertData = {
                 ...price_info[i],
-                personName: price_info[i].person_name,
+                priceDiv: price_info[i].price_div_cd,
+                originPrice: price_info[i].origin_price,
+                orgStart: price_info[i].org_start,
+                orgEnd: price_info[i].org_end,
+                salePrice: price_info[i].sale_price,
+                saleStart: price_info[i].sale_start,
+                saleEnd: price_info[i].sale_end,
+                saleRate: price_info[i].sale_rate,
+                priceMemo: price_info[i].price_memo,
+                priceType: price_info[i].price_type_cd,
+                idx: i + 1,
             };
             list.push(insertData);
         }
+
         handlePriceList(list);
     };
 
@@ -159,7 +170,8 @@ const PriceTable = (props) => {
     const isModData = Object.keys(price_info).length !== 0 ? true : false;
 
     useEffect(() => {
-        price_info.price_div_cd !== "000" &&
+        isModData &&
+            price_info.price_div_cd !== "000" &&
             setSelectPriceDiv(price_info.price_div_cd);
     }, []);
 
@@ -349,10 +361,6 @@ const PriceTable = (props) => {
                             id="origin_price"
                             onChange={(e) => {
                                 handleInput(e);
-                                String(e.target.value).replace(
-                                    commaOfNumber,
-                                    ","
-                                );
                             }}
                             ref={origin_price}
                         />

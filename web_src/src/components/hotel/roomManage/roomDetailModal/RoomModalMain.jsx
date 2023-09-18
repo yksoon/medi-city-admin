@@ -199,6 +199,181 @@ const RoomModalMain = (props) => {
         }
     };
 
+    // 수정버튼
+    const clickMod = () => {
+        if (validation()) {
+            setIsSpinner(true);
+
+            const formData = new FormData();
+
+            let data = {};
+
+            let fileArr = [];
+            let fileArrOrg = [];
+
+            data = {
+                ...roomModel,
+                hotelIdx: selectedHotel,
+                roomIdx: modData.room_idx,
+                nameKo: roomRefs.nameKo.current.value,
+                nameEn: roomRefs.nameEn.current.value,
+                roomNumber: roomRefs.roomNumber.current.value,
+                roomSize: roomRefs.roomSize.current.value,
+                minPeople: roomRefs.minPeople.current.value,
+                maxPeople: roomRefs.maxPeople.current.value,
+                infoKo: roomRefs.infoKo.current.value,
+                infoEn: roomRefs.infoEn.current.value,
+                ruleKo: roomRefs.ruleKo.current.value,
+                ruleEn: roomRefs.ruleEn.current.value,
+            };
+
+            // 기본 formData append
+            for (const key in data) {
+                formData.append(key, data[key]);
+            }
+
+            // 필수 additional + 부대시설 additional
+            const willSendAdditionalList = [
+                ...additionalCheckList,
+                ...essentialAdditionalCheckList,
+            ];
+
+            console.log(willSendAdditionalList);
+            // 부대시설 formData append
+            willSendAdditionalList.forEach((item, idx) => {
+                formData.append(
+                    `additionalInfo[${idx}].additionalIdx`,
+                    item.additionalIdx
+                );
+                formData.append(
+                    `additionalInfo[${idx}].additionalMemo`,
+                    item.additionalMemo
+                );
+            });
+
+            // 객실 가격정보 formData append
+            priceList.forEach((item, idx) => {
+                formData.append(`priceInfo[${idx}].priceDiv`, item.priceDiv);
+                formData.append(
+                    `priceInfo[${idx}].originPrice`,
+                    item.originPrice
+                );
+                formData.append(`priceInfo[${idx}].orgStart`, item.orgStart);
+                formData.append(`priceInfo[${idx}].orgEnd`, item.orgEnd);
+                formData.append(`priceInfo[${idx}].salePrice`, item.salePrice);
+                formData.append(`priceInfo[${idx}].saleStart`, item.saleStart);
+                formData.append(`priceInfo[${idx}].saleEnd`, item.saleEnd);
+                formData.append(`priceInfo[${idx}].saleRate`, item.saleRate);
+                formData.append(`priceInfo[${idx}].priceMemo`, item.priceMemo);
+                formData.append(`priceInfo[${idx}].priceType`, item.priceType);
+            });
+
+            // 파일 formData append
+            fileArrOrg = Array.from(roomRefs.attachmentOrgFile.current.files);
+            let len2 = fileArrOrg.length;
+            for (let i = 0; i < len2; i++) {
+                formData.append("attachmentOrgFile", fileArrOrg[i]);
+            }
+
+            const restParams = {
+                method: "put_multi",
+                url: apiPath.api_admin_mod_room, // hotel/v1/meta/room
+                data: formData,
+                err: err,
+                callback: (res) => responsLogic(res),
+            };
+
+            CommonRest(restParams);
+
+            const responsLogic = (res) => {
+                const result_code = res.headers.result_code;
+                if (result_code === successCode.success) {
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "객실수정이 완료 되었습니다",
+                        callback: () => pageUpdate(),
+                    });
+                } else if (result_code === successCode.duplicationRoom) {
+                    // 중복일 경우
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
+                } else {
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "잠시 후 다시 시도해주세요",
+                    });
+                }
+
+                const pageUpdate = () => {
+                    handleNeedUpdate();
+                };
+            };
+        }
+    };
+
+    // 삭제 버튼
+    const clickRemove = () => {
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: "해당 객실을 삭제하시겠습니까?",
+            callback: () => doRemove(),
+        });
+
+        const doRemove = () => {
+            setIsSpinner(true);
+
+            // hotel/v1/meta/hotel/${hotel_idx}
+            const url = apiPath.api_admin_remove_room + modData.room_idx;
+            const restParams = {
+                method: "delete",
+                url: url,
+                data: {},
+                err: err,
+                callback: (res) => responsLogic(res),
+            };
+
+            CommonRest(restParams);
+
+            const responsLogic = (res) => {
+                const result_code = res.headers.result_code;
+                if (result_code === successCode.success) {
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "삭제가 완료 되었습니다",
+                        callback: () => pageUpdate(),
+                    });
+                } else {
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: "잠시 후 다시 시도해주세요",
+                    });
+                }
+
+                const pageUpdate = () => {
+                    handleNeedUpdate();
+                };
+            };
+        };
+    };
+
     const validation = () => {
         // 호텔 선택
         if (!selectedHotel) {
@@ -248,15 +423,17 @@ const RoomModalMain = (props) => {
         }
 
         // 객실이미지
-        if (roomRefs.attachmentOrgFile.current.files.length === 0) {
-            CommonNotify({
-                type: "alert",
-                hook: alert,
-                message: "이미지를 선택 해주세요",
-                callback: () => roomRefs.attachmentOrgFile.current.focus(),
-            });
+        if (!isModData) {
+            if (roomRefs.attachmentOrgFile.current.files.length === 0) {
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "이미지를 선택 해주세요",
+                    callback: () => roomRefs.attachmentOrgFile.current.focus(),
+                });
 
-            return false;
+                return false;
+            }
         }
 
         // 객실크기
@@ -578,16 +755,10 @@ const RoomModalMain = (props) => {
                 </Link>
                 {isModData ? (
                     <>
-                        <Link
-                            className="subbtn del"
-                            // onClick={clickRemove}
-                        >
+                        <Link className="subbtn del" onClick={clickRemove}>
                             삭제
                         </Link>
-                        <Link
-                            className="subbtn on"
-                            // onClick={clickMod}
-                        >
+                        <Link className="subbtn on" onClick={clickMod}>
                             수정
                         </Link>
                     </>
