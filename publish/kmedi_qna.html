@@ -10,9 +10,13 @@
      <!-- 플러그인 -->
      <script src="js/jquery.bxslider.min.js"></script>
      <link rel="stylesheet" href="css/jquery.bxslider.css">
-     <link rel="stylesheet" type="text/css" href="css/slick.css"/>
-     <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
-     <script type="text/javascript" src="js/slick.min.js"></script>
+     <script src="js/swiper.min.js"></script>
+     <link rel="stylesheet" href="css/swiper.min.css">
+     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+     
 
      <link rel="stylesheet" href="css/default.css">
      <link rel="stylesheet" href="css/style.css">
@@ -173,7 +177,7 @@
                                     <td>-</td>
                                     <td>구나완</td>
                                     <td>수술 영상에 대해서 문의드립니다.</td>
-                                    <td><a href="" class="default_a">원유철 원장</a></td>
+                                    <td><a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a></td>
                                     <td><a href="kmedi_content_modify.html" class="default_a">치과치료 방법</a></td>
                                     <td><a href="javascript:void(0)" class="tablebtn blue" onclick="modal_open(1)">답변하기</a></td>
                                 </tr>
@@ -186,7 +190,7 @@
                                     <td>-</td>
                                     <td>구나완</td>
                                     <td>수술 영상에 대해서 문의드립니다.</td>
-                                    <td><a href="" class="default_a">원유철 원장</a></td>
+                                    <td><a href="kmedi_member_creator_detail.html" class="default_a">원유철 원장</a></td>
                                     <td><a href="kmedi_content_modify.html" class="default_a">치과치료 방법</a></td>
                                     <td><a href="javascript:void(0)" class="tablebtn blue" onclick="modal_open(1)">답변하기</a></td>
                                 </tr>
@@ -203,10 +207,10 @@
     
     <!-- modal content - 문의내용 답변 //S -->
     <div class="modal_wrap" id="modal_wrap1" style="display:none;">
-        <div class="modal w800" id="memberInsert">
+        <div class="modal w1400" id="memberInsert">
             <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
             <div class="form">
-                <h4 class="mo_title">1:1문의 답변하기</h4>
+                <h4 class="mo_title">Q&A 답변하기</h4>
                 <div class="inquiry_box">
                     <h4 class="mo_subtitle">작성자 정보</h4>
                     <table class="table_bb">
@@ -260,6 +264,18 @@
                                     사전에 방지하기 위해 아프지 않아도 충치치료를 진행해야 할까요?
                                 </td>
                             </tr>
+                            <tr>
+                                <th>첨부이미지</th>
+                                <td>
+                                    <div class="qna_img_wrap">
+                                        <span class="qna_img"></span>
+                                        <span class="qna_img"></span>
+                                        <span class="qna_img"></span>
+                                        <span class="qna_img"></span>
+                                        <span class="qna_img"></span>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -272,78 +288,63 @@
                         </colgroup>
                         <tbody>
                             <tr>
-                                <td colspan="2">
+                                <th>제목</th>
+                                <td><input type="text" class="input wp100"></td>
+                            </tr>
+                            <tr>
+                                <th>이미지 첨부</th>
+                                <td>
+                                    <input type="file" class="qna_thumb_file">
+                                    <div class="qna_img_wrap">
+                                        <span class="qna_img"><img src="img/main/hotel01.png" alt="" onclick="modal_open(2)"></span>
+                                        <span class="qna_img"><img src="img/main/hotel02.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel03.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel04.png" alt=""></span>
+                                        <span class="qna_img"><img src="img/main/hotel05.png" alt=""></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>답변</th>
+                                <td>
                                     <textarea name="" id="">스마트에디터..?</textarea>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="btn_box">
-                    <a href="" class="subbtn off">닫기</a>
-                    <a href="" class="subbtn on">등록</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 모달 - 문의내용 답변 //E -->
-    
-    <!-- modal content - 문의내용 답변 //S -->
-    <div class="modal_wrap" id="modal_wrap2" style="display:none;">
-        <div class="modal w800" id="memberInsert">
-            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
-            <div class="form">
-                <h4 class="mo_title">1:1문의 상세보기</h4>
                 <div class="inquiry_box">
-                    <h4 class="mo_subtitle">문의 내용</h4>
+                    <h4 class="mo_subtitle">등록된 컨텐츠 정보</h4>
                     <table class="table_bb">
                         <colgroup>
                             <col width="30%">
                             <col width="*">
                         </colgroup>
                         <tbody>
-                            <tr>
-                                <th>답변상태</th>
-                                <td>답변완료</td>
-                            </tr>
-                            <tr>
-                                <th>등록일시</th>
-                                <td>2023-03-20 18:32</td>
-                            </tr>
-                            <tr>
-                                <th>회원이름</th>
-                                <td>구나완</td>
-                            </tr>
-                            <tr>
-                                <th>회원구분</th>
-                                <td>개인의사</td>
-                            </tr>
-                            <tr>
-                                <th>소속병원</th>
-                                <td>Bali International Medical Center</td>
-                            </tr>
                             <tr>
                                 <th>제목</th>
-                                <td>푸시 알람이 오지 않습니다!</td>
+                                <td>충치 마취치료 <a href="" class="tablebtn">상세보기</a></td>
                             </tr>
                             <tr>
-                                <th>내용</th>
-                                <td>안드로이드 OS를 업데이트 하고 나서부터 푸시 알람이 오지 않습니다. 어떻게 해야할지 자세한 방법을 알려주세요. 감사합니다.</td>
+                                <th>컨텐츠 구분</th>
+                                <td>유료 / 50,000원</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="inquiry_box">
-                    <h4 class="mo_subtitle">답변</h4>
-                    <table class="table_bb">
-                        <colgroup>
-                            <col width="30%">
-                            <col width="*">
-                        </colgroup>
-                        <tbody>
                             <tr>
-                                <td colspan="2">
-                                    <textarea name="" id="">이렇게 저렇게 요로쿵 저러쿵 하면 할 수 있습니다.</textarea>
+                                <th>카테고리1</th>
+                                <td>#치과</td>
+                            </tr>
+                            <tr>
+                                <th>카테고리2</th>
+                                <td>#충치</td>
+                            </tr>
+                            <tr>
+                                <th>영상설명</th>
+                                <td>혈류의 개통을 유지할 수 있는 스텐트의 수명은 5년에 85% 정도로 보고되며, 스텐트가 오래될수록 스텐트 안의 내피세포가 증식하여 다시 막힐 수 있는 가능성이 증가합니다. 더이상 스텐트가 기능하지 못하여 혈관이 좁아지면 막힌 부위를 우회하는 혈관을 만드는 수술을 시행합니다.</td>
+                            </tr>
+                            <tr>
+                                <th>영상</th>
+                                <td>
+                                    <iframe width="360" height="200" src="https://www.youtube.com/embed/lFT9a04_TT4?si=D4QGB001_YiInDAA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                                 </td>
                             </tr>
                         </tbody>
@@ -351,14 +352,48 @@
                 </div>
                 <div class="btn_box">
                     <a href="" class="subbtn off">닫기</a>
-                    <a href="" class="subbtn del">삭제</a>
-                    <a href="" class="subbtn on">수정</a>
+                    <a href="javascript:alret('답변을 등록하시겠어요? 질문자에게 답변이 실시간으로 전송됩니다.')" class="subbtn on">등록</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 모달 - 문의내용 답변 //E -->
-
+    <!-- modalcontent - 문의내용 답변 //E -->
+    <!-- modalcontent - 이미지 크게보기 //S -->
+    <div class="modal_wrap" id="modal_wrap2" style="display:none;">
+        <div class="modal img_view_wrap">
+            <div class="modal_close" onclick="modal_close();"><img src="img/common/modal_close.png" alt=""></div>
+            <div class="">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="img/main/hotel01.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel02.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel03.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel04.png" alt=""></div>
+                        <div class="swiper-slide"><img src="img/main/hotel05.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modalcontent - 이미지 크게보기 //E -->
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        debugger: true,
+        mousewheel: true,
+        loop: true,
+        centeredSlides: true,
+        //방향표
+        navigation: {
+            //다음페이지 설정
+            nextEl: '.swiper-button-next',
+            //이전페이지 설정
+            prevEl: '.swiper-button-prev',
+        },
+        
+        });
+    </script>
 </body>
 </html>
 <script src="js/nav.js"></script>
