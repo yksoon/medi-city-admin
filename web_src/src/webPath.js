@@ -201,7 +201,7 @@ const apiPath = {
 
     // 호텔 삭제
     // hotel/v1/meta/hotel
-    // put multi
+    // delete
     api_admin_remove_hotel: `${
         base_api_url + slash + hotel + slash + version + slash
     }meta/hotel/`,
@@ -255,6 +255,28 @@ const apiPath = {
     api_admin_room_detail: `${
         base_api_url + slash + hotel + slash + version + slash
     }meta/room/`,
+
+    // 객실 수정
+    // hotel/v1/meta/room
+    // put multi
+    api_admin_mod_room: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/room`,
+
+    // 객실 삭제
+    // hotel/v1/meta/room
+    // delete
+    api_admin_remove_room: `${
+        base_api_url + slash + hotel + slash + version + slash
+    }meta/room/`,
+
+    // -------------------- k-medi terms ------------------
+    // 약관 리스트
+    // hotel/v1/meta/rooms
+    // post
+    api_admin_kmedi_terms_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/terms`,
 };
 
 export { routerPath, apiPath };

@@ -378,7 +378,10 @@ a.default_a {color:#008dd3;font-weight:500;text-decoration: underline;}
 .kmedi_content .kmedi_notice .file_wrap img{width:18px;}
 .kmedi_content .kmedi_notice .viewer_wrap img{width:12px;margin:0 0 -2px;}
 
-
+/* Q&A */
+.qna_img {display:inline-block;width:80px;height:60px;overflow:hidden;background-color:#efefef;cursor:pointer;}
+.qna_img img {width: 100%;height: 100%; object-fit: cover;}
+.qna_thumb_file {margin:0 0 10px;}
 
 
 
@@ -396,3 +399,12 @@ a.default_a {color:#008dd3;font-weight:500;text-decoration: underline;}
 .error_page > img {width:180px;}
 .error_page a.backbtn {background:#fff;}
 .error_page h3 {font-size: 32px;font-weight: 700;margin: 32px 0 15px;}
+
+/* 모달 추가 */
+.img_view_wrap {width:fit-content}
+
+
+@media screen and  (max-width:1400px){
+    .adm_table {overflow-y:scroll;}
+    .adm_table table {width:1200px;}
+}

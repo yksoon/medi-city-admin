@@ -82,8 +82,17 @@ const RoomModalEssential = forwardRef((props, ref) => {
         isModData && setDefaultValue();
     }, [selectHotelOptions]);
 
+    useEffect(() => {
+        // 수정일 경우 세팅
+        if (isModData && additionalList.length !== 0) {
+            setDefaultAdditional();
+        }
+    }, [additionalList]);
+
     // 수정일 경우 세팅
     const setDefaultValue = () => {
+        handleSelectedhotel(modData.hotel_idx);
+
         setSelectedHotel(
             selectHotelOptions.find((e) => e.value === modData.hotel_idx)
         );
@@ -97,16 +106,38 @@ const RoomModalEssential = forwardRef((props, ref) => {
         roomSize.current.value = modData.room_size;
         minPeople.current.value = modData.min_people;
         maxPeople.current.value = modData.max_people;
+    };
 
+    // 수정일 경우 additional 세팅
+    const setDefaultAdditional = () => {
         // 부대시설 세팅
         let arr = [];
+        let defaultAdditionalArr = [];
         const additionalInfoLength = modData.additional_info.length;
         for (let i = 0; i < additionalInfoLength; i++) {
             arr.push(modData.additional_info[i].key_name);
+
+            let obj = additionalList.filter(
+                (e) => e.key_name === modData.additional_info[i].key_name
+            );
+
+            if (obj.length !== 0) {
+                let additional_idx = obj[0].additional_idx;
+
+                obj = {
+                    ...obj[0],
+                    additionalIdx: additional_idx,
+                    additionalMemo: modData.additional_info[i].additional_memo,
+                    additional_memo: modData.additional_info[i].additional_memo,
+                };
+
+                defaultAdditionalArr.push(obj);
+            }
         }
         setShowList(arr);
 
-        handleEssentialAdditionalCheck(modData.additional_info);
+        // handleEssentialAdditionalCheck(modData.additional_info);
+        handleEssentialAdditionalCheck(defaultAdditionalArr);
     };
 
     // 수정일 시 이미지들 미리보기 추가

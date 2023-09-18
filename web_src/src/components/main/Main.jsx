@@ -23,6 +23,9 @@ import {
 } from "recoils/atoms";
 import { successCode } from "common/js/resultCode";
 import RoomManage from "components/hotel/roomManage/RoomManage";
+import LocalMemberMng from "components/kMedi/userManage/localManage/LocalMemberMng";
+import CreatorMemberMng from "components/kMedi/userManage/creatorManage/CreatorMemberMng";
+import KmediTermsMng from "components/kMedi/homepageManage/termsManage/KmediTermsMng";
 
 const Main = () => {
     const navigate = useNavigate();
@@ -169,6 +172,18 @@ const Main = () => {
             // 객실관리
             case "roomMng":
                 return <RoomManage />;
+
+            // K-MEDI - 회원관리 - 현지회원
+            case "kmediLocalMemberMng":
+                return <LocalMemberMng />;
+
+            // K-MEDI - 회원관리 - 한국크리에이터
+            case "kmediCreatorMemberMng":
+                return <CreatorMemberMng />;
+
+            // K-MEDI - 홈페이지관리 - 약관관리
+            case "kmediTermsMng":
+                return <KmediTermsMng />;
 
             default:
                 return <DashBoardMain />;
