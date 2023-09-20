@@ -23,7 +23,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-const RoomManage = () => {
+const RoomManage = (props) => {
     const { alert } = useAlert();
     const { confirm } = useConfirm();
     const err = CommonErrModule();
@@ -46,11 +46,13 @@ const RoomManage = () => {
     // 객실 상세 데이터
     const [modData, setModData] = useState({});
 
+    const isRefresh = props.isRefresh;
+
     useEffect(() => {
         getRoomList(1, 10, "");
 
         setModData({});
-    }, [isNeedUpdate]);
+    }, [isNeedUpdate, isRefresh]);
 
     // 객실 리스트
     const getRoomList = (pageNum, pageSize, searchKeyword) => {

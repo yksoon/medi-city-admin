@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     CommonConsole,
@@ -14,12 +14,23 @@ import useAlert from "hook/useAlert";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 import { successCode } from "common/js/resultCode";
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    getSortedRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
 
-const UserList = () => {
+const UserList = (props) => {
     const { alert } = useAlert();
     const { confirm } = useConfirm();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
+
+    // 테이블 세팅
+    const [sorting, setSorting] = useState([]);
+    const columnHelper = createColumnHelper();
 
     const [isOpen, setIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -29,9 +40,11 @@ const UserList = () => {
     const [checkItems, setCheckItems] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
 
+    const isRefresh = props.isRefresh;
+
     useEffect(() => {
         reqUserList(1, 10);
-    }, [isNeedUpdate]);
+    }, [isNeedUpdate, isRefresh]);
 
     const handleNeedUpdate = () => {
         setIsNeedUpdate(!isNeedUpdate);
@@ -244,6 +257,144 @@ const UserList = () => {
         reqUserList(value, 10);
     };
 
+    // 컬럼 세팅
+    const columns = useMemo(() => [
+        {
+            accessorKey: "user_idx",
+            cell: (info) => (
+                <input
+                    type="checkbox"
+                    name={`userIdx_${info.getValue()}`}
+                    id={info.getValue()}
+                    value={info.getValue()}
+                    onChange={(e) =>
+                        handleSingleCheck(e.target.checked, info.getValue())
+                    }
+                    checked={
+                        checkItems.includes(info.getValue()) ? true : false
+                    }
+                />
+            ),
+            header: () => (
+                <input
+                    type="checkbox"
+                    name="select-all"
+                    onChange={(e) => handleAllCheck(e.target.checked)}
+                    checked={
+                        checkItems &&
+                        userList &&
+                        checkItems.length === userList.length
+                            ? true
+                            : false
+                    }
+                />
+            ),
+            enableSorting: false,
+        },
+        columnHelper.accessor((row) => row.user_key, {
+            id: "user_key",
+            cell: (info) => info.getValue(),
+            header: "고유번호",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.user_role, {
+            id: "user_role",
+            cell: (info) => info.getValue(),
+            header: "구분",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.user_status, {
+            id: "nation_type_cd",
+            cell: (info) => info.getValue(),
+            header: "상태",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.user_id, {
+            id: "user_id",
+            cell: (info) => info.getValue(),
+            header: "아이디",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.user_name_ko, {
+            id: "user_name_ko",
+            cell: (info) => info.getValue(),
+            header: "이름",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor(
+            (row) => `${row.mobile1}-${row.mobile2}-${row.mobile3}`,
+            {
+                id: "mobile1",
+                cell: (info) => info.getValue(),
+                header: "연락처",
+                enableSorting: false,
+            }
+        ),
+
+        columnHelper.accessor((row) => row.organization_name_ko, {
+            id: "organization_name_ko",
+            cell: (info) => info.getValue(),
+            header: "소속",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.department_name_ko, {
+            id: "department_name_ko",
+            cell: (info) => info.getValue(),
+            header: "전공과",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.specialized_name_ko, {
+            id: "specialized_name_ko",
+            cell: (info) => info.getValue(),
+            header: "전공분야",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.reg_dttm.split(" ")[0], {
+            id: "reg_dttm",
+            cell: (info) => info.getValue(),
+            header: "가입일",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor(
+            (row) => (
+                <Link
+                    className="tablebtn"
+                    onClick={() => modUser(row.user_idx)}
+                >
+                    정보수정
+                </Link>
+            ),
+            {
+                id: "viewDetail",
+                cell: (info) => info.getValue(),
+                header: "정보수정",
+                enableSorting: false,
+            }
+        ),
+    ]);
+
+    const data = useMemo(() => userList, [userList]);
+
+    const table = useReactTable({
+        data,
+        columns,
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+    });
+
     return (
         <>
             <div className="content">
@@ -271,6 +422,22 @@ const UserList = () => {
                             <Link className="subbtn on">엑셀 다운로드</Link>
                         </div>
                     </div>
+
+                    {/* 총 건수 */}
+                    {Object.keys(pageInfo).length !== 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                marginBottom: "10px",
+                            }}
+                        >
+                            총 :{" "}
+                            <b>&nbsp; {pageInfo && pageInfo.total} &nbsp;</b> 명
+                        </div>
+                    )}
+                    {/* 총 건수 END */}
+
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
@@ -288,7 +455,7 @@ const UserList = () => {
                                 <col width="6%" />
                             </colgroup>
                             <thead>
-                                <tr>
+                                {/* <tr>
                                     <th>
                                         <input
                                             type="checkbox"
@@ -317,61 +484,131 @@ const UserList = () => {
                                     <th>전공분야</th>
                                     <th>가입일</th>
                                     <th>정보수정</th>
-                                </tr>
+                                </tr> */}
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <tr key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => {
+                                            return (
+                                                <th
+                                                    key={header.id}
+                                                    colSpan={header.colSpan}
+                                                >
+                                                    {header.isPlaceholder ? null : (
+                                                        <div
+                                                            {...{
+                                                                className:
+                                                                    header.column.getCanSort()
+                                                                        ? "cursor-pointer select-none"
+                                                                        : "",
+                                                                onClick:
+                                                                    header.column.getToggleSortingHandler(),
+                                                            }}
+                                                        >
+                                                            {flexRender(
+                                                                header.column
+                                                                    .columnDef
+                                                                    .header,
+                                                                header.getContext()
+                                                            )}
+                                                            {
+                                                                {
+                                                                    asc: " 🔼",
+                                                                    desc: " 🔽",
+                                                                }[
+                                                                    header.column.getIsSorted()
+                                                                ] ?? null
+                                                                // <span className="blue">
+                                                                //     ⇅
+                                                                // </span>
+                                                            }
+                                                        </div>
+                                                    )}
+                                                </th>
+                                            );
+                                        })}
+                                    </tr>
+                                ))}
                             </thead>
                             <tbody>
-                                {userList &&
-                                    userList.map((item, idx) => (
-                                        <tr key={`list_${idx}`}>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    name={`userIdx_${item.user_idx}`}
-                                                    id={item.user_idx}
-                                                    defaultValue={item.user_idx}
-                                                    onChange={(e) =>
-                                                        handleSingleCheck(
-                                                            e.target.checked,
-                                                            item.user_idx
-                                                        )
-                                                    }
-                                                    checked={
-                                                        checkItems.includes(
-                                                            item.user_idx
-                                                        )
-                                                            ? true
-                                                            : false
-                                                    }
-                                                />
-                                            </td>
-                                            <td>{item.user_key}</td>
-                                            <td>{item.user_role}</td>
-                                            <td>{item.user_status}</td>
-                                            <td>{item.user_id}</td>
-                                            <td>{item.user_name_ko}</td>
-                                            <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
-                                            <td>{item.organization_name_ko}</td>
-                                            <td>{item.department_name_ko}</td>
-                                            <td>{item.specialized_name_ko}</td>
-                                            <td>
-                                                {item.reg_dttm.split(" ")[0]}
-                                            </td>
-                                            <td>
-                                                <Link
-                                                    className="tablebtn"
-                                                    onClick={(e) => {
-                                                        modUser(item.user_idx);
-                                                    }}
-                                                >
-                                                    정보 수정
-                                                </Link>
+                                {userList.length !== 0 ? (
+                                    // userList.map((item, idx) => (
+                                    //     <tr key={`list_${idx}`}>
+                                    //         <td>
+                                    //             <input
+                                    //                 type="checkbox"
+                                    //                 name={`userIdx_${item.user_idx}`}
+                                    //                 id={item.user_idx}
+                                    //                 defaultValue={item.user_idx}
+                                    //                 onChange={(e) =>
+                                    //                     handleSingleCheck(
+                                    //                         e.target.checked,
+                                    //                         item.user_idx
+                                    //                     )
+                                    //                 }
+                                    //                 checked={
+                                    //                     checkItems.includes(
+                                    //                         item.user_idx
+                                    //                     )
+                                    //                         ? true
+                                    //                         : false
+                                    //                 }
+                                    //             />
+                                    //         </td>
+                                    //         <td>{item.user_key}</td>
+                                    //         <td>{item.user_role}</td>
+                                    //         <td>{item.user_status}</td>
+                                    //         <td>{item.user_id}</td>
+                                    //         <td>{item.user_name_ko}</td>
+                                    //         <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
+                                    //         <td>{item.organization_name_ko}</td>
+                                    //         <td>{item.department_name_ko}</td>
+                                    //         <td>{item.specialized_name_ko}</td>
+                                    //         <td>
+                                    //             {item.reg_dttm.split(" ")[0]}
+                                    //         </td>
+                                    //         <td>
+                                    //             <Link
+                                    //                 className="tablebtn"
+                                    //                 onClick={(e) => {
+                                    //                     modUser(item.user_idx);
+                                    //                 }}
+                                    //             >
+                                    //                 정보 수정
+                                    //             </Link>
+                                    //         </td>
+                                    //     </tr>
+                                    // ))}
+                                    table.getRowModel().rows.map((row) => (
+                                        <tr key={row.id}>
+                                            {row
+                                                .getVisibleCells()
+                                                .map((cell) => (
+                                                    <td key={cell.id}>
+                                                        {flexRender(
+                                                            cell.column
+                                                                .columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </td>
+                                                ))}
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <>
+                                        <tr>
+                                            <td
+                                                colSpan="12"
+                                                style={{ height: "55px" }}
+                                            >
+                                                <b>데이터가 없습니다.</b>
                                             </td>
                                         </tr>
-                                    ))}
+                                    </>
+                                )}
                             </tbody>
                         </table>
                     </div>
-                    {pageInfo && (
+                    {Object.keys(pageInfo).length !== 0 && (
                         <div className="pagenation">
                             <Pagination
                                 count={pageInfo.pages}

@@ -24,7 +24,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-const HotelListMain = () => {
+const HotelListMain = (props) => {
     const { alert } = useAlert();
     const { confirm } = useConfirm();
     const err = CommonErrModule();
@@ -52,9 +52,11 @@ const HotelListMain = () => {
     // 호텔 상세 데이터
     const [modData, setModData] = useState({});
 
+    const isRefresh = props.isRefresh;
+
     useEffect(() => {
         getHotelList(1, 10, "");
-    }, [isNeedUpdate]);
+    }, [isNeedUpdate, isRefresh]);
 
     // 호텔 신규 등록
     const regHotel = () => {
@@ -732,7 +734,7 @@ const HotelListMain = () => {
                                 </tbody>
                             </table>
                         </div>
-                        {pageInfo && (
+                        {Object.keys(pageInfo).length !== 0 && (
                             <div className="pagenation">
                                 <Pagination
                                     count={pageInfo.pages}
