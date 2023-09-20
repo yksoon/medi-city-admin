@@ -272,11 +272,32 @@ const apiPath = {
 
     // -------------------- k-medi terms ------------------
     // 약관 리스트
-    // hotel/v1/meta/rooms
+    // mng/v1/meta/rooms
     // post
     api_admin_kmedi_terms_list: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/terms`,
+
+    // 약관 등록
+    // mng/v1/kmedi/term
+    // post
+    api_admin_kmedi_terms_reg: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/term`,
+
+    // 약관 상세
+    // mng/v1/kmedi/term/{terms_sq}
+    // get
+    api_admin_kmedi_terms_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/term/`,
+
+    // 약관 수정
+    // mng/v1/kmedi/term
+    // put
+    api_admin_kmedi_terms_mod: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/term`,
 };
 
 export { routerPath, apiPath };
