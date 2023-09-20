@@ -32,6 +32,8 @@ const Main = () => {
     const err = CommonErrModule();
     const isSpinner = useRecoilValue(isSpinnerAtom);
 
+    const [isRefresh, setIsRefresh] = useState(false);
+
     const userInfo = useRecoilValue(userInfoAtom);
     const userToken = useRecoilValue(userTokenAtom);
 
@@ -151,6 +153,8 @@ const Main = () => {
     };
 
     const switchPage = (page) => {
+        setIsRefresh(!isRefresh);
+
         setPage(page);
     };
 
@@ -159,31 +163,31 @@ const Main = () => {
         switch (page) {
             // 대시보드
             case "dashboard":
-                return <DashBoardMain />;
+                return <DashBoardMain isRefresh={isRefresh} />;
 
             // 회원리스트
             case "userList":
-                return <UserList />;
+                return <UserList isRefresh={isRefresh} />;
 
             // 호텔리스트
             case "hotelList":
-                return <HotelListMain />;
+                return <HotelListMain isRefresh={isRefresh} />;
 
             // 객실관리
             case "roomMng":
-                return <RoomManage />;
+                return <RoomManage isRefresh={isRefresh} />;
 
             // K-MEDI - 회원관리 - 현지회원
             case "kmediLocalMemberMng":
-                return <LocalMemberMng />;
+                return <LocalMemberMng isRefresh={isRefresh} />;
 
             // K-MEDI - 회원관리 - 한국크리에이터
             case "kmediCreatorMemberMng":
-                return <CreatorMemberMng />;
+                return <CreatorMemberMng isRefresh={isRefresh} />;
 
             // K-MEDI - 홈페이지관리 - 약관관리
             case "kmediTermsMng":
-                return <KmediTermsMng />;
+                return <KmediTermsMng isRefresh={isRefresh} />;
 
             default:
                 return <DashBoardMain />;
