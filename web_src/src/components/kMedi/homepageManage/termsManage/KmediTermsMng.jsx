@@ -50,6 +50,7 @@ const KmediTermsMng = (props) => {
         getTermsList(1, 10, "");
     }, [isNeedUpdate, isRefresh]);
 
+    // 리스트
     const getTermsList = (pageNum, pageSize, searchKeyword) => {
         setIsSpinner(true);
 
@@ -82,7 +83,7 @@ const KmediTermsMng = (props) => {
                 const result_info = res.data.result_info;
                 const page_info = res.data.page_info;
 
-                console.log(res);
+                // console.log(res);
                 setTermsList(result_info);
                 setPageInfo(page_info);
 
@@ -108,7 +109,7 @@ const KmediTermsMng = (props) => {
 
         const close = () => {
             setModalTitle("");
-            // setModData({});
+            setModData({});
             setIsOpen(false);
         };
     };
@@ -194,6 +195,63 @@ const KmediTermsMng = (props) => {
                     type: "alert",
                     hook: alert,
                     message: res.headers.result_message_ko,
+                });
+            }
+        };
+    };
+
+    // 약관 선택 삭제
+    const clickRemove = () => {
+        //선택여부 확인
+        checkItems.length === 0
+            ? CommonNotify({
+                  type: "alert",
+                  hook: alert,
+                  message: "삭제할 목록을 선택해주세요",
+              })
+            : CommonNotify({
+                  type: "confirm",
+                  hook: confirm,
+                  message: "선택된 목록을 삭제 하시겠습니까?",
+                  callback: () => removeTerms(),
+              });
+    };
+
+    // 삭제 버튼
+    const removeTerms = async () => {
+        let checkItemsStr = checkItems.join();
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_kmedi_terms_remove}${checkItemsStr}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => handleNeedUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
                 });
             }
         };
@@ -311,10 +369,7 @@ const KmediTermsMng = (props) => {
                             <Link className="subbtn off">검색</Link>
                         </div>
                         <div>
-                            <Link
-                                className="subbtn del"
-                                // onClick={clickRemove}
-                            >
+                            <Link className="subbtn del" onClick={clickRemove}>
                                 선택삭제
                             </Link>{" "}
                             <Link className="subbtn on" onClick={regTerms}>

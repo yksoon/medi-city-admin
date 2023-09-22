@@ -13,6 +13,7 @@ import RegUserModal from "components/user/userList/modal/RegUserModal";
 import HotelPreview from "components/hotel/hotelList/hotelDetailModal/HotelPreview";
 import RoomModalMain from "components/hotel/roomManage/roomDetailModal/RoomModalMain";
 import KmediTermsModalMain from "components/kMedi/homepageManage/termsManage/termsModal/KmediTermsModalMain";
+import KmediLocalUserModalMain from "components/kMedi/userManage/localManage/localModal/KmediLocalUserModalMain";
 
 // Alert (props)
 // isOpen = state 상태값
@@ -71,6 +72,16 @@ const CommonModal = (props) => {
             case "KmediTermsModalMain":
                 return (
                     <KmediTermsModalMain
+                        handleNeedUpdate={handleNeedUpdate}
+                        handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
+                    />
+                );
+
+            // kmedi 현지회원 등록,수정 컴포넌트
+            case "KmediLocalUserModalMain":
+                return (
+                    <KmediLocalUserModalMain
                         handleNeedUpdate={handleNeedUpdate}
                         handleModalClose={modalOption.handleModalClose}
                         modData={props.modData}

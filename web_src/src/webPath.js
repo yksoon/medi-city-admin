@@ -298,6 +298,43 @@ const apiPath = {
     api_admin_kmedi_terms_mod: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/term`,
+
+    // 약관 삭제
+    // mng/v1/kmedi/term
+    // delete
+    api_admin_kmedi_terms_remove: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/term/`,
+
+    // -------------------- k-medi member ------------------
+
+    // 약관 리스트
+    // mng/v1/meta/rooms
+    // post
+    api_admin_kmedi_member_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/members`,
+
+    // 현지 회원 등록
+    // mng/v1/kmedi/member
+    // post
+    api_admin_kmedi_member_reg: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/member`,
+
+    // 현지 회원 상세
+    // mng/v1/kmedi/member/{terms_sq}
+    // get
+    api_admin_kmedi_member_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/member/`,
+
+    // 현지 회원 강제탈퇴
+    // mng/v1/kmedi/member/{terms_sq}
+    // delete
+    api_admin_kmedi_member_remove: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/member/`,
 };
 
 export { routerPath, apiPath };

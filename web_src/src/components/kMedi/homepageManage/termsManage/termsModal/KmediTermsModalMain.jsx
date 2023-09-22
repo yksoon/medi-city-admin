@@ -1,6 +1,7 @@
 import { CommonErrModule, CommonNotify, CommonRest } from "common/js/Common";
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
+import useConfirm from "hook/useConfirm";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -18,6 +19,7 @@ const termsTypeOption = [
 ];
 
 const KmediTermsModalMain = (props) => {
+    const { confirm } = useConfirm();
     const { alert } = useAlert();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
@@ -165,6 +167,56 @@ const KmediTermsModalMain = (props) => {
         }
     };
 
+    // 약관 선택 삭제
+    const clickRemove = () => {
+        //선택여부 확인
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: "선택된 목록을 삭제 하시겠습니까?",
+            callback: () => removeTerms(),
+        });
+    };
+
+    // 삭제 버튼
+    const removeTerms = async () => {
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_kmedi_terms_remove}${modData.terms_sq}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => handleNeedUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+        };
+    };
+
     const validation = () => {
         if (!termsDesc.current.value) {
             CommonNotify({
@@ -236,9 +288,14 @@ const KmediTermsModalMain = (props) => {
             </table>
             <div className="subbtn_box">
                 {isModData ? (
-                    <Link className="subbtn on" onClick={modTerms}>
-                        수정
-                    </Link>
+                    <>
+                        <Link className="subbtn del" onClick={clickRemove}>
+                            삭제
+                        </Link>
+                        <Link className="subbtn on" onClick={modTerms}>
+                            수정
+                        </Link>
+                    </>
                 ) : (
                     <Link className="subbtn on" onClick={regTerms}>
                         등록
