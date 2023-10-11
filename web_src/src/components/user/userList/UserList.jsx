@@ -22,6 +22,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 const UserList = (props) => {
     const { alert } = useAlert();
     const { confirm } = useConfirm();
@@ -498,7 +501,7 @@ const UserList = (props) => {
                                                             {...{
                                                                 className:
                                                                     header.column.getCanSort()
-                                                                        ? "cursor-pointer select-none"
+                                                                        ? "cursor-pointer select-none table_sort"
                                                                         : "",
                                                                 onClick:
                                                                     header.column.getToggleSortingHandler(),
@@ -512,14 +515,26 @@ const UserList = (props) => {
                                                             )}
                                                             {
                                                                 {
-                                                                    asc: " 🔼",
-                                                                    desc: " 🔽",
+                                                                    asc: (
+                                                                        <div className="sort_asc">
+                                                                            <ArrowDropUpIcon />
+                                                                            <ArrowDropDownIcon />
+                                                                        </div>
+                                                                    ),
+                                                                    desc: (
+                                                                        <div className="sort_desc">
+                                                                            <ArrowDropUpIcon />
+                                                                            <ArrowDropDownIcon />
+                                                                        </div>
+                                                                    ),
                                                                 }[
                                                                     header.column.getIsSorted()
-                                                                ] ?? null
-                                                                // <span className="blue">
-                                                                //     ⇅
-                                                                // </span>
+                                                                ] ?? (
+                                                                    <div>
+                                                                        <ArrowDropUpIcon />
+                                                                        <ArrowDropDownIcon />
+                                                                    </div>
+                                                                )
                                                             }
                                                         </div>
                                                     )}
