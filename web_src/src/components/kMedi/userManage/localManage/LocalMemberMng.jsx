@@ -626,17 +626,22 @@ const LocalMemberMng = (props) => {
                                                                     .header,
                                                                 header.getContext()
                                                             )}
-                                                            {
-                                                                {
-                                                                    asc: " 🔼",
-                                                                    desc: " 🔽",
-                                                                }[
-                                                                    header.column.getIsSorted()
-                                                                ] ?? null
-                                                                // <span className="blue">
-                                                                //     ⇅
-                                                                // </span>
-                                                            }
+                                                            {{
+                                                                asc: (
+                                                                    <span className="blue">
+                                                                        up
+                                                                    </span>
+                                                                ),
+                                                                // asc: sortingIcon,
+                                                                desc: " 🔽",
+                                                            }[
+                                                                header.column.getIsSorted()
+                                                            ] ?? (
+                                                                <span className="blue">
+                                                                    {" "}
+                                                                    ⇅{" "}
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </th>
