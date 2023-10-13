@@ -308,7 +308,7 @@ const apiPath = {
 
     // -------------------- k-medi member ------------------
 
-    // 약관 리스트
+    // 현지회원 리스트
     // mng/v1/meta/rooms
     // post
     api_admin_kmedi_member_list: `${
@@ -335,6 +335,13 @@ const apiPath = {
     api_admin_kmedi_member_remove: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/member/`,
+
+    // 크리에이터 리스트
+    // mng/v1/kmedi/creators
+    // post
+    api_admin_kmedi_creator_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/creators`,
 };
 
 export { routerPath, apiPath };

@@ -23,6 +23,8 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const HotelListMain = (props) => {
     const { alert } = useAlert();
@@ -340,7 +342,7 @@ const HotelListMain = (props) => {
                 <div className="hotel_thumb_td">
                     <img
                         src={`${apiPath.api_admin_hotel_list_thumb}${row.file_path_enc}`}
-                        alt=""
+                        alt={row.code_name}
                     />
                 </div>
             ),
@@ -356,13 +358,7 @@ const HotelListMain = (props) => {
         columnHelper.accessor((row) => row.name_key, {
             id: "name_key",
             cell: (info) => info.getValue(),
-            header: (
-                <>
-                    <span className="blue">호텔고유키</span>
-                    {/* 호텔고유키 */}
-                    {/* <span className="blue">⇅</span> */}
-                </>
-            ),
+            header: "호텔고유키",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
@@ -371,7 +367,7 @@ const HotelListMain = (props) => {
             {
                 id: "nation_type_cd",
                 cell: (info) => info.getValue(),
-                header: <span className="blue">구분</span>,
+                header: "구분",
                 sortingFn: "alphanumericCaseSensitive",
             }
         ),
@@ -382,7 +378,7 @@ const HotelListMain = (props) => {
                 columnHelper.accessor((row) => row.name_ko, {
                     id: "room_name_ko",
                     cell: (info) => info.getValue(),
-                    header: <span className="blue">호텔명(국문)</span>,
+                    header: "호텔명(국문)",
                     sortingFn: "alphanumericCaseSensitive",
                 }),
                 columnHelper.accessor((row) => row.name_en, {
@@ -549,35 +545,6 @@ const HotelListMain = (props) => {
                                     {/* <col width="5%" /> */}
                                 </colgroup>
                                 <thead>
-                                    {/* <tr>
-                                        <th>
-                                            <input
-                                                type="checkbox"
-                                                name="select-all"
-                                                onChange={(e) =>
-                                                    handleAllCheck(
-                                                        e.target.checked
-                                                    )
-                                                }
-                                                checked={
-                                                    checkItems &&
-                                                    hotelList &&
-                                                    checkItems.length ===
-                                                        hotelList.length
-                                                        ? true
-                                                        : false
-                                                }
-                                            />
-                                        </th>
-                                        <th>대표이미지</th>
-                                        <th>고유번호</th>
-                                        <th>구분</th>
-                                        <th colSpan="2">호텔명</th>
-                                        <th>주소</th>
-                                        <th>연락처</th>
-                                        <th>상세보기</th>
-                                        <th>미리보기</th>
-                                    </tr> */}
                                     {table
                                         .getHeaderGroups()
                                         .map((headerGroup) => (
@@ -596,7 +563,7 @@ const HotelListMain = (props) => {
                                                                         {...{
                                                                             className:
                                                                                 header.column.getCanSort()
-                                                                                    ? "cursor-pointer select-none"
+                                                                                    ? "cursor-pointer select-none table_sort"
                                                                                     : "",
                                                                             onClick:
                                                                                 header.column.getToggleSortingHandler(),
@@ -609,18 +576,28 @@ const HotelListMain = (props) => {
                                                                                 .header,
                                                                             header.getContext()
                                                                         )}
-                                                                        {
-                                                                            {
-                                                                                asc: " 🔼",
-                                                                                desc: " 🔽",
+                                                                        {header.column.getCanSort() &&
+                                                                            ({
+                                                                                asc: (
+                                                                                    <div className="sort_asc">
+                                                                                        <ArrowDropUpIcon />
+                                                                                        <ArrowDropDownIcon />
+                                                                                    </div>
+                                                                                ),
+                                                                                desc: (
+                                                                                    <div className="sort_desc">
+                                                                                        <ArrowDropUpIcon />
+                                                                                        <ArrowDropDownIcon />
+                                                                                    </div>
+                                                                                ),
                                                                             }[
                                                                                 header.column.getIsSorted()
-                                                                            ] ??
-                                                                                null
-                                                                            // <span className="blue">
-                                                                            //     ⇅
-                                                                            // </span>
-                                                                        }
+                                                                            ] ?? (
+                                                                                <div>
+                                                                                    <ArrowDropUpIcon />
+                                                                                    <ArrowDropDownIcon />
+                                                                                </div>
+                                                                            ))}
                                                                     </div>
                                                                 )}
                                                             </th>

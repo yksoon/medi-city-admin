@@ -22,8 +22,8 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const UserList = (props) => {
     const { alert } = useAlert();
@@ -458,36 +458,6 @@ const UserList = (props) => {
                                 <col width="6%" />
                             </colgroup>
                             <thead>
-                                {/* <tr>
-                                    <th>
-                                        <input
-                                            type="checkbox"
-                                            name="select-all"
-                                            onChange={(e) =>
-                                                handleAllCheck(e.target.checked)
-                                            }
-                                            checked={
-                                                checkItems &&
-                                                userList &&
-                                                checkItems.length ===
-                                                    userList.length
-                                                    ? true
-                                                    : false
-                                            }
-                                        />
-                                    </th>
-                                    <th>고유번호</th>
-                                    <th>구분</th>
-                                    <th>상태</th>
-                                    <th>아이디</th>
-                                    <th>이름</th>
-                                    <th>연락처</th>
-                                    <th>소속</th>
-                                    <th>전공과</th>
-                                    <th>전공분야</th>
-                                    <th>가입일</th>
-                                    <th>정보수정</th>
-                                </tr> */}
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <tr key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => {
@@ -513,8 +483,8 @@ const UserList = (props) => {
                                                                     .header,
                                                                 header.getContext()
                                                             )}
-                                                            {
-                                                                {
+                                                            {header.column.getCanSort() &&
+                                                                ({
                                                                     asc: (
                                                                         <div className="sort_asc">
                                                                             <ArrowDropUpIcon />
@@ -534,8 +504,7 @@ const UserList = (props) => {
                                                                         <ArrowDropUpIcon />
                                                                         <ArrowDropDownIcon />
                                                                     </div>
-                                                                )
-                                                            }
+                                                                ))}
                                                         </div>
                                                     )}
                                                 </th>
@@ -546,53 +515,6 @@ const UserList = (props) => {
                             </thead>
                             <tbody>
                                 {userList.length !== 0 ? (
-                                    // userList.map((item, idx) => (
-                                    //     <tr key={`list_${idx}`}>
-                                    //         <td>
-                                    //             <input
-                                    //                 type="checkbox"
-                                    //                 name={`userIdx_${item.user_idx}`}
-                                    //                 id={item.user_idx}
-                                    //                 defaultValue={item.user_idx}
-                                    //                 onChange={(e) =>
-                                    //                     handleSingleCheck(
-                                    //                         e.target.checked,
-                                    //                         item.user_idx
-                                    //                     )
-                                    //                 }
-                                    //                 checked={
-                                    //                     checkItems.includes(
-                                    //                         item.user_idx
-                                    //                     )
-                                    //                         ? true
-                                    //                         : false
-                                    //                 }
-                                    //             />
-                                    //         </td>
-                                    //         <td>{item.user_key}</td>
-                                    //         <td>{item.user_role}</td>
-                                    //         <td>{item.user_status}</td>
-                                    //         <td>{item.user_id}</td>
-                                    //         <td>{item.user_name_ko}</td>
-                                    //         <td>{`${item.mobile1}-${item.mobile2}-${item.mobile3}`}</td>
-                                    //         <td>{item.organization_name_ko}</td>
-                                    //         <td>{item.department_name_ko}</td>
-                                    //         <td>{item.specialized_name_ko}</td>
-                                    //         <td>
-                                    //             {item.reg_dttm.split(" ")[0]}
-                                    //         </td>
-                                    //         <td>
-                                    //             <Link
-                                    //                 className="tablebtn"
-                                    //                 onClick={(e) => {
-                                    //                     modUser(item.user_idx);
-                                    //                 }}
-                                    //             >
-                                    //                 정보 수정
-                                    //             </Link>
-                                    //         </td>
-                                    //     </tr>
-                                    // ))}
                                     table.getRowModel().rows.map((row) => (
                                         <tr key={row.id}>
                                             {row

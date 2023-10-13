@@ -256,7 +256,7 @@ const RegUserModal = (props) => {
 
     const regUser = () => {
         let signupData = {
-            signup_type: "000",
+            signup_type: "300",
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
             user_name_first_ko: inputFirstNameKo.current.value,
@@ -311,7 +311,7 @@ const RegUserModal = (props) => {
     // 회원수정
     const modUser = () => {
         let modData = {
-            signup_type: "000",
+            signup_type: modUserData.signup_type_cd,
             user_idx: modUserData.user_idx,
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,

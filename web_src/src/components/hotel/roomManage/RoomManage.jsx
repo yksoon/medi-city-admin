@@ -22,6 +22,8 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const RoomManage = (props) => {
     const { alert } = useAlert();
@@ -506,7 +508,7 @@ const RoomManage = (props) => {
                                                                         {...{
                                                                             className:
                                                                                 header.column.getCanSort()
-                                                                                    ? "cursor-pointer select-none"
+                                                                                    ? "cursor-pointer select-none table_sort"
                                                                                     : "",
                                                                             onClick:
                                                                                 header.column.getToggleSortingHandler(),
@@ -519,13 +521,28 @@ const RoomManage = (props) => {
                                                                                 .header,
                                                                             header.getContext()
                                                                         )}
-                                                                        {{
-                                                                            asc: " 🔼",
-                                                                            desc: " 🔽",
-                                                                        }[
-                                                                            header.column.getIsSorted()
-                                                                        ] ??
-                                                                            null}
+                                                                        {header.column.getCanSort() &&
+                                                                            ({
+                                                                                asc: (
+                                                                                    <div className="sort_asc">
+                                                                                        <ArrowDropUpIcon />
+                                                                                        <ArrowDropDownIcon />
+                                                                                    </div>
+                                                                                ),
+                                                                                desc: (
+                                                                                    <div className="sort_desc">
+                                                                                        <ArrowDropUpIcon />
+                                                                                        <ArrowDropDownIcon />
+                                                                                    </div>
+                                                                                ),
+                                                                            }[
+                                                                                header.column.getIsSorted()
+                                                                            ] ?? (
+                                                                                <div>
+                                                                                    <ArrowDropUpIcon />
+                                                                                    <ArrowDropDownIcon />
+                                                                                </div>
+                                                                            ))}
                                                                     </div>
                                                                 )}
                                                             </th>

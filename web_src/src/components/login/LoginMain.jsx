@@ -167,7 +167,6 @@ const LoginMain = () => {
                             placeholder="ID"
                             ref={inputID}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
-                            defaultValue="ksyong3@naver.com"
                         />
                     </div>
                     <div>
@@ -178,7 +177,6 @@ const LoginMain = () => {
                             placeholder="PW"
                             ref={inputPW}
                             onKeyDown={handleOnKeyPress} // Enter 입력 이벤트 함수
-                            defaultValue="123qwe123!@#"
                         />
                     </div>
                     <div className="flex login_btn">

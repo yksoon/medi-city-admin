@@ -8,7 +8,7 @@ const Instance = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-    timeout: 5000,
+    timeout: 10000,
 });
 
 Instance.interceptors.request.use(
@@ -70,8 +70,8 @@ const setInterceptors = (config) => {
             : recoilSession.ipInfo;
     token = recoilSession === null ? "" : recoilSession.userToken;
 
-    config.headers["Medicity-Src"] = ip ? ip : "";
-    config.headers["Medicity-Token"] = token ? token : "";
+    config.headers["Medipeople-Src"] = ip ? ip : "";
+    config.headers["Medipeople-Token"] = token ? token : "";
 
     return config;
 };

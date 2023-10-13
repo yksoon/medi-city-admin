@@ -13,7 +13,9 @@ import RegUserModal from "components/user/userList/modal/RegUserModal";
 import HotelPreview from "components/hotel/hotelList/hotelDetailModal/HotelPreview";
 import RoomModalMain from "components/hotel/roomManage/roomDetailModal/RoomModalMain";
 import KmediTermsModalMain from "components/kMedi/homepageManage/termsManage/termsModal/KmediTermsModalMain";
-import KmediLocalUserModalMain from "components/kMedi/userManage/localManage/localModal/KmediLocalUserModalMain";
+import KmediLocalMemberModalMain from "components/kMedi/userManage/localManage/localModal/KmediLocalMemberModalMain";
+import KmediCreatorRegModalMain from "components/kMedi/userManage/creatorManage/modal/KmediCreatorRegModalMain";
+import KmediCreatorDetailModalMain from "components/kMedi/userManage/creatorManage/modal/KmediCreatorDetailModalMain";
 
 // Alert (props)
 // isOpen = state 상태값
@@ -79,9 +81,29 @@ const CommonModal = (props) => {
                 );
 
             // kmedi 현지회원 등록,수정 컴포넌트
-            case "KmediLocalUserModalMain":
+            case "KmediLocalMemberModalMain":
                 return (
-                    <KmediLocalUserModalMain
+                    <KmediLocalMemberModalMain
+                        handleNeedUpdate={handleNeedUpdate}
+                        handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
+                    />
+                );
+
+            // kmedi 크리에이터 회원 등록 컴포넌트
+            case "KmediCreatorRegModalMain":
+                return (
+                    <KmediCreatorRegModalMain
+                        handleNeedUpdate={handleNeedUpdate}
+                        handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
+                    />
+                );
+
+            // kmedi 크리에이터 회원 상세 컴포넌트
+            case "KmediCreatorDetailModalMain":
+                return (
+                    <KmediCreatorDetailModalMain
                         handleNeedUpdate={handleNeedUpdate}
                         handleModalClose={modalOption.handleModalClose}
                         modData={props.modData}
