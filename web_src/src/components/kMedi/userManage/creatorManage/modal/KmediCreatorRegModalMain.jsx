@@ -44,6 +44,8 @@ const KmediCreatorRegModalMain = (props) => {
 
     const [selectUserRoleOptions, setSelectUserRoleOptions] = useState([]);
 
+    const handleNeedUpdate = props.handleNeedUpdate;
+
     useEffect(() => {
         selectboxUserRole();
         reqUserList(1, 10);
@@ -115,14 +117,14 @@ const KmediCreatorRegModalMain = (props) => {
     };
 
     // 체크박스 단일 선택
-    const handleSingleCheck = (checked, id) => {
-        console.log(checked, id);
+    const handleSingleCheck = (checked, row) => {
+        console.log(checked, row);
         if (checked) {
             // 단일 선택 시 체크된 아이템을 배열에 추가
-            setCheckItems((prev) => [...prev, id]);
+            setCheckItems((prev) => [...prev, row]);
         } else {
             // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-            setCheckItems(checkItems.filter((el) => el !== id));
+            setCheckItems(checkItems.filter((el) => el !== row));
         }
     };
 
@@ -172,7 +174,7 @@ const KmediCreatorRegModalMain = (props) => {
                 organization_name_ko: row.organization_name_ko ?? "",
                 department_name_ko: row.department_name_ko ?? "",
                 specialized_name_ko: row.specialized_name_ko ?? "",
-                user_status: row.user_status,
+                user_status: row.user_status_cd,
                 user_role: e.target.value,
             };
 
@@ -201,6 +203,7 @@ const KmediCreatorRegModalMain = (props) => {
                         type: "alert",
                         hook: alert,
                         message: `${row.user_name_ko} 님이 크리에이터로 변경 되었습니다.`,
+                        callback: () => refresh(),
                     });
                 } else {
                     // 에러
@@ -215,11 +218,94 @@ const KmediCreatorRegModalMain = (props) => {
                     });
                 }
             };
+
+            const refresh = () => {
+                reqUserList(1, 10);
+            };
         };
     };
 
+    // 체크박스로 여러명 변경
     const regUser = () => {
         console.log(checkItems);
+        const length = checkItems.length;
+
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: `${length} 명을 크리에이터로 변경하시겠습니까?`,
+            callback: () => doModUser(),
+        });
+
+        const doModUser = () => {
+            setIsSpinner(true);
+
+            let checkCount = 0;
+
+            for (let i = 0; i < length; i++) {
+                const modData = {
+                    signup_type: checkItems[i].signup_type_cd,
+                    user_idx: checkItems[i].user_idx,
+                    user_id: checkItems[i].user_id,
+                    user_name_first_ko: checkItems[i].user_name_first_ko,
+                    user_name_last_ko: checkItems[i].user_name_last_ko,
+                    user_name_first_en: checkItems[i].user_name_first_en,
+                    user_name_last_en: checkItems[i].user_name_last_en,
+                    inter_phone_number: checkItems[i].inter_phone_number,
+                    mobile1: checkItems[i].mobile1,
+                    mobile2: checkItems[i].mobile2,
+                    mobile3: checkItems[i].mobile3,
+                    md_licenses_number: checkItems[i].md_licenses_number ?? "",
+                    organization_name_ko:
+                        checkItems[i].organization_name_ko ?? "",
+                    department_name_ko: checkItems[i].department_name_ko ?? "",
+                    specialized_name_ko:
+                        checkItems[i].specialized_name_ko ?? "",
+                    user_status: checkItems[i].user_status_cd,
+                    user_role: "300", // 크리에이터
+                };
+
+                // 수정
+                // /v1/user
+                // PUT
+                const url = apiPath.api_admin_user_mod;
+                const data = modData;
+
+                // console.log(url);
+                // 파라미터
+                const restParams = {
+                    method: "put",
+                    url: url,
+                    data: data,
+                    err: err,
+                    callback: (res) => responsLogic(res),
+                };
+                CommonRest(restParams);
+            }
+
+            const responsLogic = (res) => {
+                if (res.headers.result_code === successCode.success) {
+                    checkCount++;
+
+                    if (checkCount === length) {
+                        setIsSpinner(false);
+
+                        CommonNotify({
+                            type: "alert",
+                            hook: alert,
+                            message: `${checkCount} 명이 크리에이터로 변경 되었습니다.`,
+                            callback: () => refresh(),
+                        });
+
+                        const refresh = () => {
+                            setCheckItems([]);
+
+                            reqUserList(1, 10);
+                        };
+                    }
+                }
+            };
+        };
     };
 
     // const IndeterminateCheckbox = ({
@@ -280,11 +366,10 @@ const KmediCreatorRegModalMain = (props) => {
                     onChange: (e) =>
                         handleSingleCheck(
                             e.target.checked,
-                            row.original.user_idx
+                            // row.original.user_idx,
+                            row.original
                         ),
-                    checked: checkItems.includes(row.original.user_idx)
-                        ? true
-                        : false,
+                    checked: checkItems.includes(row.original) ? true : false,
                     disabled:
                         managerCode.indexOf(row.original.user_role_cd) !== -1
                             ? true

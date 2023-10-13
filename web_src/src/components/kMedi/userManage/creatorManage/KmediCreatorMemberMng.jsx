@@ -141,18 +141,9 @@ const KmediCreatorMemberMng = (props) => {
 
     // 등록 모달창 닫기
     const handleRegModalClose = () => {
-        CommonNotify({
-            type: "confirm",
-            hook: confirm,
-            message: "입력된 정보가 초기화 됩니다. 창을 닫으시겠습니까?",
-            callback: () => close(),
-        });
-
-        const close = () => {
-            setRegModalTitle("");
-            // setModData({});
-            setIsRegModalOpen(false);
-        };
+        setRegModalTitle("");
+        // setModData({});
+        setIsRegModalOpen(false);
     };
 
     // 상세보기
