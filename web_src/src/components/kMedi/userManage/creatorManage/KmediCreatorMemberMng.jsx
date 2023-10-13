@@ -147,7 +147,49 @@ const KmediCreatorMemberMng = (props) => {
     };
 
     // 상세보기
-    const detailUser = (member_sq) => {
+    const detailUser = (creator_id) => {
+        setIsSpinner(true);
+
+        const url = apiPath.api_admin_kmedi_creator_detail + creator_id;
+        const data = {};
+
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+
+            // 성공
+            if (
+                result_code === successCode.success ||
+                result_code === successCode.noData
+            ) {
+                const result_info = res.data.result_info;
+
+                setModData(result_info);
+
+                openDetailUserModal();
+                // console.log(res);
+                setIsSpinner(false);
+            } else {
+                // 에러
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+            }
+        };
+    };
+
+    // 상세 모달 열기
+    const openDetailUserModal = () => {
         setModalTitle("크리에이터 상세보기");
         setIsOpen(true);
     };
@@ -250,7 +292,7 @@ const KmediCreatorMemberMng = (props) => {
             (row) => (
                 <Link
                     className="tablebtn"
-                    onClick={() => detailUser(row.creator_sq)}
+                    onClick={() => detailUser(row.creator_id)}
                 >
                     상세보기
                 </Link>
@@ -527,7 +569,7 @@ const KmediCreatorMemberMng = (props) => {
             <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
-                width={"800"}
+                width={"1600"}
                 handleModalClose={handleModalClose}
                 component={"KmediCreatorDetailModalMain"}
                 handleNeedUpdate={handleNeedUpdate}
