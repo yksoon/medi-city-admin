@@ -13,12 +13,7 @@ const ConfirmModal = () => {
                     return (
                         <div className="alert" key={`confirm_${idx}`}>
                             <div>
-                                <span
-                                    className="noti_icon"
-                                    id="modal-modal-title"
-                                >
-                                    <img src="img/common/alert.png" alt="" />
-                                </span>
+                             <span className="confirm_icon">?</span>
                                 <h3>
                                     {message
                                         ? decodeURI(message)
@@ -34,27 +29,15 @@ const ConfirmModal = () => {
                                         : ""} */}
                                 </p>
                             </div>
-                            <div className="btn_box">
-                                <Link className="backbtn on" onClick={ok.click}>
+                            <div className="modal_btn_box">
+                                <Link className="modal_btn on" onClick={ok.click}>
                                     {ok.text}{" "}
-                                    <span>
-                                        <img
-                                            src="img/common/arrow.png"
-                                            alt=""
-                                        />
-                                    </span>
                                 </Link>{" "}
                                 <Link
-                                    className="backbtn"
+                                    className="modal_btn"
                                     onClick={cancel.click}
                                 >
                                     {cancel.text}{" "}
-                                    <span>
-                                        <img
-                                            src="img/common/arrow.png"
-                                            alt=""
-                                        />
-                                    </span>
                                 </Link>
                             </div>
                         </div>

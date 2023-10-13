@@ -7,7 +7,9 @@ import {
 } from "common/js/Common";
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
+import useConfirm from "hook/useConfirm";
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
@@ -18,23 +20,21 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
 import { Pagination } from "@mui/material";
-import useConfirm from "hook/useConfirm";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-const KmediTermsMng = (props) => {
+const KmediLocalMemberMng = (props) => {
     const { confirm } = useConfirm();
     const { alert } = useAlert();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
-    const [termsList, setTermsList] = useState([]);
+    const [userList, setUserList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
     const [checkItems, setCheckItems] = useState([]);
 
-    // 약관 상세 데이터
+    // 회원 상세 데이터
     const [modData, setModData] = useState({});
 
     // 모달
@@ -49,14 +49,14 @@ const KmediTermsMng = (props) => {
     const isRefresh = props.isRefresh;
 
     useEffect(() => {
-        getTermsList(1, 10, "");
+        getUserList(1, 10, "");
     }, [isNeedUpdate, isRefresh]);
 
     // 리스트
-    const getTermsList = (pageNum, pageSize, searchKeyword) => {
+    const getUserList = (pageNum, pageSize, searchKeyword) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_list;
+        const url = apiPath.api_admin_kmedi_member_list;
         const data = {
             page_num: pageNum,
             page_size: pageSize,
@@ -86,7 +86,7 @@ const KmediTermsMng = (props) => {
                 const page_info = res.data.page_info;
 
                 // console.log(res);
-                setTermsList(result_info);
+                setUserList(result_info);
                 setPageInfo(page_info);
 
                 // console.log(res);
@@ -123,6 +123,12 @@ const KmediTermsMng = (props) => {
         setIsNeedUpdate(!isNeedUpdate);
     };
 
+    // 약관 신규 등록 모달
+    const regUser = () => {
+        setModalTitle("현지회원 신규 등록");
+        setIsOpen(true);
+    };
+
     // 체크박스 단일 선택
     const handleSingleCheck = (checked, id) => {
         if (checked) {
@@ -139,7 +145,7 @@ const KmediTermsMng = (props) => {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            termsList.forEach((el) => idArray.push(el.terms_sq));
+            userList.forEach((el) => idArray.push(el.member_sq));
             setCheckItems(idArray);
         } else {
             // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -149,26 +155,14 @@ const KmediTermsMng = (props) => {
 
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        getTermsList(value, 10);
-    };
-
-    // 약관 신규 등록 모달
-    const regTerms = () => {
-        setModalTitle("약관 신규 등록");
-        setIsOpen(true);
-    };
-
-    // 약관 상세보기 모달
-    const modTerms = () => {
-        setModalTitle("약관 상세보기");
-        setIsOpen(true);
+        getUserList(value, 10);
     };
 
     // 약관 상세
-    const detailTerms = (terms_sq) => {
+    const detailUser = (member_sq) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_detail + terms_sq;
+        const url = apiPath.api_admin_kmedi_member_detail + member_sq;
         const data = {};
 
         // 파라미터
@@ -187,7 +181,7 @@ const KmediTermsMng = (props) => {
                 const result_info = res.data.result_info;
                 setModData(result_info);
 
-                modTerms();
+                modUser();
 
                 setIsSpinner(false);
             } else {
@@ -202,6 +196,12 @@ const KmediTermsMng = (props) => {
         };
     };
 
+    // 현지회원 상세보기 모달
+    const modUser = () => {
+        setModalTitle("현지회원 상세보기");
+        setIsOpen(true);
+    };
+
     // 약관 선택 삭제
     const clickRemove = () => {
         //선택여부 확인
@@ -209,22 +209,22 @@ const KmediTermsMng = (props) => {
             ? CommonNotify({
                   type: "alert",
                   hook: alert,
-                  message: "삭제할 목록을 선택해주세요",
+                  message: "탈퇴처리 할 회원을 선택해주세요",
               })
             : CommonNotify({
                   type: "confirm",
                   hook: confirm,
                   message: "선택된 목록을 삭제 하시겠습니까?",
-                  callback: () => removeTerms(),
+                  callback: () => removeUsers(),
               });
     };
 
     // 삭제 버튼
-    const removeTerms = async () => {
+    const removeUsers = async () => {
         let checkItemsStr = checkItems.join();
         setIsSpinner(true);
 
-        const url = `${apiPath.api_admin_kmedi_terms_remove}${checkItemsStr}`;
+        const url = `${apiPath.api_admin_kmedi_member_remove}${checkItemsStr}`;
 
         const restParams = {
             method: "delete",
@@ -244,7 +244,7 @@ const KmediTermsMng = (props) => {
                 CommonNotify({
                     type: "alert",
                     hook: alert,
-                    message: "삭제가 완료 되었습니다",
+                    message: "탈퇴 처리가 완료 되었습니다",
                     callback: () => handleNeedUpdate(),
                 });
             } else {
@@ -262,11 +262,11 @@ const KmediTermsMng = (props) => {
     // 컬럼 세팅
     const columns = useMemo(() => [
         {
-            accessorKey: "terms_sq",
+            accessorKey: "member_sq",
             cell: (info) => (
                 <input
                     type="checkbox"
-                    name={`termsSq_${info.getValue()}`}
+                    name={`member_sq_${info.getValue()}`}
                     id={info.getValue()}
                     value={info.getValue()}
                     onChange={(e) =>
@@ -284,8 +284,8 @@ const KmediTermsMng = (props) => {
                     onChange={(e) => handleAllCheck(e.target.checked)}
                     checked={
                         checkItems &&
-                        termsList &&
-                        checkItems.length === termsList.length
+                        userList &&
+                        checkItems.length === userList.length
                             ? true
                             : false
                     }
@@ -294,31 +294,52 @@ const KmediTermsMng = (props) => {
             enableSorting: false,
         },
 
-        columnHelper.accessor((row) => row.terms_type_cd, {
-            id: "terms_type_cd",
+        columnHelper.accessor((row) => row.insert_dt.split(" ")[0], {
+            id: "insert_dt",
+            cell: (info) => info.getValue(),
+            header: "가입일",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.member_status_cd_nm, {
+            id: "member_status_cd_nm",
+            cell: (info) => info.getValue(),
+            header: "상태",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.member_type_cd_nm, {
+            id: "member_type_cd_nm",
             cell: (info) => info.getValue(),
             header: "구분",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.lang_cd, {
-            id: "lang_cd",
+        columnHelper.accessor((row) => row.member_nm, {
+            id: "member_nm",
             cell: (info) => info.getValue(),
-            header: "언어",
+            header: "이름",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.terms_desc, {
-            id: "terms_desc",
+        columnHelper.accessor((row) => <></>, {
+            id: "phone",
             cell: (info) => info.getValue(),
-            header: "내용",
+            header: "연락처",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.reg_dttm.split(" ")[0], {
-            id: "reg_dttm",
+        columnHelper.accessor((row) => row.member_email_addr, {
+            id: "member_email_addr",
             cell: (info) => info.getValue(),
-            header: "등록일",
+            header: "이메일",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.member_company_nm, {
+            id: "member_company_nm",
+            cell: (info) => info.getValue(),
+            header: "소속병원",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
@@ -326,21 +347,21 @@ const KmediTermsMng = (props) => {
             (row) => (
                 <Link
                     className="tablebtn"
-                    onClick={() => detailTerms(row.terms_sq)}
+                    onClick={() => detailUser(row.member_sq)}
                 >
-                    약관수정
+                    상세보기
                 </Link>
             ),
             {
                 id: "viewDetail",
                 cell: (info) => info.getValue(),
-                header: "약관수정",
+                header: "상세보기",
                 enableSorting: false,
             }
         ),
     ]);
 
-    const data = useMemo(() => termsList, [termsList]);
+    const data = useMemo(() => userList, [userList]);
 
     const table = useReactTable({
         data,
@@ -357,26 +378,187 @@ const KmediTermsMng = (props) => {
         <>
             <div className="content">
                 <div className="title">
-                    <h3>홈페이지 관리 - 약관 관리</h3>
+                    <h3>회원 관리 - 현지회원</h3>
                 </div>
                 <div className="con_area">
-                    <div className="adm_search">
+                    <div className="kmedi_top_wrap">
+                        <div className="kmedi_top_box">
+                            <div className="kmedi_top">
+                                <h5>기간조회</h5>
+                                <Link href="" className="kmedi_top_btn">
+                                    7일
+                                </Link>
+                                <Link href="" className="kmedi_top_btn">
+                                    14일
+                                </Link>
+                                <Link href="" className="kmedi_top_btn">
+                                    30일
+                                </Link>
+                                <Link href="" className="kmedi_top_btn">
+                                    3개월
+                                </Link>
+                                <input type="date" className="input" /> ~{" "}
+                                <input type="date" className="input" />
+                            </div>
+                            <div className="kmedi_top">
+                                <h5>회원상태</h5>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_state1"
+                                        name="member_state"
+                                    />
+                                    <label htmlFor="member_state1">전체</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_state2"
+                                        name="member_state"
+                                    />
+                                    <label htmlFor="member_state2">정상</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_state3"
+                                        name="member_state"
+                                    />
+                                    <label htmlFor="member_state3">탈퇴</label>
+                                </div>
+                            </div>
+                            <div className="kmedi_top">
+                                <h5>회원구분</h5>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_division1"
+                                        name="member_division"
+                                    />
+                                    <label htmlFor="member_division1">
+                                        전체
+                                    </label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_division2"
+                                        name="member_division"
+                                    />
+                                    <label htmlFor="member_division2">
+                                        개인의사
+                                    </label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_division3"
+                                        name="member_division"
+                                    />
+                                    <label htmlFor="member_division3">
+                                        영업사원
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="kmedi_top">
+                                <h5>상세정보</h5>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_detail1"
+                                        name="member_detail"
+                                    />
+                                    <label htmlFor="member_detail1">전체</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_detail2"
+                                        name="member_detail"
+                                    />
+                                    <label htmlFor="member_detail2">입력</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="member_detail3"
+                                        name="member_detail"
+                                    />
+                                    <label htmlFor="member_detail3">
+                                        미입력
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="kmedi_top_box">
+                            <div className="kmedi_top">
+                                <select name="" id="">
+                                    <option value="">구분</option>
+                                    <option value="">회원이름</option>
+                                    <option value="">병원이름</option>
+                                    <option value="">핸드폰</option>
+                                    <option value="">customer ID</option>
+                                </select>
+                                <input type="text" className="input" />
+                                <Link className="subbtn off">검색</Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="adm_statistics">
                         <div>
-                            <select name="" id="">
-                                <option value="">구분</option>
-                                <option value="">이름</option>
-                                <option value="">소속</option>
-                            </select>{" "}
-                            <input type="text" className="input" />{" "}
-                            <Link className="subbtn off">검색</Link>
+                            <h5>회원</h5>
+                            <ul>
+                                <li>
+                                    <Link href="">
+                                        전체 <strong>00</strong>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="">
+                                        개인의사 <strong>00</strong>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="">
+                                        영업사원 <strong>00</strong>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="">
+                                        한국 크리에이터 <strong>00</strong>
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                         <div>
+                            <h5>1:1문의</h5>
+                            <ul>
+                                <li>
+                                    <Link href="">
+                                        전체 <strong>00</strong>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="">
+                                        답변대기 <strong>00</strong>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="">
+                                        답변완료 <strong>00</strong>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="kmedi_add_btn">
+                        <div>
                             <Link className="subbtn del" onClick={clickRemove}>
-                                선택삭제
+                                강제탈퇴
                             </Link>{" "}
-                            <Link className="subbtn on" onClick={regTerms}>
-                                약관등록
-                            </Link>{" "}
+                            <Link className="subbtn on" onClick={regUser}>
+                                회원등록
+                            </Link>
                             <Link className="subbtn on">엑셀 다운로드</Link>
                         </div>
                     </div>
@@ -391,7 +573,7 @@ const KmediTermsMng = (props) => {
                             }}
                         >
                             총 :{" "}
-                            <b>&nbsp; {pageInfo && pageInfo.total} &nbsp;</b> 건
+                            <b>&nbsp; {pageInfo && pageInfo.total} &nbsp;</b> 명
                         </div>
                     )}
                     {/* 총 건수 END */}
@@ -399,12 +581,15 @@ const KmediTermsMng = (props) => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
-                                <col width="2%" />
                                 <col width="5%" />
-                                <col width="5%" />
-                                <col width="*" />
-                                <col width="7%" />
-                                <col width="5%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
                             </colgroup>
                             <thead>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -463,7 +648,27 @@ const KmediTermsMng = (props) => {
                                 ))}
                             </thead>
                             <tbody>
-                                {termsList.length !== 0 ? (
+                                {/* <tr>
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td>23-05-30</td>
+                                    <td>정상</td>
+                                    <td>개인의사</td>
+                                    <td>임은지</td>
+                                    <td>010-0000-0000</td>
+                                    <td>ej.lim@hicomp.net</td>
+                                    <td>hicompint</td>
+                                    <td>
+                                        <Link
+                                            href="kmedi_member_local_detail.html"
+                                            className="tablebtn"
+                                        >
+                                            상세보기
+                                        </Link>
+                                    </td>
+                                </tr> */}
+                                {userList.length !== 0 ? (
                                     table.getRowModel().rows.map((row) => (
                                         <tr key={row.id}>
                                             {row
@@ -483,7 +688,7 @@ const KmediTermsMng = (props) => {
                                     <>
                                         <tr>
                                             <td
-                                                colSpan="12"
+                                                colSpan="9"
                                                 style={{ height: "55px" }}
                                             >
                                                 <b>데이터가 없습니다.</b>
@@ -509,9 +714,9 @@ const KmediTermsMng = (props) => {
             <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
-                width={"1400"}
+                width={"800"}
                 handleModalClose={handleModalClose}
-                component={"KmediTermsModalMain"}
+                component={"KmediLocalMemberModalMain"}
                 handleNeedUpdate={handleNeedUpdate}
                 modData={modData}
             />
@@ -519,4 +724,4 @@ const KmediTermsMng = (props) => {
     );
 };
 
-export default KmediTermsMng;
+export default KmediLocalMemberMng;

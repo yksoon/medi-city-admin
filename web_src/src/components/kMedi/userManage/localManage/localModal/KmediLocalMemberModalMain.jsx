@@ -12,7 +12,7 @@ const memberTypeCdOption = [
     { value: "100", label: "개인의사" },
     { value: "300", label: "영업사원" },
 ];
-const KmediLocalUserModalMain = (props) => {
+const KmediLocalMemberModalMain = (props) => {
     const { confirm } = useConfirm();
     const { alert } = useAlert();
     const err = CommonErrModule();
@@ -360,4 +360,4 @@ const KmediLocalUserModalMain = (props) => {
     );
 };
 
-export default KmediLocalUserModalMain;
+export default KmediLocalMemberModalMain;

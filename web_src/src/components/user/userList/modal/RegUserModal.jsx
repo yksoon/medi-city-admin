@@ -256,7 +256,7 @@ const RegUserModal = (props) => {
 
     const regUser = () => {
         let signupData = {
-            signup_type: "000",
+            signup_type: "300",
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
             user_name_first_ko: inputFirstNameKo.current.value,
@@ -299,11 +299,18 @@ const RegUserModal = (props) => {
                 CommonNotify({
                     type: "alert",
                     hook: alert,
-                    message: res.headers.result_message_ko,
+                    message: "회원 등록이 완료 되었습니다.",
+                    callback: () => pageUpdate(),
                 });
+            } else {
+                setIsSpinner(false);
 
-                handleNeedUpdate();
-                modalOption.handleModalClose();
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                    callback: () => pageUpdate(),
+                });
             }
         };
     };
@@ -311,7 +318,7 @@ const RegUserModal = (props) => {
     // 회원수정
     const modUser = () => {
         let modData = {
-            signup_type: "000",
+            signup_type: modUserData.signup_type_cd,
             user_idx: modUserData.user_idx,
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
@@ -358,26 +365,27 @@ const RegUserModal = (props) => {
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: res.headers.result_message_ko,
-                        callback: () => requestUserInfo(),
+                        message: "회원 정보 수정이 완료 되었습니다",
+                        callback: () => pageUpdate(),
                     });
-
-                    handleNeedUpdate();
-                    modalOption.handleModalClose();
                 } else {
                     setIsSpinner(false);
 
                     CommonNotify({
                         type: "alert",
                         hook: alert,
-                        message: "잠시후 다시 시도해주세요",
+                        message: res.headers.result_message_ko,
+                        callback: () => pageUpdate(),
                     });
-
-                    handleNeedUpdate();
-                    modalOption.handleModalClose();
                 }
             };
         }
+    };
+
+    // 등록,수정 완료 로직
+    const pageUpdate = () => {
+        handleNeedUpdate();
+        modalOption.handleModalClose();
     };
 
     // 검증 (signup/mod)

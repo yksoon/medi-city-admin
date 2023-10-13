@@ -23,9 +23,18 @@ import {
 } from "recoils/atoms";
 import { successCode } from "common/js/resultCode";
 import RoomManage from "components/hotel/roomManage/RoomManage";
-import LocalMemberMng from "components/kMedi/userManage/localManage/LocalMemberMng";
-import CreatorMemberMng from "components/kMedi/userManage/creatorManage/CreatorMemberMng";
+import KmediLocalMemberMng from "components/kMedi/userManage/localManage/KmediLocalMemberMng";
+import KmediCreatorMemberMng from "components/kMedi/userManage/creatorManage/KmediCreatorMemberMng";
 import KmediTermsMng from "components/kMedi/homepageManage/termsManage/KmediTermsMng";
+import KmediNoticeMng from "components/kMedi/boardManage/noticeManage/KmediNoticeMng";
+import KmediBannerMng from "components/kMedi/homepageManage/bannerManage/KmediBannerMng";
+import KmediPointMng from "components/kMedi/pointManage/KmediPointMng";
+import KmediPaymentMng from "components/kMedi/paymentManage/KmediPaymentMng";
+import KmediContentsMng from "components/kMedi/contentsManage/KmediContentsMng";
+import KmediCalcMng from "components/kMedi/clacManage/KmediCalcMng";
+import KmediCategoryMng from "components/kMedi/categoryManage/KmediCategoryMng";
+import KmediOneToOneMng from "components/kMedi/boardManage/oneToOneManage/KmediOneToOneMng";
+import KmediMedicalQnaMng from "components/kMedi/boardManage/medicalQnaManage/KmediMedicalQnaMng";
 
 const Main = () => {
     const navigate = useNavigate();
@@ -179,15 +188,51 @@ const Main = () => {
 
             // K-MEDI - 회원관리 - 현지회원
             case "kmediLocalMemberMng":
-                return <LocalMemberMng isRefresh={isRefresh} />;
+                return <KmediLocalMemberMng isRefresh={isRefresh} />;
 
             // K-MEDI - 회원관리 - 한국크리에이터
             case "kmediCreatorMemberMng":
-                return <CreatorMemberMng isRefresh={isRefresh} />;
+                return <KmediCreatorMemberMng isRefresh={isRefresh} />;
 
             // K-MEDI - 홈페이지관리 - 약관관리
             case "kmediTermsMng":
                 return <KmediTermsMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 홈페이지관리 - 배너관리
+            case "kmediBannerMng":
+                return <KmediBannerMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 컨텐츠관리
+            case "kmediContentsMng":
+                return <KmediContentsMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 카테고리
+            case "kmediCategoryMng":
+                return <KmediCategoryMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 결제관리
+            case "kmediPaymentMng":
+                return <KmediPaymentMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 정산관리
+            case "kmediCalcMng":
+                return <KmediCalcMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 포인트관리
+            case "kmediPointMng":
+                return <KmediPointMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 게시판관리 - 공지사항
+            case "kmediNoticeMng":
+                return <KmediNoticeMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 게시판관리 - 1:1 문의
+            case "kmediOneToOneMng":
+                return <KmediOneToOneMng isRefresh={isRefresh} />;
+
+            // K-MEDI - 게시판관리 - 의료 QNA
+            case "kmediMedicalQnaMng":
+                return <KmediMedicalQnaMng isRefresh={isRefresh} />;
 
             default:
                 return <DashBoardMain />;
