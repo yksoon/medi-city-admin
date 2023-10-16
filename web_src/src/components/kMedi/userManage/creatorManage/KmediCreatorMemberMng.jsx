@@ -23,6 +23,7 @@ import { apiPath } from "webPath";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Pagination } from "@mui/material";
+import { commonSeparator } from "common/js/static";
 
 const KmediCreatorMemberMng = (props) => {
     const { confirm } = useConfirm();
@@ -147,7 +148,49 @@ const KmediCreatorMemberMng = (props) => {
     };
 
     // 상세보기
-    const detailUser = (member_sq) => {
+    const detailUser = (creator_id) => {
+        setIsSpinner(true);
+
+        const url = apiPath.api_admin_kmedi_creator_detail + creator_id;
+        const data = {};
+
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+
+            // 성공
+            if (
+                result_code === successCode.success ||
+                result_code === successCode.noData
+            ) {
+                const result_info = res.data.result_info;
+
+                setModData(result_info);
+
+                openDetailUserModal();
+                // console.log(res);
+                setIsSpinner(false);
+            } else {
+                // 에러
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+            }
+        };
+    };
+
+    // 상세 모달 열기
+    const openDetailUserModal = () => {
         setModalTitle("크리에이터 상세보기");
         setIsOpen(true);
     };
@@ -185,38 +228,38 @@ const KmediCreatorMemberMng = (props) => {
 
     // 컬럼 세팅
     const columns = useMemo(() => [
-        {
-            accessorKey: "creator_sq",
-            cell: (info) => (
-                <input
-                    type="checkbox"
-                    name={`creator_sq_${info.getValue()}`}
-                    id={info.getValue()}
-                    value={info.getValue()}
-                    onChange={(e) =>
-                        handleSingleCheck(e.target.checked, info.getValue())
-                    }
-                    checked={
-                        checkItems.includes(info.getValue()) ? true : false
-                    }
-                />
-            ),
-            header: () => (
-                <input
-                    type="checkbox"
-                    name="select-all"
-                    onChange={(e) => handleAllCheck(e.target.checked)}
-                    checked={
-                        checkItems &&
-                        userList &&
-                        checkItems.length === userList.length
-                            ? true
-                            : false
-                    }
-                />
-            ),
-            enableSorting: false,
-        },
+        // {
+        //     accessorKey: "creator_sq",
+        //     cell: (info) => (
+        //         <input
+        //             type="checkbox"
+        //             name={`creator_sq_${info.getValue()}`}
+        //             id={info.getValue()}
+        //             value={info.getValue()}
+        //             onChange={(e) =>
+        //                 handleSingleCheck(e.target.checked, info.getValue())
+        //             }
+        //             checked={
+        //                 checkItems.includes(info.getValue()) ? true : false
+        //             }
+        //         />
+        //     ),
+        //     header: () => (
+        //         <input
+        //             type="checkbox"
+        //             name="select-all"
+        //             onChange={(e) => handleAllCheck(e.target.checked)}
+        //             checked={
+        //                 checkItems &&
+        //                 userList &&
+        //                 checkItems.length === userList.length
+        //                     ? true
+        //                     : false
+        //             }
+        //         />
+        //     ),
+        //     enableSorting: false,
+        // },
 
         columnHelper.accessor((row) => row.creator_nm, {
             id: "creator_nm",
@@ -225,12 +268,19 @@ const KmediCreatorMemberMng = (props) => {
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.creator_desc, {
-            id: "creator_desc",
-            cell: (info) => info.getValue(),
-            header: "설명",
-            sortingFn: "alphanumericCaseSensitive",
-        }),
+        columnHelper.accessor(
+            (row) =>
+                row.creator_desc.split(commonSeparator)[1] === "null" ||
+                !row.creator_desc.split(commonSeparator)[1]
+                    ? row.creator_desc.split(commonSeparator)[0]
+                    : row.creator_desc.split(commonSeparator)[1],
+            {
+                id: "creator_desc",
+                cell: (info) => info.getValue(),
+                header: "설명",
+                sortingFn: "alphanumericCaseSensitive",
+            }
+        ),
 
         columnHelper.accessor((row) => row.creator_email_addr, {
             id: "creator_email_addr",
@@ -250,7 +300,7 @@ const KmediCreatorMemberMng = (props) => {
             (row) => (
                 <Link
                     className="tablebtn"
-                    onClick={() => detailUser(row.creator_sq)}
+                    onClick={() => detailUser(row.creator_id)}
                 >
                     상세보기
                 </Link>
@@ -405,7 +455,7 @@ const KmediCreatorMemberMng = (props) => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
-                                <col width="3%" />
+                                {/* <col width="3%" /> */}
                                 <col width="15%" />
                                 <col width="*" />
                                 <col width="15%" />
@@ -489,7 +539,7 @@ const KmediCreatorMemberMng = (props) => {
                                     <>
                                         <tr>
                                             <td
-                                                colSpan="6"
+                                                colSpan="5"
                                                 style={{ height: "55px" }}
                                             >
                                                 <b>데이터가 없습니다.</b>
@@ -527,7 +577,7 @@ const KmediCreatorMemberMng = (props) => {
             <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
-                width={"800"}
+                width={"1600"}
                 handleModalClose={handleModalClose}
                 component={"KmediCreatorDetailModalMain"}
                 handleNeedUpdate={handleNeedUpdate}

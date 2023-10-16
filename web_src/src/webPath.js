@@ -342,6 +342,13 @@ const apiPath = {
     api_admin_kmedi_creator_list: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/creators`,
+
+    // 크리에이터 상세
+    // mng/v1/kmedi/creator/{creator_id}/
+    // get
+    api_admin_kmedi_creator_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/creator/`,
 };
 
 export { routerPath, apiPath };
