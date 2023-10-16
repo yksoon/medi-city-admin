@@ -61,6 +61,8 @@ const RegUserModal = (props) => {
     const inputOrganization = useRef(null);
     const inputDepartment = useRef(null);
     const inputSpecialized = useRef(null);
+    const inputEmail = useRef(null);
+    const inputUserMemo = useRef(null);
 
     useEffect(() => {
         // 국가번호
@@ -103,10 +105,12 @@ const RegUserModal = (props) => {
         inputLisenceNum.current.value = modUserData.md_licenses_number;
         selectUserRole.current.value = modUserData.user_role_cd;
         selectUserStatus.current.value = modUserData.user_status_cd;
+        inputEmail.current.value = modUserData.email;
+        inputUserMemo.current.value = modUserData.user_memo;
 
         setSelectedCountry(modUserData.inter_phone_number);
 
-        console.log(selectCountry);
+        // console.log(selectCountry);
     };
 
     // 국가번호 SELECT 가공
@@ -273,6 +277,8 @@ const RegUserModal = (props) => {
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
             user_status: selectUserStatus.current.value,
+            email: inputEmail.current.value,
+            user_memo: inputUserMemo.current.value,
         };
 
         // 등록
@@ -336,6 +342,8 @@ const RegUserModal = (props) => {
             specialized_name_ko: inputSpecialized.current.value,
             user_role: selectUserRole.current.value,
             user_status: selectUserStatus.current.value,
+            email: inputEmail.current.value,
+            user_memo: inputUserMemo.current.value,
         };
 
         if (checkValidation("mod")) {
@@ -668,6 +676,16 @@ const RegUserModal = (props) => {
                         </td>
                     </tr>
                     <tr>
+                        <th>이메일</th>
+                        <td>
+                            <input
+                                type="text"
+                                className="input w180"
+                                ref={inputEmail}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
                         <th>국적</th>
                         <td>
                             <Select
@@ -769,6 +787,16 @@ const RegUserModal = (props) => {
                                 type="text"
                                 className="input w180"
                                 ref={inputSpecialized}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>관리자메모</th>
+                        <td>
+                            <textarea
+                                type="text"
+                                className="input wp100"
+                                ref={inputUserMemo}
                             />
                         </td>
                     </tr>

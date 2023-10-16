@@ -1,4 +1,6 @@
-const ProfileInfoComponent = (props) => {
+import { forwardRef } from "react";
+
+const ProfileInfoComponent = forwardRef((props, ref) => {
     const userData = props.userData;
 
     return (
@@ -36,6 +38,6 @@ const ProfileInfoComponent = (props) => {
             </div>
         </>
     );
-};
+});
 
 export default ProfileInfoComponent;

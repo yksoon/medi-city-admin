@@ -9,12 +9,13 @@ import useAlert from "hook/useAlert";
 import useConfirm from "hook/useConfirm";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { isSpinnerAtom } from "recoils/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { countryBankAtom, isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
 import UserInfoComponent from "./detailModalComponents/UserInfoComponent";
 import ProfileInfoComponent from "./detailModalComponents/ProfileInfoComponent";
 import ManagerMemoComponent from "./detailModalComponents/ManagerMemoComponent";
+import { commonUserRoleCd } from "common/js/static";
 
 const KmediCreatorDetailModalMain = (props) => {
     const { alert } = useAlert();
@@ -22,18 +23,63 @@ const KmediCreatorDetailModalMain = (props) => {
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
+    // 국가번호
+    const countryBank = useRecoilValue(countryBankAtom);
+
+    // 모달 닫기
+    const handleModalClose = props.handleModalClose;
+
     // 상세보기 데이터
     const modData = props.modData;
     const isModData = Object.keys(modData).length !== 0 ? true : false;
 
     const handleNeedUpdate = props.handleNeedUpdate;
 
+    // 회원정보
     const [userData, setUserData] = useState({});
 
+    // 국가번호 옵션
+    const [selectCountryOptions, setSelectCountryOptions] = useState([]);
+
+    // 국가번호
+    const [selectedCountry, setSelectedCountry] = useState("82");
+
+    const creatorRefs = {
+        userNameInput: useRef(null),
+        selectCountry: useRef(null),
+        mobile1Input: useRef(null),
+        mobile2Input: useRef(null),
+        mobile3Input: useRef(null),
+        emailInput: useRef(null),
+        organizationInput: useRef(null),
+        specializedInput: useRef(null),
+        memoTextarea: useRef(null),
+    };
+
     useEffect(() => {
+        selectboxCountry();
         // console.log("modData", modData);
         parseUserData();
     }, []);
+
+    // 국가번호 SELECT 가공
+    const selectboxCountry = () => {
+        let options = [];
+        const country = countryBank.filter(
+            (e) => e.code_type === "INTER_PHONE_TYPE"
+        );
+
+        for (let i = 0; i < country.length; i++) {
+            let newObj = {
+                value: country[i].code_key,
+                label: country[i].code_value,
+            };
+
+            options.push(newObj);
+        }
+
+        setSelectCountryOptions(options);
+    };
 
     const parseUserData = () => {
         const desc = modData.creator_desc;
@@ -85,7 +131,7 @@ const KmediCreatorDetailModalMain = (props) => {
             if (result_code === successCode.success) {
                 setIsSpinner(false);
 
-                console.log(result_info);
+                // console.log(result_info);
                 setUserData(result_info);
             }
             // 에러
@@ -103,6 +149,116 @@ const KmediCreatorDetailModalMain = (props) => {
         };
     };
 
+    // 국가번호 변경 핸들러
+    const handleCountrySelect = (value) => {
+        setSelectedCountry(value);
+    };
+
+    // 수정
+    const modCreator = () => {
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: "수정하시겠습니까?",
+            callback: () => doModCreator(),
+        });
+
+        const doModCreator = () => {
+            const data = {
+                user_idx: userData.user_idx,
+                user_role: userData.user_role_cd,
+                // userNameInput: creatorRefs.userNameInput.current.value,
+                inter_phone_number: selectedCountry,
+                mobile1: creatorRefs.mobile1Input.current.value,
+                mobile2: creatorRefs.mobile2Input.current.value,
+                mobile3: creatorRefs.mobile3Input.current.value,
+                email: creatorRefs.emailInput.current.value,
+                organization_name_ko:
+                    creatorRefs.organizationInput.current.value,
+                specialized_name_ko: creatorRefs.specializedInput.current.value,
+                user_memo: creatorRefs.memoTextarea.current.value,
+            };
+
+            const resultMsg = "탈퇴 처리가 완료되었습니다.";
+
+            putProcess(resultMsg, data);
+        };
+    };
+
+    // 탈퇴
+    const removeUser = () => {
+        CommonNotify({
+            type: "confirm",
+            hook: confirm,
+            message: `탈퇴 처리 시 크리에이터의 권한이 삭제 됩니다.
+                그래도 탈퇴 처리 하시겠습니까?`,
+            callback: () => doRemoveCreator(),
+        });
+
+        const doRemoveCreator = () => {
+            const data = {
+                user_idx: userData.user_idx,
+                user_role: commonUserRoleCd.general, // 400 : 일반
+                // userNameInput: creatorRefs.userNameInput.current.value,
+                inter_phone_number: selectedCountry,
+                mobile1: creatorRefs.mobile1Input.current.value,
+                mobile2: creatorRefs.mobile2Input.current.value,
+                mobile3: creatorRefs.mobile3Input.current.value,
+                email: creatorRefs.emailInput.current.value,
+                organization_name_ko:
+                    creatorRefs.organizationInput.current.value,
+                specialized_name_ko: creatorRefs.specializedInput.current.value,
+                user_memo: creatorRefs.memoTextarea.current.value,
+            };
+
+            const resultMsg = "탈퇴 처리가 완료되었습니다.";
+
+            putProcess(resultMsg, data);
+        };
+    };
+
+    const putProcess = (resultMsg, data) => {
+        setIsSpinner(true);
+
+        // 수정
+        // /v1/user
+        // PUT
+        const url = apiPath.api_admin_user_mod;
+
+        // 파라미터
+        const restParams = {
+            method: "put",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            if (res.headers.result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: resultMsg,
+                    callback: () => handleNeedUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                    callback: () => handleNeedUpdate(),
+                });
+            }
+        };
+    };
+
     return (
         <>
             <div className="con_area">
@@ -113,12 +269,20 @@ const KmediCreatorDetailModalMain = (props) => {
 
                     {/* 회원정보 */}
                     {Object.keys(userData).length !== 0 && (
-                        <UserInfoComponent userData={userData} />
+                        <UserInfoComponent
+                            userData={userData}
+                            selectCountryOptions={selectCountryOptions}
+                            handleCountrySelect={handleCountrySelect}
+                            ref={creatorRefs}
+                        />
                     )}
 
                     {/* 프로필정보 */}
                     {Object.keys(userData).length !== 0 && (
-                        <ProfileInfoComponent userData={userData} />
+                        <ProfileInfoComponent
+                            userData={userData}
+                            ref={creatorRefs}
+                        />
                     )}
 
                     <div className="kmedi_member_box">
@@ -499,26 +663,20 @@ const KmediCreatorDetailModalMain = (props) => {
                     </div>
 
                     {/* 관리자메모 */}
-                    <ManagerMemoComponent modData={modData} />
+                    <ManagerMemoComponent modData={modData} ref={creatorRefs} />
                 </div>
 
                 <div className="subbtn_box">
                     <Link
-                        href="kmedi_member_local.html"
+                        onClick={handleModalClose}
                         className="modal_btn subbtn off"
                     >
                         목록으로
                     </Link>
-                    <Link
-                        href="javascript:alert('정말 강제탈퇴 하시겠습니까? ');"
-                        className="subbtn del"
-                    >
+                    <Link onClick={removeUser} className="subbtn del">
                         강제탈퇴
                     </Link>
-                    <Link
-                        href="javascript:alert('저장되었습니다.');"
-                        className="subbtn on"
-                    >
+                    <Link onClick={modCreator} className="subbtn on">
                         저장
                     </Link>
                 </div>

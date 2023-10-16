@@ -23,6 +23,7 @@ import { apiPath } from "webPath";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Pagination } from "@mui/material";
+import { commonSeparator } from "common/js/static";
 
 const KmediCreatorMemberMng = (props) => {
     const { confirm } = useConfirm();
@@ -227,38 +228,38 @@ const KmediCreatorMemberMng = (props) => {
 
     // 컬럼 세팅
     const columns = useMemo(() => [
-        {
-            accessorKey: "creator_sq",
-            cell: (info) => (
-                <input
-                    type="checkbox"
-                    name={`creator_sq_${info.getValue()}`}
-                    id={info.getValue()}
-                    value={info.getValue()}
-                    onChange={(e) =>
-                        handleSingleCheck(e.target.checked, info.getValue())
-                    }
-                    checked={
-                        checkItems.includes(info.getValue()) ? true : false
-                    }
-                />
-            ),
-            header: () => (
-                <input
-                    type="checkbox"
-                    name="select-all"
-                    onChange={(e) => handleAllCheck(e.target.checked)}
-                    checked={
-                        checkItems &&
-                        userList &&
-                        checkItems.length === userList.length
-                            ? true
-                            : false
-                    }
-                />
-            ),
-            enableSorting: false,
-        },
+        // {
+        //     accessorKey: "creator_sq",
+        //     cell: (info) => (
+        //         <input
+        //             type="checkbox"
+        //             name={`creator_sq_${info.getValue()}`}
+        //             id={info.getValue()}
+        //             value={info.getValue()}
+        //             onChange={(e) =>
+        //                 handleSingleCheck(e.target.checked, info.getValue())
+        //             }
+        //             checked={
+        //                 checkItems.includes(info.getValue()) ? true : false
+        //             }
+        //         />
+        //     ),
+        //     header: () => (
+        //         <input
+        //             type="checkbox"
+        //             name="select-all"
+        //             onChange={(e) => handleAllCheck(e.target.checked)}
+        //             checked={
+        //                 checkItems &&
+        //                 userList &&
+        //                 checkItems.length === userList.length
+        //                     ? true
+        //                     : false
+        //             }
+        //         />
+        //     ),
+        //     enableSorting: false,
+        // },
 
         columnHelper.accessor((row) => row.creator_nm, {
             id: "creator_nm",
@@ -267,12 +268,19 @@ const KmediCreatorMemberMng = (props) => {
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.creator_desc, {
-            id: "creator_desc",
-            cell: (info) => info.getValue(),
-            header: "설명",
-            sortingFn: "alphanumericCaseSensitive",
-        }),
+        columnHelper.accessor(
+            (row) =>
+                row.creator_desc.split(commonSeparator)[1] === "null" ||
+                !row.creator_desc.split(commonSeparator)[1]
+                    ? row.creator_desc.split(commonSeparator)[0]
+                    : row.creator_desc.split(commonSeparator)[1],
+            {
+                id: "creator_desc",
+                cell: (info) => info.getValue(),
+                header: "설명",
+                sortingFn: "alphanumericCaseSensitive",
+            }
+        ),
 
         columnHelper.accessor((row) => row.creator_email_addr, {
             id: "creator_email_addr",
@@ -447,7 +455,7 @@ const KmediCreatorMemberMng = (props) => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
-                                <col width="3%" />
+                                {/* <col width="3%" /> */}
                                 <col width="15%" />
                                 <col width="*" />
                                 <col width="15%" />
@@ -531,7 +539,7 @@ const KmediCreatorMemberMng = (props) => {
                                     <>
                                         <tr>
                                             <td
-                                                colSpan="6"
+                                                colSpan="5"
                                                 style={{ height: "55px" }}
                                             >
                                                 <b>데이터가 없습니다.</b>
