@@ -1,11 +1,13 @@
 import { CommonErrModule, CommonNotify, CommonRest } from "common/js/Common";
+import { numberPattern } from "common/js/Pattern";
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
 import useConfirm from "hook/useConfirm";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { isSpinnerAtom } from "recoils/atoms";
+import Select from "react-select";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { countryBankAtom, isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
 
 const memberTypeCdOption = [
@@ -25,6 +27,8 @@ const KmediLocalMemberModalMain = (props) => {
     const handleModalClose = props.handleModalClose;
     const handleNeedUpdate = props.handleNeedUpdate;
 
+    const countryBank = useRecoilValue(countryBankAtom);
+
     // References
     const memberId = useRef(null);
     const memberTypeCd = useRef(null);
@@ -33,10 +37,22 @@ const KmediLocalMemberModalMain = (props) => {
     const memberEmailAddr = useRef(null);
     const memberCompanyNm = useRef(null);
     const memberDeptNm = useRef(null);
+    const selectCountry = useRef(null);
+
+    const [selectCountryOptions, setSelectCountryOptions] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState("62");
 
     useEffect(() => {
-        isModData && setDefaultValue();
+        // 국가번호
+        setSelectboxCountry();
     }, []);
+
+    useEffect(() => {
+        // mod인경우
+        if (isModData) {
+            setDefaultValue();
+        }
+    }, [selectCountryOptions]);
 
     // 수정일 경우 기본 세팅
     const setDefaultValue = () => {
@@ -46,6 +62,52 @@ const KmediLocalMemberModalMain = (props) => {
         memberEmailAddr.current.value = modData.member_email_addr;
         memberCompanyNm.current.value = modData.member_company_nm;
         memberDeptNm.current.value = modData.member_dept_nm;
+    };
+
+    // 국가번호 세팅
+    const setSelectboxCountry = () => {
+        let options = [];
+        const country = countryBank.filter(
+            (e) => e.code_type === "INTER_PHONE_TYPE"
+        );
+
+        for (let i = 0; i < country.length; i++) {
+            let newObj = {
+                value: country[i].code_key,
+                label: country[i].code_value,
+            };
+
+            options.push(newObj);
+        }
+
+        setSelectCountryOptions(options);
+    };
+
+    // 국적 SELECT 스타일
+    const customStyles = {
+        control: () => ({
+            width: "inherit",
+            height: "inherit",
+            lineHeight: "28px",
+        }),
+        valueContainer: () => ({
+            height: "28px",
+            lineHeight: "28px",
+            padding: "0",
+            display: "block",
+        }),
+        indicatorsContainer: () => ({
+            display: "none",
+        }),
+        input: () => ({
+            height: "inherit",
+            lineHeight: "28px",
+            gridArea: "0",
+            display: "block",
+            position: "absolute",
+            top: "0",
+            width: "85%",
+        }),
     };
 
     // 등록
@@ -60,7 +122,7 @@ const KmediLocalMemberModalMain = (props) => {
 
             const data = {
                 // 회원 아이디
-                member_id: memberId.current.value,
+                member_id: `+${selectedCountry}${memberId.current.value}`,
 
                 // 회원타입 코드
                 // 100 : 개인의사
@@ -240,17 +302,67 @@ const KmediLocalMemberModalMain = (props) => {
                             </select>
                         </td>
                     </tr>
+                    {!isModData && (
+                        <tr>
+                            <th>
+                                국적 <span className="red">*</span>
+                            </th>
+                            <td>
+                                <Select
+                                    className="select"
+                                    options={selectCountryOptions}
+                                    defaultValue={
+                                        isModData
+                                            ? selectCountryOptions.find(
+                                                  (e) =>
+                                                      e.value ===
+                                                      modData.inter_phone_number
+                                              )
+                                            : selectCountryOptions.find(
+                                                  (e) => e.value === "62"
+                                              )
+                                    }
+                                    key={
+                                        isModData
+                                            ? selectCountryOptions.find(
+                                                  (e) =>
+                                                      e.value ===
+                                                      modData.inter_phone_number
+                                              )
+                                            : selectCountryOptions.find(
+                                                  (e) => e.value === "62"
+                                              )
+                                    }
+                                    styles={customStyles}
+                                    onChange={(e) => {
+                                        setSelectedCountry(e.value);
+                                    }}
+                                    ref={selectCountry}
+                                />
+                            </td>
+                        </tr>
+                    )}
+
                     <tr>
                         <th>
-                            아이디 <span className="red">*</span>
+                            아이디
+                            <br />
+                            (전화번호) <span className="red">*</span>
                         </th>
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
-                                placeholder="아이디"
+                                className={`input wp100 ${isModData && "hold"}`}
+                                placeholder="아이디 (전화번호)"
+                                disabled={isModData && true}
+                                // onChange={patternCheck}
+                                onKeyDown={(evt) =>
+                                    // ["e", "E", "+", "-"].includes(evt.key) &&
+                                    !numberPattern.test(evt.key) &&
+                                    evt.preventDefault()
+                                }
                                 ref={memberId}
-                            />
+                            ></input>
                         </td>
                     </tr>
                     <tr>
