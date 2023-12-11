@@ -9,6 +9,7 @@ import App from "App";
 
 import "common/css/default.css";
 import "common/css/style.css";
+import {StyledEngineProvider} from "@mui/material";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const app = document.getElementById("app");
@@ -31,7 +32,9 @@ root.render(
     <BrowserRouter>
         <RecoilRoot>
             <RecoilizeDebugger root={app} />
-            <App />
+            <StyledEngineProvider injectFirst>
+                <App />
+            </StyledEngineProvider>
         </RecoilRoot>
     </BrowserRouter>
 );
