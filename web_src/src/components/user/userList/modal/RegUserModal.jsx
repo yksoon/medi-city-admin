@@ -13,6 +13,7 @@ import {
     userInfoAtom,
 } from "recoils/atoms";
 import { successCode } from "common/js/resultCode";
+import CountrySelect from "components/common/CountrySelect";
 
 const RegUserModal = (props) => {
     const { alert } = useAlert();
@@ -123,7 +124,7 @@ const RegUserModal = (props) => {
         for (let i = 0; i < country.length; i++) {
             let newObj = {
                 value: country[i].code_key,
-                label: country[i].code_value,
+                label: country[i].code_value_ko,
             };
 
             options.push(newObj);
@@ -140,7 +141,7 @@ const RegUserModal = (props) => {
         for (let i = 0; i < userRole.length; i++) {
             let newObj = {
                 value: userRole[i].code_key,
-                label: userRole[i].code_value,
+                label: `${userRole[i].code_value_ko}(${userRole[i].code_value_en})`,
             };
 
             // 로그인유저가 시스템 관리자가 아닌경우 시스템관리자 빼고 담어
@@ -164,7 +165,7 @@ const RegUserModal = (props) => {
         for (let i = 0; i < userStatus.length; i++) {
             let newObj = {
                 value: userStatus[i].code_key,
-                label: userStatus[i].code_value,
+                label: `${userStatus[i].code_value_ko}(${userStatus[i].code_value_en})`,
             };
 
             options.push(newObj);
@@ -261,6 +262,7 @@ const RegUserModal = (props) => {
     const regUser = () => {
         let signupData = {
             signup_type: "300",
+            pwd_ptn_yn : "N",
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
             user_name_first_ko: inputFirstNameKo.current.value,
@@ -325,6 +327,7 @@ const RegUserModal = (props) => {
     const modUser = () => {
         let modData = {
             signup_type: modUserData.signup_type_cd,
+            pwd_ptn_yn : "N",
             user_idx: modUserData.user_idx,
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
@@ -424,21 +427,21 @@ const RegUserModal = (props) => {
                 return false;
             }
 
-            // 비밀번호 패턴체크
-            if (
-                !pwPattern.test(inputPW.current.value) ||
-                !pwPattern.test(inputPWChk.current.value)
-            ) {
-                CommonNotify({
-                    type: "alert",
-                    hook: alert,
-                    message:
-                        "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                });
-
-                inputPW.current.focus();
-                return false;
-            }
+            // // 비밀번호 패턴체크
+            // if (
+            //     !pwPattern.test(inputPW.current.value) ||
+            //     !pwPattern.test(inputPWChk.current.value)
+            // ) {
+            //     CommonNotify({
+            //         type: "alert",
+            //         hook: alert,
+            //         message:
+            //             "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+            //     });
+            //
+            //     inputPW.current.focus();
+            //     return false;
+            // }
 
             // 비밀번호 일치 확인
             if (inputPW.current.value !== inputPWChk.current.value) {
@@ -458,21 +461,21 @@ const RegUserModal = (props) => {
         if (type === "mod") {
             // 비밀번호 여부 확인
             if (inputPW.current.value || inputPWChk.current.value) {
-                // 비밀번호 패턴체크
-                if (
-                    !pwPattern.test(inputPW.current.value) ||
-                    !pwPattern.test(inputPWChk.current.value)
-                ) {
-                    CommonNotify({
-                        type: "alert",
-                        hook: alert,
-                        message:
-                            "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
-                    });
-
-                    inputPW.current.focus();
-                    return false;
-                }
+                // // 비밀번호 패턴체크
+                // if (
+                //     !pwPattern.test(inputPW.current.value) ||
+                //     !pwPattern.test(inputPWChk.current.value)
+                // ) {
+                //     CommonNotify({
+                //         type: "alert",
+                //         hook: alert,
+                //         message:
+                //             "비밀번호는 특수문자, 문자, 숫자 포함 형태의 6~16자리로 입력해주세요",
+                //     });
+                //
+                //     inputPW.current.focus();
+                //     return false;
+                // }
 
                 // 비밀번호 일치 확인
                 if (inputPW.current.value !== inputPWChk.current.value) {
@@ -555,7 +558,7 @@ const RegUserModal = (props) => {
                             <select
                                 name=""
                                 id=""
-                                className="w180"
+                                className="wp100"
                                 ref={selectUserRole}
                             >
                                 {selectUserRoleOptions &&
@@ -576,7 +579,7 @@ const RegUserModal = (props) => {
                             <select
                                 name=""
                                 id=""
-                                className="w180"
+                                className="wp100"
                                 ref={selectUserStatus}
                             >
                                 {selectUserStatusOptions &&
@@ -599,14 +602,14 @@ const RegUserModal = (props) => {
                             {modUserData ? (
                                 <input
                                     type="email"
-                                    className="input hold w180"
+                                    className="input hold w230"
                                     ref={inputID}
                                     readOnly
                                 />
                             ) : (
                                 <input
                                     type="email"
-                                    className="input w180"
+                                    className="input w230"
                                     ref={inputID}
                                     autoFocus
                                 />
@@ -620,7 +623,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="password"
-                                className="input w180"
+                                className="input w230"
                                 ref={inputPW}
                             />
                         </td>
@@ -632,7 +635,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="password"
-                                className="input w180"
+                                className="input w230"
                                 ref={inputPWChk}
                             />
                         </td>
@@ -680,7 +683,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
+                                className="input w230"
                                 ref={inputEmail}
                             />
                         </td>
@@ -688,36 +691,12 @@ const RegUserModal = (props) => {
                     <tr>
                         <th>국적</th>
                         <td>
-                            <Select
-                                className="select"
-                                options={selectCountryOptions}
-                                defaultValue={
-                                    modUserData
-                                        ? selectCountryOptions.find(
-                                              (e) =>
-                                                  e.value ===
-                                                  modUserData.inter_phone_number
-                                          )
-                                        : selectCountryOptions.find(
-                                              (e) => e.value === "82"
-                                          )
+                            <CountrySelect
+                                onChange={(e, value) =>
+                                    setSelectedCountry(value)
                                 }
-                                key={
-                                    modUserData
-                                        ? selectCountryOptions.find(
-                                              (e) =>
-                                                  e.value ===
-                                                  modUserData.inter_phone_number
-                                          )
-                                        : selectCountryOptions.find(
-                                              (e) => e.value === "82"
-                                          )
-                                }
-                                styles={customStyles}
-                                onChange={(e) => {
-                                    setSelectedCountry(e.value);
-                                }}
-                                ref={selectCountry}
+                                defaultValue={selectedCountry}
+                                mode={"full"}
                             />
                         </td>
                     </tr>
@@ -734,13 +713,13 @@ const RegUserModal = (props) => {
                                     defaultValue="010"
                                     ref={inputMobile1}
                                     readOnly
-                                />
+                                />{" "}-{" "}
                                 <input
                                     type="tel"
                                     className="input w120"
                                     id="phone_num2"
                                     ref={inputMobile2}
-                                />
+                                />{" "}-{" "}
                                 <input
                                     type="tel"
                                     className="input w120"
@@ -755,7 +734,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
+                                className="input wp100"
                                 ref={inputLisenceNum}
                             />
                         </td>
@@ -765,7 +744,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
+                                className="input wp100"
                                 ref={inputOrganization}
                             />
                         </td>
@@ -775,7 +754,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
+                                className="input wp100"
                                 ref={inputDepartment}
                             />
                         </td>
@@ -785,7 +764,7 @@ const RegUserModal = (props) => {
                         <td>
                             <input
                                 type="text"
-                                className="input w180"
+                                className="input wp100"
                                 ref={inputSpecialized}
                             />
                         </td>
@@ -794,7 +773,6 @@ const RegUserModal = (props) => {
                         <th>관리자메모</th>
                         <td>
                             <textarea
-                                type="text"
                                 className="input wp100"
                                 ref={inputUserMemo}
                             />
