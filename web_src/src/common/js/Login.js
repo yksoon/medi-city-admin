@@ -1,6 +1,6 @@
 import { routerPath } from "webPath";
 import { RestServer } from "./Rest";
-import { CommonConsole } from "./Common";
+import { CommonConsole } from "src/common/js/Common";
 import { useSetRecoilState } from "recoil";
 import { userInfoAtom, userTokenAtom } from "recoils/atoms";
 

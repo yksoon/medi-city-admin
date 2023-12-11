@@ -156,9 +156,7 @@ const KmediLocalMemberMng = (props) => {
     // 페이지네이션 이동
     const handleChange = (e, value) => {
         getUserList(value, 10);
-    };
-
-    // 약관 상세
+    };    // 약관 상세
     const detailUser = (member_sq) => {
         setIsSpinner(true);
 
@@ -195,6 +193,8 @@ const KmediLocalMemberMng = (props) => {
             }
         };
     };
+
+
 
     // 현지회원 상세보기 모달
     const modUser = () => {

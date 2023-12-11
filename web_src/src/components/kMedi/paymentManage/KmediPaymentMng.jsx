@@ -1,4 +1,5 @@
-const { Link } = require("react-router-dom");
+import {Link} from "react-router-dom";
+
 
 const KmediPaymentMng = (props) => {
     return (

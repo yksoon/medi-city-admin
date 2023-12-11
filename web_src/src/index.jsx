@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import RecoilizeDebugger from "recoilize";
 
-import App from "./App";
+import App from "App";
 
 import "common/css/default.css";
 import "common/css/style.css";

@@ -2,7 +2,7 @@
 const colon = ":";
 const slash = "/";
 
-const isDeveloping = process.env.REACT_APP_ISDEVELOPING;
+const isDeveloping = import.meta.env.VITE_ISDEVELOPING;
 
 // 프로토콜
 // 호스트
@@ -15,7 +15,7 @@ if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
     // host = "3.36.85.141";
-    host = "api.medi-city.co.kr";
+    host = "gateway.medi-people.co.kr";
 } else {
     host = "dev-api.medi-city.co.kr";
 }
