@@ -515,7 +515,7 @@ const KmediNoticeMng = (props) => {
             <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
-                width={"1400"}
+                width={"800"}
                 handleModalClose={handleModalClose}
                 component={"KmediBoardNoticeModalMain"}
                 handleNeedUpdate={handleNeedUpdate}

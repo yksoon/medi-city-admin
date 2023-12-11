@@ -374,6 +374,20 @@ const apiPath = {
     api_admin_kmedi_board_notice_remove: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/board/notice${slash}`,
+
+    // K-MEDI 공지사항 정보 등록 (관리자)
+    // mng/v1/kmedi/board/notice
+    // POST MULTI
+    api_admin_kmedi_board_notice_reg: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/notice`,
+
+    // K-MEDI 공지사항 정보 수정 (관리자)
+    // mng/v1/kmedi/board/notice
+    // PUT MULTI
+    api_admin_kmedi_board_notice_mod: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/notice`,
 };
 
 export { routerPath, apiPath };
