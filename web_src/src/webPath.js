@@ -349,6 +349,31 @@ const apiPath = {
     api_admin_kmedi_creator_detail: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/creator/`,
+
+    /**
+     * Notice Management API
+     * K-MEDI 공지사항 관리 API
+     */
+    // K-MEDI 공지사항 정보 목록 (관리자)
+    // mng/v1/kmedi/board/notices
+    // POST
+    api_admin_kmedi_board_notice_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/notices`,
+
+    // K-MEDI 공지사항 정보 상세 (관리자)
+    // mng/v1/kmedi/board/notice/{notice_sq}
+    // GET
+    api_admin_kmedi_board_notice_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/notice${slash}`,
+
+    // K-MEDI 공지사항 정보 삭제 (관리자)
+    // mng/v1/kmedi/board/notice/{notice_sq}
+    // DELETE
+    api_admin_kmedi_board_notice_remove: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/notice${slash}`,
 };
 
 export { routerPath, apiPath };
