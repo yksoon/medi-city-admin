@@ -105,7 +105,7 @@ const KmediCreatorRegModalMain = (props) => {
         for (let i = 0; i < userRole.length; i++) {
             let newObj = {
                 value: userRole[i].code_key,
-                label: userRole[i].code_value,
+                label: userRole[i].code_value_ko,
             };
 
             if (managerCode.indexOf(newObj.value) === -1) {

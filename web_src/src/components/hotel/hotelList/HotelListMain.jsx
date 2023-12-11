@@ -481,28 +481,30 @@ const HotelListMain = (props) => {
                                     <option value="">소속</option>
                                 </select>{" "} */}
                                 <input type="text" className="input" />
-                                <Link href="" className="subbtn off">
+                                <Link to="" className="subbtn off">
                                     검색
                                 </Link>
                             </div>
                             <div>
                                 <Link
                                     className="subbtn del"
+                                    to=""
                                     onClick={clickRemove}
                                 >
                                     선택삭제
                                 </Link>{" "}
                                 <Link
-                                    className="modal_btn subbtn on"
+                                    className="subbtn on"
                                     title="#hotelInsert"
+                                    to=""
                                     onClick={(e) => regHotel()}
                                 >
                                     호텔신규등록
                                 </Link>{" "}
-                                <Link href="" className="subbtn on">
+                                <Link to="" className="subbtn on">
                                     엑셀 다운로드
                                 </Link>{" "}
-                                <Link href="" className="subbtn on">
+                                <Link to="" className="subbtn on">
                                     일괄 업로드
                                 </Link>
                             </div>
