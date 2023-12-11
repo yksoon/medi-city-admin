@@ -1,6 +1,6 @@
 import { RestServer } from "./Rest";
 import { apiPath, routerPath } from "webPath";
-import { CommonConsole, CommonNotify } from "./Common";
+import { CommonConsole, CommonNotify } from "src/common/js/Common";
 
 const tokenExpire = (setIsSpinner, alert, resetUserInfo, resetUserToken) => {
     setIsSpinner(true);

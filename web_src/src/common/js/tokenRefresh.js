@@ -1,5 +1,5 @@
 import { RestServer } from "common/js/Rest";
-import { CommonConsole } from "./Common";
+import { CommonConsole } from "src/common/js/Common";
 import { apiPath } from "webPath";
 
 const tokenRefresh = async (callback) => {
