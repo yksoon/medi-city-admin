@@ -8,7 +8,7 @@ import {
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
 import useConfirm from "hook/useConfirm";
-import { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
@@ -23,6 +23,7 @@ import {
 import { Pagination } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchBar from "components/common/SearchBar";
 
 const KmediLocalMemberMng = (props) => {
     const { confirm } = useConfirm();
@@ -30,9 +31,12 @@ const KmediLocalMemberMng = (props) => {
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
+    const searchKeyword = useRef(null);
+
     const [userList, setUserList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
     const [checkItems, setCheckItems] = useState([]);
+    const [page, setPage] = useState(1);
 
     // 회원 상세 데이터
     const [modData, setModData] = useState({});
@@ -100,6 +104,13 @@ const KmediLocalMemberMng = (props) => {
         };
     };
 
+    // 검색
+    const doSearch = () => {
+        const keyword = searchKeyword.current.value;
+
+        getUserList(1, 10, keyword);
+    };
+
     // 모달창 닫기
     const handleModalClose = () => {
         CommonNotify({
@@ -155,7 +166,9 @@ const KmediLocalMemberMng = (props) => {
 
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        getUserList(value, 10);
+        getUserList(value, 10, searchKeyword.current.value);
+
+        setPage(value)
     };    // 약관 상세
     const detailUser = (member_sq) => {
         setIsSpinner(true);
@@ -381,187 +394,197 @@ const KmediLocalMemberMng = (props) => {
                     <h3>회원 관리 - 현지회원</h3>
                 </div>
                 <div className="con_area">
-                    <div className="kmedi_top_wrap">
-                        <div className="kmedi_top_box">
-                            <div className="kmedi_top">
-                                <h5>기간조회</h5>
-                                <Link href="" className="kmedi_top_btn">
-                                    7일
-                                </Link>
-                                <Link href="" className="kmedi_top_btn">
-                                    14일
-                                </Link>
-                                <Link href="" className="kmedi_top_btn">
-                                    30일
-                                </Link>
-                                <Link href="" className="kmedi_top_btn">
-                                    3개월
-                                </Link>
-                                <input type="date" className="input" /> ~{" "}
-                                <input type="date" className="input" />
-                            </div>
-                            <div className="kmedi_top">
-                                <h5>회원상태</h5>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_state1"
-                                        name="member_state"
-                                    />
-                                    <label htmlFor="member_state1">전체</label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_state2"
-                                        name="member_state"
-                                    />
-                                    <label htmlFor="member_state2">정상</label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_state3"
-                                        name="member_state"
-                                    />
-                                    <label htmlFor="member_state3">탈퇴</label>
-                                </div>
-                            </div>
-                            <div className="kmedi_top">
-                                <h5>회원구분</h5>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_division1"
-                                        name="member_division"
-                                    />
-                                    <label htmlFor="member_division1">
-                                        전체
-                                    </label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_division2"
-                                        name="member_division"
-                                    />
-                                    <label htmlFor="member_division2">
-                                        개인의사
-                                    </label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_division3"
-                                        name="member_division"
-                                    />
-                                    <label htmlFor="member_division3">
-                                        영업사원
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="kmedi_top">
-                                <h5>상세정보</h5>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_detail1"
-                                        name="member_detail"
-                                    />
-                                    <label htmlFor="member_detail1">전체</label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_detail2"
-                                        name="member_detail"
-                                    />
-                                    <label htmlFor="member_detail2">입력</label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="member_detail3"
-                                        name="member_detail"
-                                    />
-                                    <label htmlFor="member_detail3">
-                                        미입력
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="kmedi_top_box">
-                            <div className="kmedi_top">
-                                <select name="" id="">
-                                    <option value="">구분</option>
-                                    <option value="">회원이름</option>
-                                    <option value="">병원이름</option>
-                                    <option value="">핸드폰</option>
-                                    <option value="">customer ID</option>
-                                </select>
-                                <input type="text" className="input" />
-                                <Link className="subbtn off">검색</Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="adm_statistics">
-                        <div>
-                            <h5>회원</h5>
-                            <ul>
-                                <li>
-                                    <Link href="">
-                                        전체 <strong>00</strong>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="">
-                                        개인의사 <strong>00</strong>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="">
-                                        영업사원 <strong>00</strong>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="">
-                                        한국 크리에이터 <strong>00</strong>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5>1:1문의</h5>
-                            <ul>
-                                <li>
-                                    <Link href="">
-                                        전체 <strong>00</strong>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="">
-                                        답변대기 <strong>00</strong>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="">
-                                        답변완료 <strong>00</strong>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="kmedi_add_btn">
-                        <div>
-                            <Link className="subbtn del" onClick={clickRemove}>
-                                강제탈퇴
-                            </Link>{" "}
-                            <Link className="subbtn on" onClick={regUser}>
-                                회원등록
-                            </Link>
-                            <Link className="subbtn on">엑셀 다운로드</Link>
-                        </div>
-                    </div>
+                    {/*<div className="kmedi_top_wrap">*/}
+                    {/*    <div className="kmedi_top_box">*/}
+                    {/*        <div className="kmedi_top">*/}
+                    {/*            <h5>기간조회</h5>*/}
+                    {/*            <Link href="" className="kmedi_top_btn">*/}
+                    {/*                7일*/}
+                    {/*            </Link>*/}
+                    {/*            <Link href="" className="kmedi_top_btn">*/}
+                    {/*                14일*/}
+                    {/*            </Link>*/}
+                    {/*            <Link href="" className="kmedi_top_btn">*/}
+                    {/*                30일*/}
+                    {/*            </Link>*/}
+                    {/*            <Link href="" className="kmedi_top_btn">*/}
+                    {/*                3개월*/}
+                    {/*            </Link>*/}
+                    {/*            <input type="date" className="input" /> ~{" "}*/}
+                    {/*            <input type="date" className="input" />*/}
+                    {/*        </div>*/}
+                    {/*        <div className="kmedi_top">*/}
+                    {/*            <h5>회원상태</h5>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_state1"*/}
+                    {/*                    name="member_state"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_state1">전체</label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_state2"*/}
+                    {/*                    name="member_state"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_state2">정상</label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_state3"*/}
+                    {/*                    name="member_state"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_state3">탈퇴</label>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="kmedi_top">*/}
+                    {/*            <h5>회원구분</h5>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_division1"*/}
+                    {/*                    name="member_division"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_division1">*/}
+                    {/*                    전체*/}
+                    {/*                </label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_division2"*/}
+                    {/*                    name="member_division"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_division2">*/}
+                    {/*                    개인의사*/}
+                    {/*                </label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_division3"*/}
+                    {/*                    name="member_division"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_division3">*/}
+                    {/*                    영업사원*/}
+                    {/*                </label>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="kmedi_top">*/}
+                    {/*            <h5>상세정보</h5>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_detail1"*/}
+                    {/*                    name="member_detail"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_detail1">전체</label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_detail2"*/}
+                    {/*                    name="member_detail"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_detail2">입력</label>*/}
+                    {/*            </div>*/}
+                    {/*            <div>*/}
+                    {/*                <input*/}
+                    {/*                    type="radio"*/}
+                    {/*                    id="member_detail3"*/}
+                    {/*                    name="member_detail"*/}
+                    {/*                />*/}
+                    {/*                <label htmlFor="member_detail3">*/}
+                    {/*                    미입력*/}
+                    {/*                </label>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="kmedi_top_box">*/}
+                    {/*        <div className="kmedi_top">*/}
+                    {/*            <select name="" id="">*/}
+                    {/*                <option value="">구분</option>*/}
+                    {/*                <option value="">회원이름</option>*/}
+                    {/*                <option value="">병원이름</option>*/}
+                    {/*                <option value="">핸드폰</option>*/}
+                    {/*                <option value="">customer ID</option>*/}
+                    {/*            </select>*/}
+                    {/*            <input type="text" className="input" />*/}
+                    {/*            <Link className="subbtn off">검색</Link>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="adm_statistics">*/}
+                    {/*    <div>*/}
+                    {/*        <h5>회원</h5>*/}
+                    {/*        <ul>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    전체 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    개인의사 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    영업사원 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    한국 크리에이터 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*        </ul>*/}
+                    {/*    </div>*/}
+                    {/*    <div>*/}
+                    {/*        <h5>1:1문의</h5>*/}
+                    {/*        <ul>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    전체 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    답변대기 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*            <li>*/}
+                    {/*                <Link href="">*/}
+                    {/*                    답변완료 <strong>00</strong>*/}
+                    {/*                </Link>*/}
+                    {/*            </li>*/}
+                    {/*        </ul>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="kmedi_add_btn">*/}
+                    {/*    <div>*/}
+                    {/*        <Link className="subbtn del" onClick={clickRemove}>*/}
+                    {/*            강제탈퇴*/}
+                    {/*        </Link>{" "}*/}
+                    {/*        <Link className="subbtn on" onClick={regUser}>*/}
+                    {/*            회원등록*/}
+                    {/*        </Link>*/}
+                    {/*        <Link className="subbtn on">엑셀 다운로드</Link>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    {/*검색 바*/}
+                    <SearchBar
+                        searchKeyword={searchKeyword}
+                        doSearch={doSearch}
+                        regBoard={regUser}
+                        downloadExcel={() => {}}
+                        // uploadExcel={() => {}}
+                        clickRemove={clickRemove}
+                    />
 
                     {/* 총 건수 */}
                     {Object.keys(pageInfo).length !== 0 && (

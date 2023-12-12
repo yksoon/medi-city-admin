@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import {
     CommonConsole,
@@ -25,6 +25,7 @@ import {
 } from "@tanstack/react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchBar from "components/common/SearchBar";
 
 const HotelListMain = (props) => {
     const { alert } = useAlert();
@@ -44,7 +45,10 @@ const HotelListMain = (props) => {
 
     const [hotelList, setHotelList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
+    const [page, setPage] = useState(1);
     const [checkItems, setCheckItems] = useState([]);
+
+    const searchKeyword = useRef(null);
 
     // 미리보기 데이터 state
     const [previewData, setPreviewData] = useState({
@@ -57,8 +61,15 @@ const HotelListMain = (props) => {
     const isRefresh = props.isRefresh;
 
     useEffect(() => {
-        getHotelList(1, 10, "");
+        getHotelList(page, 10, "");
     }, [isNeedUpdate, isRefresh]);
+
+    // 검색
+    const doSearch = () => {
+        const keyword = searchKeyword.current.value;
+
+        getHotelList(1, 10, keyword);
+    };
 
     // 호텔 신규 등록
     const regHotel = () => {
@@ -149,7 +160,9 @@ const HotelListMain = (props) => {
 
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        getHotelList(value, 10, "");
+        getHotelList(value, 10, searchKeyword.current.value);
+
+        setPage(value)
     };
 
     // 미리보기
@@ -473,42 +486,16 @@ const HotelListMain = (props) => {
                 </div>
                 <div className="con_area">
                     <div>
-                        <div className="adm_search">
-                            <div>
-                                {/* <select name="" id="">
-                                    <option value="">구분</option>
-                                    <option value="">이름</option>
-                                    <option value="">소속</option>
-                                </select>{" "} */}
-                                <input type="text" className="input" />
-                                <Link to="" className="subbtn off">
-                                    검색
-                                </Link>
-                            </div>
-                            <div>
-                                <Link
-                                    className="subbtn del"
-                                    to=""
-                                    onClick={clickRemove}
-                                >
-                                    선택삭제
-                                </Link>{" "}
-                                <Link
-                                    className="subbtn on"
-                                    title="#hotelInsert"
-                                    to=""
-                                    onClick={(e) => regHotel()}
-                                >
-                                    호텔신규등록
-                                </Link>{" "}
-                                <Link to="" className="subbtn on">
-                                    엑셀 다운로드
-                                </Link>{" "}
-                                <Link to="" className="subbtn on">
-                                    일괄 업로드
-                                </Link>
-                            </div>
-                        </div>
+
+                        {/*검색 바*/}
+                        <SearchBar
+                            searchKeyword={searchKeyword}
+                            doSearch={doSearch}
+                            regBoard={regHotel}
+                            downloadExcel={() => {}}
+                            uploadExcel={() => {}}
+                            clickRemove={clickRemove}
+                        />
 
                         {/* 총 건수 */}
                         {Object.keys(pageInfo).length !== 0 && (

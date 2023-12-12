@@ -262,7 +262,7 @@ const RegUserModal = (props) => {
     const regUser = () => {
         let signupData = {
             signup_type: "300",
-            pwd_ptn_yn : "N",
+            ptn_yn : "N",
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,
             user_name_first_ko: inputFirstNameKo.current.value,
@@ -327,7 +327,7 @@ const RegUserModal = (props) => {
     const modUser = () => {
         let modData = {
             signup_type: modUserData.signup_type_cd,
-            pwd_ptn_yn : "N",
+            ptn_yn : "N",
             user_idx: modUserData.user_idx,
             user_id: inputID.current.value,
             user_pwd: inputPW.current.value,

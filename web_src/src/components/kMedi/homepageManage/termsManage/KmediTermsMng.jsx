@@ -7,7 +7,7 @@ import {
 } from "common/js/Common";
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
-import { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
@@ -23,6 +23,7 @@ import { Pagination } from "@mui/material";
 import useConfirm from "hook/useConfirm";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchBar from "components/common/SearchBar";
 
 const KmediTermsMng = (props) => {
     const { confirm } = useConfirm();
@@ -30,9 +31,12 @@ const KmediTermsMng = (props) => {
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
+    const searchKeyword = useRef(null);
+
     const [termsList, setTermsList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
     const [checkItems, setCheckItems] = useState([]);
+    const [page, setPage] = useState(1);
 
     // 약관 상세 데이터
     const [modData, setModData] = useState({});
@@ -49,7 +53,7 @@ const KmediTermsMng = (props) => {
     const isRefresh = props.isRefresh;
 
     useEffect(() => {
-        getTermsList(1, 10, "");
+        getTermsList(page, 10, "");
     }, [isNeedUpdate, isRefresh]);
 
     // 리스트
@@ -98,6 +102,13 @@ const KmediTermsMng = (props) => {
                 setIsSpinner(false);
             }
         };
+    };
+
+    // 검색
+    const doSearch = () => {
+        const keyword = searchKeyword.current.value;
+
+        getTermsList(1, 10, keyword);
     };
 
     // 모달창 닫기
@@ -149,7 +160,9 @@ const KmediTermsMng = (props) => {
 
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        getTermsList(value, 10);
+        getTermsList(value, 10, searchKeyword.current.value)
+
+        setPage(value)
     };
 
     // 약관 신규 등록 모달
@@ -360,26 +373,36 @@ const KmediTermsMng = (props) => {
                     <h3>홈페이지 관리 - 약관 관리</h3>
                 </div>
                 <div className="con_area">
-                    <div className="adm_search">
-                        <div>
-                            <select name="" id="">
-                                <option value="">구분</option>
-                                <option value="">이름</option>
-                                <option value="">소속</option>
-                            </select>{" "}
-                            <input type="text" className="input" />{" "}
-                            <Link className="subbtn off">검색</Link>
-                        </div>
-                        <div>
-                            <Link className="subbtn del" onClick={clickRemove}>
-                                선택삭제
-                            </Link>{" "}
-                            <Link className="subbtn on" onClick={regTerms}>
-                                약관등록
-                            </Link>{" "}
-                            <Link className="subbtn on">엑셀 다운로드</Link>
-                        </div>
-                    </div>
+                    {/*<div className="adm_search">*/}
+                    {/*    <div>*/}
+                    {/*        <select name="" id="">*/}
+                    {/*            <option value="">구분</option>*/}
+                    {/*            <option value="">이름</option>*/}
+                    {/*            <option value="">소속</option>*/}
+                    {/*        </select>{" "}*/}
+                    {/*        <input type="text" className="input" />{" "}*/}
+                    {/*        <Link className="subbtn off">검색</Link>*/}
+                    {/*    </div>*/}
+                    {/*    <div>*/}
+                    {/*        <Link className="subbtn del" onClick={clickRemove}>*/}
+                    {/*            선택삭제*/}
+                    {/*        </Link>{" "}*/}
+                    {/*        <Link className="subbtn on" onClick={regTerms}>*/}
+                    {/*            약관등록*/}
+                    {/*        </Link>{" "}*/}
+                    {/*        <Link className="subbtn on">엑셀 다운로드</Link>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
+                    {/*검색 바*/}
+                    <SearchBar
+                        searchKeyword={searchKeyword}
+                        doSearch={doSearch}
+                        regBoard={regTerms}
+                        downloadExcel={() => {}}
+                        // uploadExcel={() => {}}
+                        clickRemove={clickRemove}
+                    />
 
                     {/* 총 건수 */}
                     {Object.keys(pageInfo).length !== 0 && (
