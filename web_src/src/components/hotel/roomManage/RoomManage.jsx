@@ -10,7 +10,7 @@ import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
 import useConfirm from "hook/useConfirm";
 import { room_static } from "models/hotel/room";
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isSpinnerAtom } from "recoils/atoms";
@@ -24,6 +24,7 @@ import {
 } from "@tanstack/react-table";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchBar from "components/common/SearchBar";
 
 const RoomManage = (props) => {
     const { alert } = useAlert();
@@ -37,6 +38,7 @@ const RoomManage = (props) => {
 
     const [roomList, setRoomList] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
+    const [page, setPage] = useState(1);
 
     // 체크박스
     const [checkItems, setCheckItems] = useState([]);
@@ -48,10 +50,12 @@ const RoomManage = (props) => {
     // 객실 상세 데이터
     const [modData, setModData] = useState({});
 
+    const searchKeyword = useRef(null);
+
     const isRefresh = props.isRefresh;
 
     useEffect(() => {
-        getRoomList(1, 10, "");
+        getRoomList(page, 10, "");
 
         setModData({});
     }, [isNeedUpdate, isRefresh]);
@@ -103,9 +107,18 @@ const RoomManage = (props) => {
         };
     };
 
+    // 검색
+    const doSearch = () => {
+        const keyword = searchKeyword.current.value;
+
+        getRoomList(1, 10, keyword);
+    };
+
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        getRoomList(value, 10, "");
+        getRoomList(value, 10, searchKeyword.current.value);
+
+        setPage(value)
     };
 
     // 모달창 닫기
@@ -421,41 +434,16 @@ const RoomManage = (props) => {
                 </div>
                 <div className="con_area">
                     <div>
-                        <div className="adm_search">
-                            <div>
-                                <select name="" id="">
-                                    <option value="">구분</option>
-                                    <option value="">이름</option>
-                                    <option value="">소속</option>
-                                </select>
-                                <input type="text" className="input" />
-                                <Link href="" className="subbtn off">
-                                    검색
-                                </Link>
-                            </div>
-                            <div>
-                                <Link
-                                    className="subbtn del"
-                                    onClick={clickRemove}
-                                >
-                                    선택삭제
-                                </Link>{" "}
-                                <Link
-                                    className="modal_btn subbtn on"
-                                    title="#hotelInsert"
-                                    onClick={(e) => regRoom()}
-                                >
-                                    객실신규등록
-                                </Link>
-                                <Link href="" className="subbtn on">
-                                    엑셀 다운로드
-                                </Link>
-                                <Link href="" className="subbtn on">
-                                    일괄 업로드
-                                </Link>
-                            </div>
-                        </div>
 
+                        {/*검색 바*/}
+                        <SearchBar
+                            searchKeyword={searchKeyword}
+                            doSearch={doSearch}
+                            regBoard={regRoom}
+                            downloadExcel={() => {}}
+                            uploadExcel={() => {}}
+                            clickRemove={clickRemove}
+                        />
                         {/* 총 건수 */}
                         {Object.keys(pageInfo).length !== 0 && (
                             <div

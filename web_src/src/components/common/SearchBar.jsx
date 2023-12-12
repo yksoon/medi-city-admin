@@ -6,6 +6,7 @@ const SearchBar = (props) => {
     const doSearch = props.doSearch;
     const regBoard = props.regBoard;
     const downloadExcel = props.downloadExcel;
+    const uploadExcel = props.uploadExcel
     const clickRemove = props.clickRemove;
 
     // 엔터키
@@ -39,6 +40,15 @@ const SearchBar = (props) => {
                             엑셀 다운로드
                         </Link>
                     )}
+                    {uploadExcel && (
+                        <Link
+                            to=""
+                            className="subbtn on"
+                            onClick={uploadExcel}
+                        >
+                            엑셀 업로드
+                        </Link>
+                    )}
                     {regBoard && (
                         <Link to="" className="subbtn on" onClick={regBoard}>
                             등록
@@ -53,17 +63,6 @@ const SearchBar = (props) => {
                             삭제
                         </Link>
                     )}
-                    {/*<Link className="btn btn01" onClick={downloadExcel} to="">*/}
-                    {/*    엑셀 다운로드*/}
-                    {/*</Link>*/}
-                    {/*{userInfoAdmin.user_role_cd === "000" && (*/}
-                    {/*    <Link*/}
-                    {/*        className="btn btn02"*/}
-                    {/*        onClick={removeBoard}*/}
-                    {/*     to="">*/}
-                    {/*        삭제*/}
-                    {/*    </Link>*/}
-                    {/*)}*/}
                 </div>
             </div>
         </>

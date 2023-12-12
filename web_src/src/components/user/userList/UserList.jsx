@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import {
     CommonConsole,
@@ -24,6 +24,7 @@ import {
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchBar from "components/common/SearchBar";
 
 const UserList = (props) => {
     const { alert } = useAlert();
@@ -42,11 +43,14 @@ const UserList = (props) => {
     const [isNeedUpdate, setIsNeedUpdate] = useState(false);
     const [checkItems, setCheckItems] = useState([]);
     const [pageInfo, setPageInfo] = useState({});
+    const [page, setPage] = useState(1);
 
     const isRefresh = props.isRefresh;
 
+    const searchKeyword = useRef(null);
+
     useEffect(() => {
-        reqUserList(1, 10);
+        reqUserList(page, 10, "");
     }, [isNeedUpdate, isRefresh]);
 
     const handleNeedUpdate = () => {
@@ -64,7 +68,7 @@ const UserList = (props) => {
     };
 
     // 유저 리스트
-    const reqUserList = (pageNum, pageSize) => {
+    const reqUserList = (pageNum, pageSize, searchKeyword) => {
         setIsSpinner(true);
 
         // account/v1/user/infos
@@ -73,6 +77,7 @@ const UserList = (props) => {
         let data = {
             page_num: pageNum,
             page_size: pageSize,
+            search_keyword: searchKeyword
         };
 
         // 파라미터
@@ -107,6 +112,13 @@ const UserList = (props) => {
                 setIsSpinner(false);
             }
         };
+    };
+
+    // 검색
+    const doSearch = () => {
+        const keyword = searchKeyword.current.value;
+
+        reqUserList(1, 10, keyword);
     };
 
     // 회원 정보 수정
@@ -257,7 +269,9 @@ const UserList = (props) => {
 
     // 페이지네이션 이동
     const handleChange = (e, value) => {
-        reqUserList(value, 10);
+        reqUserList(value, 10, searchKeyword.current.value);
+
+        setPage(value)
     };
 
     // 컬럼 세팅
@@ -405,26 +419,16 @@ const UserList = (props) => {
                     <h3>회원 리스트</h3>
                 </div>
                 <div className="con_area">
-                    <div className="adm_search">
-                        <div>
-                            <select name="" id="">
-                                <option value="">구분</option>
-                                <option value="">이름</option>
-                                <option value="">소속</option>
-                            </select>{" "}
-                            <input type="text" className="input" />{" "}
-                            <Link className="subbtn off">검색</Link>
-                        </div>
-                        <div>
-                            <Link className="subbtn del" onClick={clickRemove}>
-                                선택삭제
-                            </Link>{" "}
-                            <Link className="subbtn on" onClick={regUser}>
-                                회원등록
-                            </Link>{" "}
-                            <Link className="subbtn on">엑셀 다운로드</Link>
-                        </div>
-                    </div>
+
+                    {/*검색 바*/}
+                    <SearchBar
+                        searchKeyword={searchKeyword}
+                        doSearch={doSearch}
+                        regBoard={regUser}
+                        downloadExcel={() => {}}
+                        // uploadExcel={() => {}}
+                        clickRemove={clickRemove}
+                    />
 
                     {/* 총 건수 */}
                     {Object.keys(pageInfo).length !== 0 && (

@@ -100,7 +100,7 @@ const KmediNoticeMng = (props) => {
     const doSearch = () => {
         const keyword = searchKeyword.current.value;
 
-        getBoardList(page, 10, keyword);
+        getBoardList(1, 10, keyword);
     };
 
     // 리스트 새로고침
