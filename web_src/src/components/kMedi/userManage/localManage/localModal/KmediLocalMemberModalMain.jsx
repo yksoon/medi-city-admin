@@ -42,6 +42,8 @@ const KmediLocalMemberModalMain = (props) => {
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState("62");
 
+    const [rewardInfo, setRewardInfo] = useState([]);
+
     useEffect(() => {
         // 국가번호
         setSelectboxCountry();
@@ -62,6 +64,8 @@ const KmediLocalMemberModalMain = (props) => {
         memberEmailAddr.current.value = modData.member_email_addr;
         memberCompanyNm.current.value = modData.member_company_nm;
         memberDeptNm.current.value = modData.member_dept_nm;
+
+        getReward()
     };
 
     // 국가번호 세팅
@@ -109,6 +113,50 @@ const KmediLocalMemberModalMain = (props) => {
             width: "85%",
         }),
     };
+
+    const getReward = () => {
+        setIsSpinner(true);
+
+        // K-MEDI 회원 리워드 목록 (관리자)
+        // mng/v1/kmedi/member-rewards
+        // POST
+        const url = apiPath.api_admin_kmedi_member_reward_list;
+
+        const data = {
+            page_num: 1,
+            page_size: 10,
+            member_sq: modData.member_sq
+        }
+
+        // 파라미터
+        const restParams = {
+            method: "post",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            if (res.headers.result_code === successCode.success || res.headers.result_code === successCode.noData) {
+                const result_info = res.data.result_info;
+
+                setIsSpinner(false);
+
+                setRewardInfo(result_info)
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
+            }
+        };
+    }
 
     // 등록
     const regUser = () => {
@@ -449,6 +497,51 @@ const KmediLocalMemberModalMain = (props) => {
                     </tr>
                 </tbody>
             </table>
+
+            {isModData && (
+                <>
+                    <h4 className="mo_subtitle">리워드 정보</h4>
+                    <table className="table_bb">
+                        <colgroup>
+                            <col width="30%"/>
+                            <col width="*"/>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>리워드 지급</th>
+                            <td>
+                                <select className="input w100">
+                                    <option value="">- 선택 -</option>
+                                    <option value="100">지급</option>
+                                    <option value="200">차감</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    className="input w180"
+                                    // ref={memberCompanyNm}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>리워드 지급/차감 목록</th>
+                            <td>
+                                {rewardInfo.length !== 0 && rewardInfo.map((item, idx) => (
+                                    <>
+                                        {item.member_reward_history_type_cd === "100" ? "+" : item.member_reward_history_type_cd === "200" ? "-" : ""}
+                                        {" "}
+                                        {item.member_reward_history_amt}
+                                        {" : "}
+                                        {item.member_reward_history_desc}
+                                        <br/>
+                                    </>
+                                ))}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </>
+            )}
+
             <div className="subbtn_box">
                 {isModData ? (
                     <>
@@ -465,7 +558,7 @@ const KmediLocalMemberModalMain = (props) => {
                     </Link>
                 )}
                 <Link className="subbtn off" onClick={handleModalClose}>
-                    취소
+                취소
                 </Link>
             </div>
         </>

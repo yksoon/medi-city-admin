@@ -528,6 +528,30 @@ const CommonErrModule = () => {
     return err;
 };
 
+/**
+ * 숫자 세자리 콤마
+ * @param str
+ * @param digit
+ * @returns {string}
+ * @constructor
+ */
+const CommonCommaPattern = (str, digit) => {
+    const pattern_3 = /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g;
+    const pattern_4 = /\B(?<!\.\d*)(?=(\d{4})+(?!\d))/g;
+
+    let returnValue = "";
+
+    if (digit === 3) {
+        returnValue = str.toString().replace(pattern_3, ",");
+    } else if (digit === 4) {
+        returnValue = str.toString().replace(pattern_4, ",");
+    } else {
+        returnValue = str.toString().replace(pattern_3, ",");
+    }
+
+    return returnValue;
+};
+
 export {
     CommonModal,
     CommonConsole,
@@ -538,4 +562,5 @@ export {
     CommonSpinner2,
     CommonErrModule,
     CommonModalChild,
+    CommonCommaPattern
 };
