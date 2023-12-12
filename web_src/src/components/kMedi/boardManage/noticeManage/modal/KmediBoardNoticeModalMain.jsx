@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useConfirm from "hook/useConfirm";
 import useAlert from "hook/useAlert";
 import {CommonErrModule, CommonNotify, CommonRest} from "common/js/Common";
@@ -31,6 +31,8 @@ const KmediBoardNoticeModalMain = (props) => {
     const handleModalClose = props.handleModalClose;
     const handleNeedUpdate = props.handleNeedUpdate;
 
+    const [fileList, setFileList] = useState([])
+
     // References
     const langCd = useRef(null);
     const noticeTitle = useRef(null);
@@ -47,7 +49,19 @@ const KmediBoardNoticeModalMain = (props) => {
     const setDefaultValue = () => {
         noticeTitle.current.value = modData.notice_title;
         noticeDesc.current.value = modData.notice_desc;
+
+        addFileList()
     };
+
+    const addFileList = () => {
+        let newArr = [];
+
+        if(modData.file_info.length !== 0 || modData.image_file_info.length !== 0) {
+            newArr = newArr.concat(modData.file_info, modData.image_file_info)
+        }
+
+        setFileList(newArr)
+    }
 
     // 삭제
     const clickRemove = () => {
@@ -345,6 +359,16 @@ const KmediBoardNoticeModalMain = (props) => {
         return true;
     };
 
+    // const downloadFile = async (url, fileName) => {
+    //     const res = await fetch(url)
+    //     const blob = await res.blob()
+    //     const downloadUrl = window.URL.createObjectURL(blob)
+    //     const link = document.createElement('a')
+    //     link.href = downloadUrl
+    //     link.download = fileName
+    //     link.click()
+    // }
+
     return (
         <>
             <table className="table_b inner_table">
@@ -396,28 +420,36 @@ const KmediBoardNoticeModalMain = (props) => {
                 <tr>
                     <th>내용 <span className="red">*</span></th>
                     <td>
-                                <textarea
-                                    className="hotel_info"
-                                    ref={noticeDesc}
-                                ></textarea>
+                        <textarea
+                            className="hotel_info"
+                            ref={noticeDesc}
+                        ></textarea>
                     </td>
                 </tr>
                 <tr>
                     <th>
                         첨부파일
                     </th>
-                    <td colSpan={3}>
+                    <td colSpan={3} className="fileicon">
                         <div className="profile_wrap">
-                                    <span className="profile_thumb">
-                                        <img
-                                            src=""
-                                            alt=""
-                                            id="preview"
-                                            className="profile_img"
-                                            ref={previewAttachment}
-                                            onLoad={handleImageLoad}
-                                        />
-                                    </span>
+                            <div>
+                                {fileList.length !== 0 &&
+                                    fileList.map((item, idx) => (
+                                        <div key={`file_${idx}`}>
+                                            <Link
+                                                to={item.notice_attach_url}
+                                                // to=""
+                                                // onClick={() => downloadFile(item.notice_attach_url, item.notice_attach_nm)}
+                                            >
+                                                <img
+                                                    src="img/common/file.svg"
+                                                    alt=""
+                                                />
+                                                {item.notice_attach_nm}{" "}
+                                            </Link>
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
                         <input
                             type="file"

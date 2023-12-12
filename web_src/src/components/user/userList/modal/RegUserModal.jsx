@@ -261,6 +261,13 @@ const RegUserModal = (props) => {
 
     const regUser = () => {
         let signupData = {
+            /**
+             * signup_type
+             * 000 : 일반(아이디+PW)
+             * 100 : SNS(네이버)
+             * 200 : SNS(카카오)
+             * 300 : 관리자가 등록
+             */
             signup_type: "300",
             ptn_yn : "N",
             user_id: inputID.current.value,
@@ -538,6 +545,17 @@ const RegUserModal = (props) => {
                 message: "성명을 입력해주세요",
             });
             inputFirstNameEn.current.focus();
+            return false;
+        }
+
+        // 성명(영문)
+        if (selectUserRole.current.value === "300" && !inputUserMemo.current.value) {
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "메모를 입력해주세요",
+            });
+            inputUserMemo.current.focus();
             return false;
         }
 
