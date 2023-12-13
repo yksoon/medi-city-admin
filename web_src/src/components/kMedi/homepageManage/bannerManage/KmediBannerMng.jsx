@@ -86,6 +86,8 @@ const KmediBannerMng = (props) => {
                 isRefresh={isRefresh}
                 isNeedUpdate={isNeedUpdate}
                 setIsNeedUpdate={setIsNeedUpdate}
+                checkItems={checkItems}
+                setCheckItems={setCheckItems}
             />
         </>
     );
