@@ -31,10 +31,11 @@ const CommonListComponent = (props) => {
     const modBoard = props.modBoard
     const isNeedUpdate = props.isNeedUpdate
     const setIsNeedUpdate = props.setIsNeedUpdate
+    const checkItems = props.checkItems
+    const setCheckItems = props.setCheckItems
 
     const searchKeyword = useRef(null);
 
-    const [checkItems, setCheckItems] = useState([]);
     const [page, setPage] = useState(1);
 
     // 약관 상세 데이터
