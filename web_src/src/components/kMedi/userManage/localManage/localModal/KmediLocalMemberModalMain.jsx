@@ -3,12 +3,13 @@ import { numberPattern } from "common/js/Pattern";
 import { successCode } from "common/js/resultCode";
 import useAlert from "hook/useAlert";
 import useConfirm from "hook/useConfirm";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { countryBankAtom, isSpinnerAtom } from "recoils/atoms";
 import { apiPath } from "webPath";
+import CountrySelect from "components/common/CountrySelect";
 
 const memberTypeCdOption = [
     { value: "100", label: "개인의사" },
@@ -39,10 +40,15 @@ const KmediLocalMemberModalMain = (props) => {
     const memberDeptNm = useRef(null);
     const selectCountry = useRef(null);
 
+    const memberRewardHistoryTypeCd = useRef(null);
+    const memberRewardHistoryAmt = useRef(null);
+    const memberRewardHistoryDesc = useRef(null);
+
     const [selectCountryOptions, setSelectCountryOptions] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState("62");
 
     const [rewardInfo, setRewardInfo] = useState([]);
+    const [totalReward, setTotalReward] = useState(0);
 
     useEffect(() => {
         // 국가번호
@@ -145,7 +151,8 @@ const KmediLocalMemberModalMain = (props) => {
 
                 setIsSpinner(false);
 
-                setRewardInfo(result_info)
+                setRewardInfo(result_info.reward_info)
+                setTotalReward(result_info.total_amt)
             } else {
                 setIsSpinner(false);
 
@@ -324,95 +331,184 @@ const KmediLocalMemberModalMain = (props) => {
         return true;
     };
 
+    const doReward = () => {
+        if (rewardValidation()) {
+            setIsSpinner(true)
+
+            // K-MEDI 회원 리워드 등록 (관리자)
+            // mng/v1/kmedi/member-reward
+            // POST
+            const url = apiPath.api_admin_kmedi_member_reward_reg
+
+            const data = {
+                member_sq: modData.member_sq,
+                member_reward_history_type_cd: memberRewardHistoryTypeCd.current.value,
+                member_reward_history_amt: memberRewardHistoryAmt.current.value,
+                member_reward_history_desc: memberRewardHistoryDesc.current.value,
+            }
+
+            const restParams = {
+                method: "post",
+                url: url,
+                data: data,
+                err: err,
+                callback: (res) => responsLogic(res),
+            };
+
+            CommonRest(restParams);
+
+            const responsLogic = (res) => {
+                const result_code = res.headers.result_code;
+                if (result_code === successCode.success) {
+                    setIsSpinner(false);
+
+                    getReward()
+                } else {
+                    setIsSpinner(false);
+
+                    CommonNotify({
+                        type: "alert",
+                        hook: alert,
+                        message: res.headers.result_message_ko,
+                    });
+                }
+            };
+        }
+    }
+
+    const rewardValidation = () => {
+        const noti = (ref, msg) => {
+            CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: msg,
+                callback: () => focus(),
+            });
+
+            const focus = () => {
+                ref.current.focus();
+            };
+        };
+
+        if (!memberRewardHistoryTypeCd.current.value) {
+            noti(memberRewardHistoryTypeCd, "지급/차감을 선택해주세요");
+
+            return false;
+        }
+
+        if (!memberRewardHistoryAmt.current.value) {
+            noti(memberRewardHistoryAmt, "수량을 입력해주세요");
+
+            return false;
+        }
+
+        if (!memberRewardHistoryDesc.current.value) {
+            noti(memberRewardHistoryDesc, "설명을 입력해주세요");
+
+            return false;
+        }
+
+        return true
+    }
+
     return (
         <>
             <table className="table_bb">
                 <colgroup>
-                    <col width="30%" />
-                    <col width="*" />
+                    <col width="30%"/>
+                    <col width="*"/>
                 </colgroup>
                 <tbody>
+                <tr>
+                    <th>
+                        구분 <span className="red">*</span>
+                    </th>
+                    <td>
+                        <select className="w180" ref={memberTypeCd} disabled={isModData}>
+                            {memberTypeCdOption.length !== 0 &&
+                                memberTypeCdOption.map((item) => (
+                                    <option
+                                        key={`member_type_cd_${item.value}`}
+                                        value={item.value}
+                                    >
+                                        {item.label}
+                                    </option>
+                                ))}
+                        </select>
+                    </td>
+                </tr>
+                {!isModData && (
                     <tr>
                         <th>
-                            구분 <span className="red">*</span>
+                            국적 <span className="red">*</span>
                         </th>
                         <td>
-                            <select className="w180" ref={memberTypeCd}>
-                                {memberTypeCdOption.length !== 0 &&
-                                    memberTypeCdOption.map((item) => (
-                                        <option
-                                            key={`member_type_cd_${item.value}`}
-                                            value={item.value}
-                                        >
-                                            {item.label}
-                                        </option>
-                                    ))}
-                            </select>
-                        </td>
-                    </tr>
-                    {!isModData && (
-                        <tr>
-                            <th>
-                                국적 <span className="red">*</span>
-                            </th>
-                            <td>
-                                <Select
-                                    className="select"
-                                    options={selectCountryOptions}
-                                    defaultValue={
-                                        isModData
-                                            ? selectCountryOptions.find(
-                                                  (e) =>
-                                                      e.value ===
-                                                      modData.inter_phone_number
-                                              )
-                                            : selectCountryOptions.find(
-                                                  (e) => e.value === "62"
-                                              )
-                                    }
-                                    key={
-                                        isModData
-                                            ? selectCountryOptions.find(
-                                                  (e) =>
-                                                      e.value ===
-                                                      modData.inter_phone_number
-                                              )
-                                            : selectCountryOptions.find(
-                                                  (e) => e.value === "62"
-                                              )
-                                    }
-                                    styles={customStyles}
-                                    onChange={(e) => {
-                                        setSelectedCountry(e.value);
-                                    }}
-                                    ref={selectCountry}
-                                />
-                            </td>
-                        </tr>
-                    )}
-
-                    <tr>
-                        <th>
-                            아이디
-                            <br />
-                            (전화번호) <span className="red">*</span>
-                        </th>
-                        <td>
-                            <input
-                                type="text"
-                                className={`input wp100 ${isModData && "hold"}`}
-                                placeholder="아이디 (전화번호)"
-                                disabled={isModData && true}
-                                // onChange={patternCheck}
-                                onKeyDown={(evt) =>
-                                    // ["e", "E", "+", "-"].includes(evt.key) &&
-                                    !numberPattern.test(evt.key) &&
-                                    evt.preventDefault()
+                            {/*<Select*/}
+                            {/*    className="select"*/}
+                            {/*    options={selectCountryOptions}*/}
+                            {/*    defaultValue={*/}
+                            {/*        isModData*/}
+                            {/*            ? selectCountryOptions.find(*/}
+                            {/*                (e) =>*/}
+                            {/*                    e.value ===*/}
+                            {/*                    modData.inter_phone_number*/}
+                            {/*            )*/}
+                            {/*            : selectCountryOptions.find(*/}
+                            {/*                (e) => e.value === "62"*/}
+                            {/*            )*/}
+                            {/*    }*/}
+                            {/*    key={*/}
+                            {/*        isModData*/}
+                            {/*            ? selectCountryOptions.find(*/}
+                            {/*                (e) =>*/}
+                            {/*                    e.value ===*/}
+                            {/*                    modData.inter_phone_number*/}
+                            {/*            )*/}
+                            {/*            : selectCountryOptions.find(*/}
+                            {/*                (e) => e.value === "62"*/}
+                            {/*            )*/}
+                            {/*    }*/}
+                            {/*    styles={customStyles}*/}
+                            {/*    onChange={(e) => {*/}
+                            {/*        setSelectedCountry(e.value);*/}
+                            {/*    }}*/}
+                            {/*    ref={selectCountry}*/}
+                            {/*/>*/}
+                            <CountrySelect
+                                onChange={(e, value) =>
+                                    setSelectedCountry(value)
                                 }
-                                ref={memberId}
-                            ></input>
+                                defaultValue={selectedCountry}
+                                mode={"full"}
+                            />
                         </td>
                     </tr>
+                )}
+
+                <tr>
+                    <th>
+                        아이디
+                        <br/>
+                        (전화번호) <span className="red">*</span>
+                    </th>
+                    <td>
+                        <input
+                            type="text"
+                            className={`input wp100 ${isModData && "hold"}`}
+                            placeholder="아이디 (전화번호)"
+                            disabled={isModData && true}
+                            // onChange={patternCheck}
+                            onKeyDown={(evt) =>
+                                // ["e", "E", "+", "-"].includes(evt.key) &&
+                                !numberPattern.test(evt.key) &&
+                                evt.preventDefault()
+                            }
+                            ref={memberId}
+                            autoComplete="off"
+                        ></input>
+                    </td>
+                </tr>
+                {!isModData && (
                     <tr>
                         <th>
                             비밀번호 <span className="red">*</span>
@@ -423,35 +519,39 @@ const KmediLocalMemberModalMain = (props) => {
                                 className="input w180"
                                 placeholder="비밀번호"
                                 ref={memberPwd}
+                                autoComplete="new-password"
                             />
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            성명 <span className="red">*</span>
-                        </th>
-                        <td>
-                            <input
-                                type="text"
-                                className="input w180"
-                                placeholder="이름"
-                                ref={memberNm}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>이메일</th>
-                        <td>
-                            <input
-                                type="email"
-                                className="input w180"
-                                placeholder="이메일"
-                                ref={memberEmailAddr}
-                            />
-                        </td>
-                    </tr>
+                )}
+                <tr>
+                    <th>
+                        성명 <span className="red">*</span>
+                    </th>
+                    <td>
+                        <input
+                            type="text"
+                            className="input w180"
+                            placeholder="이름"
+                            ref={memberNm}
+                            disabled={isModData}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td>
+                        <input
+                            type="email"
+                            className="input w180"
+                            placeholder="이메일"
+                            ref={memberEmailAddr}
+                            disabled={isModData}
+                        />
+                    </td>
+                </tr>
 
-                    {/* <tr>
+                {/* <tr>
                         <th>휴대전화</th>
                         <td>
                             <div id="phone_num" className="m0">
@@ -475,26 +575,28 @@ const KmediLocalMemberModalMain = (props) => {
                             </div>
                         </td>
                     </tr> */}
-                    <tr>
-                        <th>소속병원</th>
-                        <td>
-                            <input
-                                type="text"
-                                className="input w180"
-                                ref={memberCompanyNm}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>전공과</th>
-                        <td>
-                            <input
-                                type="text"
-                                className="input w180"
-                                ref={memberDeptNm}
-                            />
-                        </td>
-                    </tr>
+                <tr>
+                    <th>소속병원</th>
+                    <td>
+                        <input
+                            type="text"
+                            className="input w180"
+                            ref={memberCompanyNm}
+                            disabled={isModData}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>전공과</th>
+                    <td>
+                        <input
+                            type="text"
+                            className="input w180"
+                            ref={memberDeptNm}
+                            disabled={isModData}
+                        />
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -510,42 +612,63 @@ const KmediLocalMemberModalMain = (props) => {
                         <tr>
                             <th>리워드 지급</th>
                             <td>
-                                <select className="input w100">
+                                <select className="input w100" ref={memberRewardHistoryTypeCd}>
                                     <option value="">- 선택 -</option>
                                     <option value="100">지급</option>
                                     <option value="200">차감</option>
                                 </select>
                                 <input
                                     type="text"
+                                    className="input w100"
+                                    placeholder="수량"
+                                    ref={memberRewardHistoryAmt}
+                                />
+                                <br/>
+                                <input
+                                    type="text"
                                     className="input w180"
-                                    // ref={memberCompanyNm}
+                                    placeholder="설명"
+                                    ref={memberRewardHistoryDesc}
                                 />
                             </td>
                         </tr>
                         <tr>
-                            <th>리워드 지급/차감 목록</th>
+                            <th>총 리워드</th>
                             <td>
-                                {rewardInfo.length !== 0 && rewardInfo.map((item, idx) => (
-                                    <>
+                                {totalReward}
+                            </td>
+                        </tr>
+                            {rewardInfo.length !== 0 && rewardInfo.map((item, idx) => (
+                                <tr>
+                                    {idx === 0 && (
+                                        <th rowSpan={rewardInfo.length}>리워드 지급/차감 목록</th>
+                                    )}
+                                    <td>
                                         {item.member_reward_history_type_cd === "100" ? "+" : item.member_reward_history_type_cd === "200" ? "-" : ""}
                                         {" "}
                                         {item.member_reward_history_amt}
                                         {" : "}
                                         {item.member_reward_history_desc}
-                                        <br/>
-                                    </>
+                                    </td>
+                                </tr>
                                 ))}
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </>
             )}
 
+            {isModData && (
+                <div className="subbtn_box">
+                    <Link to="" className="subbtn on" onClick={doReward}>
+                        리워드 적용
+                    </Link>
+                </div>
+            )}
+
             <div className="subbtn_box">
                 {isModData ? (
                     <>
-                        <Link className="subbtn del" onClick={clickRemove}>
+                        <Link to="" className="subbtn del" onClick={clickRemove}>
                             강제탈퇴
                         </Link>
                         {/* <Link className="subbtn on" onClick={modUser}>
@@ -553,12 +676,12 @@ const KmediLocalMemberModalMain = (props) => {
                         </Link> */}
                     </>
                 ) : (
-                    <Link className="subbtn on" onClick={regUser}>
+                    <Link to="" className="subbtn on" onClick={regUser}>
                         등록
                     </Link>
                 )}
-                <Link className="subbtn off" onClick={handleModalClose}>
-                취소
+                <Link to="" className="subbtn off" onClick={handleModalClose}>
+                    취소
                 </Link>
             </div>
         </>

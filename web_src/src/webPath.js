@@ -357,6 +357,13 @@ const apiPath = {
         base_api_url + slash + mng + slash + version + slash
     }kmedi/member-rewards`,
 
+    // K-MEDI 회원 리워드 등록 (관리자)
+    // mng/v1/kmedi/member-reward
+    // POST
+    api_admin_kmedi_member_reward_reg: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/member-reward`,
+
     /**
      * Notice Management API
      * K-MEDI 공지사항 관리 API
