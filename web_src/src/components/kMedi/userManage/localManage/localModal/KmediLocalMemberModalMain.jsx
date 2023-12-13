@@ -363,6 +363,10 @@ const KmediLocalMemberModalMain = (props) => {
                     setIsSpinner(false);
 
                     getReward()
+
+                    memberRewardHistoryTypeCd.current.value = ""
+                    memberRewardHistoryAmt.current.value = ""
+                    memberRewardHistoryDesc.current.value = ""
                 } else {
                     setIsSpinner(false);
 
@@ -413,7 +417,8 @@ const KmediLocalMemberModalMain = (props) => {
 
     return (
         <>
-            <table className="table_bb">
+            <h4 className="mo_subtitle">회원 정보</h4>
+            <table className="table_bb" style={{marginBottom: "20px"}}>
                 <colgroup>
                     <col width="30%"/>
                     <col width="*"/>
@@ -603,7 +608,7 @@ const KmediLocalMemberModalMain = (props) => {
             {isModData && (
                 <>
                     <h4 className="mo_subtitle">리워드 정보</h4>
-                    <table className="table_bb">
+                    <table className="table_bb" style={{marginBottom: "20px"}}>
                         <colgroup>
                             <col width="30%"/>
                             <col width="*"/>
@@ -638,20 +643,28 @@ const KmediLocalMemberModalMain = (props) => {
                                 {totalReward}
                             </td>
                         </tr>
-                            {rewardInfo.length !== 0 && rewardInfo.map((item, idx) => (
-                                <tr>
-                                    {idx === 0 && (
-                                        <th rowSpan={rewardInfo.length}>리워드 지급/차감 목록</th>
-                                    )}
-                                    <td>
-                                        {item.member_reward_history_type_cd === "100" ? "+" : item.member_reward_history_type_cd === "200" ? "-" : ""}
-                                        {" "}
-                                        {item.member_reward_history_amt}
-                                        {" : "}
-                                        {item.member_reward_history_desc}
-                                    </td>
-                                </tr>
-                                ))}
+                        {rewardInfo.length !== 0 && rewardInfo.map((item, idx) => (
+                            <tr key={`rewardInfo_${idx}`}>
+                                {idx === 0 && (
+                                    <th rowSpan={rewardInfo.length}>리워드 지급/차감 목록</th>
+                                )}
+                                <td>
+                                    {" "}
+                                    {item.member_reward_history_amt}{" "}
+                                    {item.member_reward_history_type_cd === "100" ?
+                                        (<span style={{
+                                            color: "#008744",
+                                            fontWeight: "700"
+                                        }}>지급</span>) :
+                                        item.member_reward_history_type_cd === "200" ?
+                                            (<span style={{
+                                                color: "#dd0000",
+                                                fontWeight: "700"
+                                            }}>차감</span>) : ""}
+                                    {` (${item.member_reward_history_desc})`}
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </>

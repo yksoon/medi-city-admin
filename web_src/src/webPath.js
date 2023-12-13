@@ -16,7 +16,8 @@ if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
     // host = "3.36.85.141";
-    host = "api.medi-people.co.kr";
+    // host = "api.medi-people.co.kr";
+    host = "localhost";
 } else {
     host = "dev-api.medi-city.co.kr";
 }
@@ -403,6 +404,17 @@ const apiPath = {
     api_admin_kmedi_board_notice_mod: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/board/notice`,
+
+    /**
+     * Banner Management API
+     * K-MEDI 베너 관리 API
+     */
+    // K-MEDI 베너 정보 목록 (관리자)
+    // mng/v1/kmedi/banners
+    // POST
+    api_admin_kmedi_banner_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/banners`,
 };
 
 export { routerPath, apiPath };
