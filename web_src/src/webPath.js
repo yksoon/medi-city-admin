@@ -11,13 +11,12 @@ const isDeveloping = import.meta.env.VITE_ISDEVELOPING;
 const protocol = "http://";
 
 let host = "";
-let host2=""
 if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
     // host = "3.36.85.141";
-    // host = "api.medi-people.co.kr";
-    host = "localhost";
+    host = "api.medi-people.co.kr";
+    // host = "localhost";
 } else {
     host = "dev-api.medi-city.co.kr";
 }

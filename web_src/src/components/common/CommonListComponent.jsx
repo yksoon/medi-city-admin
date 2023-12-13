@@ -30,6 +30,7 @@ const CommonListComponent = (props) => {
     const regBoard = props.regBoard
     const modBoard = props.modBoard
     const isNeedUpdate = props.isNeedUpdate
+    const setIsNeedUpdate = props.setIsNeedUpdate
 
     const searchKeyword = useRef(null);
 
