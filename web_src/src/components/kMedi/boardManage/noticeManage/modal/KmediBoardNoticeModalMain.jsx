@@ -7,6 +7,7 @@ import {isSpinnerAtom} from "recoils/atoms";
 import {Link} from "react-router-dom";
 import {apiPath} from "webPath";
 import {successCode} from "common/js/resultCode";
+import axios from "axios";
 
 const langOption = [
     { value: "en", label: "영어" },
@@ -359,15 +360,26 @@ const KmediBoardNoticeModalMain = (props) => {
         return true;
     };
 
-    // const downloadFile = async (url, fileName) => {
-    //     const res = await fetch(url)
-    //     const blob = await res.blob()
-    //     const downloadUrl = window.URL.createObjectURL(blob)
-    //     const link = document.createElement('a')
-    //     link.href = downloadUrl
-    //     link.download = fileName
-    //     link.click()
-    // }
+    const downloadFile = async (fileUrl, fileName) => {
+        try {
+            // 파일 다운로드 요청
+            const response = await axios({
+                method: 'GET',
+                url: fileUrl,
+                responseType: 'blob', // 파일 형식에 따라 responseType을 조절할 수 있습니다.
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName); // 다운로드되는 파일의 이름을 설정합니다.
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error('파일 다운로드 중 에러 발생:', error);
+        }
+
+    }
 
     return (
         <>
@@ -437,9 +449,9 @@ const KmediBoardNoticeModalMain = (props) => {
                                     fileList.map((item, idx) => (
                                         <div key={`file_${idx}`}>
                                             <Link
-                                                to={item.notice_attach_url}
-                                                // to=""
-                                                // onClick={() => downloadFile(item.notice_attach_url, item.notice_attach_nm)}
+                                                // to={item.notice_attach_url}
+                                                to=""
+                                                onClick={() => downloadFile(item.notice_attach_url, item.notice_attach_nm)}
                                             >
                                                 <img
                                                     src="img/common/file.svg"
