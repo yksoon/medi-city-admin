@@ -41,7 +41,7 @@ const auth = "auth";
 const mng = "mng";
 
 // Account Service
-const account = "account";
+const account = "act";
 
 // Hotel Service
 const hotel = "hotel";
