@@ -15,7 +15,7 @@ if (isDeveloping === "local" || isDeveloping === "dev") {
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
     // host = "3.36.85.141";
-    host = "gateway.medi-people.co.kr";
+    host = "api.medi-people.co.kr";
 } else {
     host = "dev-api.medi-city.co.kr";
 }
