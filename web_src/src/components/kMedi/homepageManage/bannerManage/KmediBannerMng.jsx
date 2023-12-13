@@ -1,86 +1,92 @@
 import { Link } from "react-router-dom";
+import useConfirm from "hook/useConfirm";
+import useAlert from "hook/useAlert";
+import {CommonConsole, CommonErrModule, CommonNotify, CommonRest} from "common/js/Common";
+import {useSetRecoilState} from "recoil";
+import {isSpinnerAtom} from "recoils/atoms";
+import {useEffect, useRef, useState} from "react";
+import {createColumnHelper} from "@tanstack/react-table";
+import {apiPath} from "webPath";
+import {successCode} from "common/js/resultCode";
+import CommonListComponent from "components/common/CommonListComponent";
 
 const KmediBannerMng = (props) => {
+    const { confirm } = useConfirm();
+    const { alert } = useAlert();
+    const err = CommonErrModule();
+    const setIsSpinner = useSetRecoilState(isSpinnerAtom);
+
+    const isRefresh = props.isRefresh;
+    const [isNeedUpdate, setIsNeedUpdate] = useState(false);
+
+    const [boardList, setBoardList] = useState([]);
+    const [pageInfo, setPageInfo] = useState({});
+    const [checkItems, setCheckItems] = useState([]);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        getBoardList(page, 10, "");
+    }, [isNeedUpdate, isRefresh]);
+
+    // 리스트
+    const getBoardList = (pageNum, pageSize, searchKeyword) => {
+        setIsSpinner(true);
+
+        const url = apiPath.api_admin_kmedi_terms_list;
+        const data = {
+            page_num: pageNum,
+            page_size: pageSize,
+            search_keyword: searchKeyword,
+        };
+
+        // 파라미터
+        const restParams = {
+            method: "post",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+
+            // 성공
+            if (
+                result_code === successCode.success ||
+                result_code === successCode.noData
+            ) {
+                const result_info = res.data.result_info;
+                const page_info = res.data.page_info;
+
+                // console.log(res);
+                setBoardList(result_info);
+                setPageInfo(page_info);
+
+                // console.log(res);
+                setIsSpinner(false);
+            } else {
+                // 에러
+                CommonConsole("log", res);
+
+                setIsSpinner(false);
+            }
+        };
+    };
+
+
     return (
         <>
-            <div className="content">
-                <div className="title">
-                    <h3>배너관리</h3>
-                </div>
-                <div className="con_area">
-                    <div className="kmedi_add_btn">
-                        <div>
-                            <Link
-                                href="javascipt:void(0)"
-                                className="subbtn on"
-                                onclick="modal_open(1)"
-                            >
-                                추가
-                            </Link>
-                            <Link
-                                href="javascipt:void(0)"
-                                className="subbtn off"
-                            >
-                                삭제
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="kmedi_content">
-                        <div className="kmedi_banner">
-                            <div className="adm_table">
-                                <table className="table_a">
-                                    <colgroup>
-                                        <col width="5%" />
-                                        <col width="5%" />
-                                        <col width="20%" />
-                                        <col width="20%" />
-                                        <col width="*" />
-                                        <col width="10%" />
-                                    </colgroup>
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <input type="checkbox" />
-                                            </th>
-                                            <th>정렬순서</th>
-                                            <th>이미지</th>
-                                            <th>배너이름</th>
-                                            <th>배너설명</th>
-                                            <th>수정</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" />
-                                            </td>
-                                            <td>1</td>
-                                            <td className="banner_thumb_td">
-                                                <img
-                                                    src="img/hotel/hotel01.png"
-                                                    alt=""
-                                                />
-                                            </td>
-                                            <td>메인비주얼</td>
-                                            <td>배너설명</td>
-                                            <td>
-                                                <Link
-                                                    href="javascript:void(0);"
-                                                    className="tablebtn"
-                                                    onclick="modal_open(1)"
-                                                >
-                                                    수정
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="pagenation"></div>
-                    </div>
-                </div>
-            </div>
+            <CommonListComponent
+                templateTitle={"홈페이지 관리 - 배너관리"}
+                boardList={boardList}
+                pageInfo={pageInfo}
+                isRefresh={isRefresh}
+                isNeedUpdate={isNeedUpdate}
+                setIsNeedUpdate={setIsNeedUpdate}
+            />
         </>
     );
 };

@@ -373,26 +373,6 @@ const KmediTermsMng = (props) => {
                     <h3>홈페이지 관리 - 약관 관리</h3>
                 </div>
                 <div className="con_area">
-                    {/*<div className="adm_search">*/}
-                    {/*    <div>*/}
-                    {/*        <select name="" id="">*/}
-                    {/*            <option value="">구분</option>*/}
-                    {/*            <option value="">이름</option>*/}
-                    {/*            <option value="">소속</option>*/}
-                    {/*        </select>{" "}*/}
-                    {/*        <input type="text" className="input" />{" "}*/}
-                    {/*        <Link className="subbtn off">검색</Link>*/}
-                    {/*    </div>*/}
-                    {/*    <div>*/}
-                    {/*        <Link className="subbtn del" onClick={clickRemove}>*/}
-                    {/*            선택삭제*/}
-                    {/*        </Link>{" "}*/}
-                    {/*        <Link className="subbtn on" onClick={regTerms}>*/}
-                    {/*            약관등록*/}
-                    {/*        </Link>{" "}*/}
-                    {/*        <Link className="subbtn on">엑셀 다운로드</Link>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                     {/*검색 바*/}
                     <SearchBar
