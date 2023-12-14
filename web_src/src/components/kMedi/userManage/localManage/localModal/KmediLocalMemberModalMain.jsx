@@ -626,6 +626,7 @@ const KmediLocalMemberModalMain = (props) => {
                                     type="text"
                                     className="input w100"
                                     placeholder="수량"
+                                    onInput={(e) => {e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')}}
                                     ref={memberRewardHistoryAmt}
                                 />
                                 <br/>

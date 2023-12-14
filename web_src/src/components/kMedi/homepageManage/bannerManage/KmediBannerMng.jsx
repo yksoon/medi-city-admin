@@ -4,8 +4,8 @@ import useAlert from "hook/useAlert";
 import {CommonConsole, CommonErrModule, CommonNotify, CommonRest} from "common/js/Common";
 import {useSetRecoilState} from "recoil";
 import {isSpinnerAtom} from "recoils/atoms";
-import {useEffect, useRef, useState} from "react";
-import {createColumnHelper} from "@tanstack/react-table";
+import React, {useEffect, useMemo, useRef, useState} from "react";
+import {createColumnHelper, getCoreRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
 import {apiPath} from "webPath";
 import {successCode} from "common/js/resultCode";
 import CommonListComponent from "components/common/CommonListComponent";
@@ -24,15 +24,33 @@ const KmediBannerMng = (props) => {
     const [checkItems, setCheckItems] = useState([]);
     const [page, setPage] = useState(1);
 
+    // 약관 상세 데이터
+    const [modData, setModData] = useState({});
+
+    // 모달
+    const [isOpen, setIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+
+    // 테이블 세팅
+    const [sorting, setSorting] = useState([]);
+    const columnHelper = createColumnHelper();
+
     useEffect(() => {
         getBoardList(page, 10, "");
     }, [isNeedUpdate, isRefresh]);
+
+    // 리스트 새로고침
+    const handleNeedUpdate = () => {
+        setModalTitle("");
+        setIsOpen(false);
+        setIsNeedUpdate(!isNeedUpdate);
+    };
 
     // 리스트
     const getBoardList = (pageNum, pageSize, searchKeyword) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_list;
+        const url = apiPath.api_admin_kmedi_banner_list;
         const data = {
             page_num: pageNum,
             page_size: pageSize,
@@ -76,18 +94,240 @@ const KmediBannerMng = (props) => {
         };
     };
 
+    // 삭제 버튼
+    const removeBoard = async () => {
+        let checkItemsStr = checkItems.join();
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_kmedi_terms_remove}${checkItemsStr}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => handleNeedUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+        };
+    };
+
+    // 체크박스 단일 선택
+    const handleSingleCheck = (checked, id) => {
+        if (checked) {
+            // 단일 선택 시 체크된 아이템을 배열에 추가
+            setCheckItems((prev) => [...prev, id]);
+        } else {
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            setCheckItems(checkItems.filter((el) => el !== id));
+        }
+    };
+
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked) => {
+        if (checked) {
+            // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+            const idArray = [];
+            boardList.forEach((el) => idArray.push(el.terms_sq));
+            setCheckItems(idArray);
+        } else {
+            // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+            setCheckItems([]);
+        }
+    };
+
+    // 약관 상세
+    const detailBoard = (idx) => {
+        setIsSpinner(true);
+
+        const url = apiPath.api_admin_kmedi_terms_detail + idx;
+        const data = {};
+
+        // 파라미터
+        const restParams = {
+            method: "get",
+            url: url,
+            data: data,
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            if (res.headers.result_code === successCode.success) {
+                const result_info = res.data.result_info;
+                setModData(result_info);
+
+                modBoard();
+
+                setIsSpinner(false);
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: res.headers.result_message_ko,
+                });
+            }
+        };
+    };
+
+    // 신규 등록 모달
+    const regBoard = () => {
+        setModalTitle("약관 신규 등록");
+        setIsOpen(true);
+    };
+
+    // 상세보기 모달
+    const modBoard = () => {
+        setModalTitle("약관 상세보기");
+        setIsOpen(true);
+    };
+
+    // // 컬럼 세팅
+    const columns = useMemo(() => [
+        {
+            accessorKey: "terms_sq",
+            cell: (info) => (
+                <input
+                    type="checkbox"
+                    name={`termsSq_${info.getValue()}`}
+                    id={info.getValue()}
+                    value={info.getValue()}
+                    onChange={(e) =>
+                        handleSingleCheck(e.target.checked, info.getValue())
+                    }
+                    checked={
+                        checkItems.includes(info.getValue()) ? true : false
+                    }
+                />
+            ),
+            header: () => (
+                <input
+                    type="checkbox"
+                    name="select-all"
+                    onChange={(e) => handleAllCheck(e.target.checked)}
+                    checked={
+                        checkItems &&
+                        boardList &&
+                        checkItems.length === boardList.length
+                            ? true
+                            : false
+                    }
+                />
+            ),
+            enableSorting: false,
+        },
+
+        columnHelper.accessor((row) => row.terms_type_cd, {
+            id: "terms_type_cd",
+            cell: (info) => info.getValue(),
+            header: "구분",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.lang_cd, {
+            id: "lang_cd",
+            cell: (info) => info.getValue(),
+            header: "언어",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.terms_desc, {
+            id: "terms_desc",
+            cell: (info) => info.getValue(),
+            header: "내용",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.reg_dttm.split(" ")[0], {
+            id: "reg_dttm",
+            cell: (info) => info.getValue(),
+            header: "등록일",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor(
+            (row) => (
+                <Link
+                    className="tablebtn"
+                    onClick={() => detailBoard(row.terms_sq)}
+                >
+                    약관수정
+                </Link>
+            ),
+            {
+                id: "viewDetail",
+                cell: (info) => info.getValue(),
+                header: "약관수정",
+                enableSorting: false,
+            }
+        ),
+    ]);
+
+    const data = useMemo(() => boardList, [boardList]);
+
+    const table = useReactTable({
+        data,
+        columns,
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+    });
 
     return (
         <>
             <CommonListComponent
                 templateTitle={"홈페이지 관리 - 배너관리"}
+                modalComponent={"KmediTermsModalMain"}
+                modalWidth={"1400"}
                 boardList={boardList}
+                getBoardList={getBoardList}
+                modData={modData}
+                setModData={setModData}
                 pageInfo={pageInfo}
-                isRefresh={isRefresh}
                 isNeedUpdate={isNeedUpdate}
                 setIsNeedUpdate={setIsNeedUpdate}
                 checkItems={checkItems}
                 setCheckItems={setCheckItems}
+                removeBoard={removeBoard}
+                regBoard={regBoard}
+                table={table}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                modalTitle={modalTitle}
+                setModalTitle={setModalTitle}
+                setPage={setPage}
+                handleNeedUpdate={handleNeedUpdate}
+                // downloadExcel={downloadExcel}
+                // uploadExcel={uploadExcel}
             />
         </>
     );
