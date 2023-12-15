@@ -35,6 +35,7 @@ const CommonListComponent = (props) => {
     const setIsOpen = props.setIsOpen
     const setPage = props.setPage
     const handleNeedUpdate = props.handleNeedUpdate
+    const colWidth = props.colWidth
 
     const downloadExcel = props.downloadExcel
     const uploadExcel = props.uploadExcel
@@ -124,12 +125,10 @@ const CommonListComponent = (props) => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
-                                <col width="2%" />
-                                <col width="5%" />
-                                <col width="5%" />
-                                <col width="*" />
-                                <col width="7%" />
-                                <col width="5%" />
+                                {colWidth && colWidth.length !== 0 &&
+                                    colWidth.map((item, idx) => (
+                                        <col key={`${item}_${idx}`} width={item}/>
+                                    ))}
                             </colgroup>
                             <thead>
                             {table.length !== 0 && table.getHeaderGroups().map((headerGroup) => (

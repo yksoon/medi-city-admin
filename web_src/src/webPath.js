@@ -414,6 +414,34 @@ const apiPath = {
     api_admin_kmedi_banner_list: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/banners`,
+
+    // K-MEDI 베너 정보 상세 (관리자)
+    // /v1/kmedi/banner/{banner_sq}/
+    // GET
+    api_admin_kmedi_banner_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/banner${slash}`,
+
+    // K-MEDI 베너 정보 삭제 (관리자)
+    // /v1/kmedi/banner/{banner_sq}/
+    // DELETE
+    api_admin_kmedi_banner_remove: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/banner${slash}`,
+
+    // K-MEDI 베너 정보 등록 (관리자)
+    // /v1/kmedi/banner
+    // POST MULTI
+    api_admin_kmedi_banner_reg: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/banner`,
+
+    // K-MEDI 베너 정보 수정 (관리자)
+    // /v1/kmedi/banner
+    // PUT MULTI
+    api_admin_kmedi_banner_mod: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/banner`,
 };
 
 export { routerPath, apiPath };

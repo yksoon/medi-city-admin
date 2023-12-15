@@ -9,6 +9,7 @@ import {createColumnHelper, getCoreRowModel, getSortedRowModel, useReactTable} f
 import {apiPath} from "webPath";
 import {successCode} from "common/js/resultCode";
 import CommonListComponent from "components/common/CommonListComponent";
+import {Checkbox} from "@mui/material";
 
 const KmediBannerMng = (props) => {
     const { confirm } = useConfirm();
@@ -99,7 +100,7 @@ const KmediBannerMng = (props) => {
         let checkItemsStr = checkItems.join();
         setIsSpinner(true);
 
-        const url = `${apiPath.api_admin_kmedi_terms_remove}${checkItemsStr}`;
+        const url = `${apiPath.api_admin_kmedi_banner_remove}${checkItemsStr}`;
 
         const restParams = {
             method: "delete",
@@ -150,7 +151,7 @@ const KmediBannerMng = (props) => {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            boardList.forEach((el) => idArray.push(el.terms_sq));
+            boardList.forEach((el) => idArray.push(el.banner_sq));
             setCheckItems(idArray);
         } else {
             // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -162,7 +163,7 @@ const KmediBannerMng = (props) => {
     const detailBoard = (idx) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_detail + idx;
+        const url = apiPath.api_admin_kmedi_banner_detail + idx;
         const data = {};
 
         // 파라미터
@@ -198,92 +199,100 @@ const KmediBannerMng = (props) => {
 
     // 신규 등록 모달
     const regBoard = () => {
-        setModalTitle("약관 신규 등록");
+        setModalTitle("배너 신규 등록");
         setIsOpen(true);
     };
 
     // 상세보기 모달
     const modBoard = () => {
-        setModalTitle("약관 상세보기");
+        setModalTitle("배너 상세보기");
         setIsOpen(true);
     };
 
     // // 컬럼 세팅
     const columns = useMemo(() => [
         {
-            accessorKey: "terms_sq",
+            accessorKey: "banner_sq",
             cell: (info) => (
-                <input
-                    type="checkbox"
-                    name={`termsSq_${info.getValue()}`}
+                <Checkbox
+                    size="small"
+                    name={`banner_sq_${info.getValue()}`}
                     id={info.getValue()}
                     value={info.getValue()}
                     onChange={(e) =>
                         handleSingleCheck(e.target.checked, info.getValue())
                     }
                     checked={
-                        checkItems.includes(info.getValue()) ? true : false
+                        checkItems.includes(info.getValue())
                     }
                 />
             ),
             header: () => (
-                <input
-                    type="checkbox"
+                <Checkbox
+                    size="small"
                     name="select-all"
                     onChange={(e) => handleAllCheck(e.target.checked)}
                     checked={
                         checkItems &&
                         boardList &&
                         checkItems.length === boardList.length
-                            ? true
-                            : false
                     }
                 />
             ),
             enableSorting: false,
         },
 
-        columnHelper.accessor((row) => row.terms_type_cd, {
-            id: "terms_type_cd",
+        columnHelper.accessor(
+            (row) => (
+                <>
+                    <img
+                        loading="lazy"
+                        src={
+                            row.banner_image_url
+                                ? row.banner_image_url
+                                : "img/common/no_image.jpg"
+                        }
+                        alt=""
+                        style={{ width: "100px" }}
+                    />
+                </>
+            ),
+            {
+                id: "banner_image_url",
+                cell: (info) => info.getValue(),
+                header: "미리보기",
+                enableSorting: false,
+            },
+        ),
+
+        columnHelper.accessor((row) => row.banner_name, {
+            id: "banner_name",
             cell: (info) => info.getValue(),
-            header: "구분",
+            header: "배너명",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.lang_cd, {
-            id: "lang_cd",
-            cell: (info) => info.getValue(),
-            header: "언어",
-            sortingFn: "alphanumericCaseSensitive",
-        }),
-
-        columnHelper.accessor((row) => row.terms_desc, {
-            id: "terms_desc",
+        columnHelper.accessor((row) => row.banner_desc, {
+            id: "banner_desc",
             cell: (info) => info.getValue(),
             header: "내용",
-            sortingFn: "alphanumericCaseSensitive",
-        }),
-
-        columnHelper.accessor((row) => row.reg_dttm.split(" ")[0], {
-            id: "reg_dttm",
-            cell: (info) => info.getValue(),
-            header: "등록일",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
         columnHelper.accessor(
             (row) => (
                 <Link
+                    to=""
                     className="tablebtn"
-                    onClick={() => detailBoard(row.terms_sq)}
+                    onClick={() => detailBoard(row.banner_sq)}
                 >
-                    약관수정
+                    상세보기
                 </Link>
             ),
             {
                 id: "viewDetail",
                 cell: (info) => info.getValue(),
-                header: "약관수정",
+                header: "상세보기",
                 enableSorting: false,
             }
         ),
@@ -302,12 +311,20 @@ const KmediBannerMng = (props) => {
         getSortedRowModel: getSortedRowModel(),
     });
 
+    const colWidth = [
+        "2%",
+        "15%",
+        "20%",
+        "*",
+        "5%"
+    ]
+
     return (
         <>
             <CommonListComponent
                 templateTitle={"홈페이지 관리 - 배너관리"}
-                modalComponent={"KmediTermsModalMain"}
-                modalWidth={"1400"}
+                modalComponent={"KmediBannerModal"}
+                modalWidth={"800"}
                 boardList={boardList}
                 getBoardList={getBoardList}
                 modData={modData}
@@ -326,6 +343,7 @@ const KmediBannerMng = (props) => {
                 setModalTitle={setModalTitle}
                 setPage={setPage}
                 handleNeedUpdate={handleNeedUpdate}
+                colWidth={colWidth}
                 // downloadExcel={downloadExcel}
                 // uploadExcel={uploadExcel}
             />

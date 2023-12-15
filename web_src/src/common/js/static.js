@@ -16,4 +16,11 @@ const commonUserRoleCd = {
     etc: "900",
 };
 
-export { commonSeparator, commonUserRoleCd };
+// 썸네일 formData append
+const imageResizeOptions = {
+    maxSizeMB: 0.25,
+    useWebWorker: true,
+    preserveExif: true,
+};
+
+export { commonSeparator, commonUserRoleCd, imageResizeOptions };
