@@ -13,38 +13,34 @@ import {isSpinnerAtom} from "recoils/atoms";
 const CommonListComponent = (props) => {
     const { confirm } = useConfirm();
     const { alert } = useAlert();
-    const err = CommonErrModule();
-    const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
     /**
      * props
-     * @type {*|string}
      */
     const templateTitle = props.templateTitle ?? ""
+    const modalComponent = props.modalComponent
+    const modalWidth = props.modalWidth
+    const modalTitle = props.modalTitle
+    const setModalTitle = props.setModalTitle
     const boardList = props.boardList ?? []
     const pageInfo = props.pageInfo ?? {}
-    const isRefresh = props.isRefresh;
     const getBoardList = props.getBoardList
-    const handleSingleCheck = props.handleSingleCheck
-    const handleAllCheck = props.handleAllCheck
     const regBoard = props.regBoard
-    const modBoard = props.modBoard
-    const isNeedUpdate = props.isNeedUpdate
-    const setIsNeedUpdate = props.setIsNeedUpdate
     const checkItems = props.checkItems
-    const setCheckItems = props.setCheckItems
+    const removeBoard = props.removeBoard
+    const table = props.table
+    const modData = props.modData
+    const setModData = props.setModData
+    const isOpen = props.isOpen
+    const setIsOpen = props.setIsOpen
+    const setPage = props.setPage
+    const handleNeedUpdate = props.handleNeedUpdate
+    const colWidth = props.colWidth
+
+    const downloadExcel = props.downloadExcel
+    const uploadExcel = props.uploadExcel
 
     const searchKeyword = useRef(null);
-
-    const [page, setPage] = useState(1);
-
-    // 약관 상세 데이터
-    const [modData, setModData] = useState({});
-
-    // 모달
-    const [isOpen, setIsOpen] = useState(false);
-    const [modalTitle, setModalTitle] = useState("");
-
 
     // 검색
     const doSearch = () => {
@@ -69,18 +65,28 @@ const CommonListComponent = (props) => {
         };
     };
 
-    // 리스트 새로고침
-    const handleNeedUpdate = () => {
-        setModalTitle("");
-        setIsOpen(false);
-        setIsNeedUpdate(!isNeedUpdate);
-    };
-
     // 페이지네이션 이동
     const handleChange = (e, value) => {
         getBoardList(value, 10, searchKeyword.current.value)
 
         setPage(value)
+    };
+
+    // 선택 삭제
+    const clickRemove = () => {
+        //선택여부 확인
+        checkItems.length === 0
+            ? CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "삭제할 목록을 선택해주세요",
+            })
+            : CommonNotify({
+                type: "confirm",
+                hook: confirm,
+                message: "선택된 목록을 삭제 하시겠습니까?",
+                callback: () => removeBoard(),
+            });
     };
 
     return (
@@ -96,8 +102,8 @@ const CommonListComponent = (props) => {
                         searchKeyword={searchKeyword}
                         doSearch={doSearch}
                         regBoard={regBoard}
-                        downloadExcel={() => {}}
-                        // uploadExcel={() => {}}
+                        downloadExcel={downloadExcel}
+                        uploadExcel={uploadExcel}
                         clickRemove={clickRemove}
                     />
 
@@ -119,15 +125,13 @@ const CommonListComponent = (props) => {
                     <div className="adm_table">
                         <table className="table_a">
                             <colgroup>
-                                <col width="2%" />
-                                <col width="5%" />
-                                <col width="5%" />
-                                <col width="*" />
-                                <col width="7%" />
-                                <col width="5%" />
+                                {colWidth && colWidth.length !== 0 &&
+                                    colWidth.map((item, idx) => (
+                                        <col key={`${item}_${idx}`} width={item}/>
+                                    ))}
                             </colgroup>
                             <thead>
-                            {table.getHeaderGroups().map((headerGroup) => (
+                            {table.length !== 0 && table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => {
                                         return (
@@ -229,9 +233,9 @@ const CommonListComponent = (props) => {
             <CommonModal
                 isOpen={isOpen}
                 title={modalTitle}
-                width={"1400"}
+                width={modalWidth}
                 handleModalClose={handleModalClose}
-                component={"KmediTermsModalMain"}
+                component={modalComponent}
                 handleNeedUpdate={handleNeedUpdate}
                 modData={modData}
             />

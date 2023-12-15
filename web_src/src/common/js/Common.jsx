@@ -17,6 +17,7 @@ import KmediLocalMemberModalMain from "components/kMedi/userManage/localManage/l
 import KmediCreatorRegModalMain from "components/kMedi/userManage/creatorManage/modal/KmediCreatorRegModalMain";
 import KmediCreatorDetailModalMain from "components/kMedi/userManage/creatorManage/modal/KmediCreatorDetailModalMain";
 import KmediBoardNoticeModalMain from "components/kMedi/boardManage/noticeManage/modal/KmediBoardNoticeModalMain";
+import KmediBannerModal from "components/kMedi/homepageManage/bannerManage/modal/KmediBannerModal";
 
 // Alert (props)
 // isOpen = state 상태값
@@ -115,6 +116,16 @@ const CommonModal = (props) => {
             case "KmediBoardNoticeModalMain":
                 return (
                     <KmediBoardNoticeModalMain
+                        handleNeedUpdate={handleNeedUpdate}
+                        handleModalClose={modalOption.handleModalClose}
+                        modData={props.modData}
+                    />
+                );
+
+            // kmedi 배너관리 모달 컴포넌트
+            case "KmediBannerModal":
+                return (
+                    <KmediBannerModal
                         handleNeedUpdate={handleNeedUpdate}
                         handleModalClose={modalOption.handleModalClose}
                         modData={props.modData}
