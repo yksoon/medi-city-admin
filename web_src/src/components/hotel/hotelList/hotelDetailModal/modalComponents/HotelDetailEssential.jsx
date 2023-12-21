@@ -371,7 +371,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                 <select
                                     name=""
                                     id="nationType"
-                                    className="w120"
+                                    className="w180"
                                     ref={nationType}
                                     onChange={(e) => {
                                         handleIshowNation(e);
@@ -383,7 +383,7 @@ const HotelDetailEssential = forwardRef((props, ref) => {
                                             value={item.code_key}
                                             key={`nationType_${idx}`}
                                         >
-                                            {item.code_value}
+                                            {`${item.code_value_ko}(${item.code_value_en})`}
                                         </option>
                                     ))}
                                 </select>
