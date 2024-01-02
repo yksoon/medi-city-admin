@@ -11,6 +11,7 @@ const isDeveloping = import.meta.env.VITE_ISDEVELOPING;
 // const protocol = "http://";
 let protocol;
 let host;
+
 if (isDeveloping === "local" || isDeveloping === "dev") {
     protocol = "https://"
     host = "dev-api.medi-city.co.kr";
