@@ -7,7 +7,7 @@ const SearchBar = (props) => {
     const regBoard = props.regBoard;
     const downloadExcel = props.downloadExcel;
     const uploadExcel = props.uploadExcel
-    const clickRemove = props.clickRemove;
+    const removeBoard = props.removeBoard;
 
     // 엔터키
     const handleOnKeyPress = (e) => {
@@ -54,11 +54,11 @@ const SearchBar = (props) => {
                             등록
                         </Link>
                     )}
-                    {clickRemove && (
+                    {removeBoard && (
                         <Link
                             to=""
                             className="subbtn del"
-                            onClick={clickRemove}
+                            onClick={removeBoard}
                         >
                             삭제
                         </Link>

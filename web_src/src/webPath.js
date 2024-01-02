@@ -9,9 +9,9 @@ const isDeveloping = import.meta.env.VITE_ISDEVELOPING;
 // 포트
 // 버전
 // const protocol = "http://";
-
 let protocol;
-let host = "";
+let host;
+
 if (isDeveloping === "local" || isDeveloping === "dev") {
     protocol = "https://"
     host = "dev-api.medi-city.co.kr";
@@ -446,6 +446,31 @@ const apiPath = {
     api_admin_kmedi_banner_mod: `${
         base_api_url + slash + mng + slash + version + slash
     }kmedi/banner`,
+
+    /**
+     * QNA Management API
+     * K-MEDI QNA 관리 API
+     */
+    // K-MEDI QNA 정보 목록 (관리자)
+    // /v1/kmedi/board/qnas
+    // POST
+    api_admin_kmedi_board_qna_list: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/qnas`,
+
+    // K-MEDI QNA 정보 상세 (관리자)
+    // /v1/kmedi/board/qna/{qna_sq}
+    // GET
+    api_admin_kmedi_board_qna_detail: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/qna${slash}`,
+
+    // K-MEDI 답변 정보 삭제 (관리자)
+    // /v1/kmedi/board/qna/answer/{qna_sqs}
+    // DELETE
+    api_admin_kmedi_board_qna_remove: `${
+        base_api_url + slash + mng + slash + version + slash
+    }kmedi/board/qna/answer${slash}`,
 };
 
 export { routerPath, apiPath };

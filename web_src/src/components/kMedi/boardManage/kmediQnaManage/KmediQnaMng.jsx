@@ -1,34 +1,19 @@
-import {
-    CommonConsole,
-    CommonErrModule,
-    CommonModal,
-    CommonNotify,
-    CommonRest,
-} from "common/js/Common";
-import { successCode } from "common/js/resultCode";
-import useAlert from "hook/useAlert";
-import React, {useEffect, useMemo, useRef, useState} from "react";
-import { useSetRecoilState } from "recoil";
-import { isSpinnerAtom } from "recoils/atoms";
-import { apiPath } from "webPath";
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table";
 import { Link } from "react-router-dom";
-import { Pagination } from "@mui/material";
 import useConfirm from "hook/useConfirm";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import SearchBar from "components/common/SearchBar";
+import useAlert from "hook/useAlert";
+import {CommonConsole, CommonErrModule, CommonNotify, CommonRest} from "common/js/Common";
+import {useSetRecoilState} from "recoil";
+import {isSpinnerAtom} from "recoils/atoms";
+import React, {useEffect, useMemo, useState} from "react";
+import {createColumnHelper, getCoreRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
+import {apiPath} from "webPath";
+import {successCode} from "common/js/resultCode";
+import {Checkbox} from "@mui/material";
 import CommonListComponent from "components/common/CommonListComponent";
 
-const KmediTermsMng = (props) => {
-    const {confirm} = useConfirm();
-    const {alert} = useAlert();
+const KmediQnaMng = (props) => {
+    const { confirm } = useConfirm();
+    const { alert } = useAlert();
     const err = CommonErrModule();
     const setIsSpinner = useSetRecoilState(isSpinnerAtom);
 
@@ -66,11 +51,13 @@ const KmediTermsMng = (props) => {
     const getBoardList = (pageNum, pageSize, searchKeyword) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_list;
+        const url = apiPath.api_admin_kmedi_board_qna_list;
         const data = {
             page_num: pageNum,
             page_size: pageSize,
-            search_keyword: searchKeyword,
+            // search_tp: "qnaTitle",
+            // search_wd: searchKeyword,
+            search_wd: searchKeyword,
         };
 
         // 파라미터
@@ -126,7 +113,7 @@ const KmediTermsMng = (props) => {
         if (checked) {
             // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
             const idArray = [];
-            boardList.forEach((el) => idArray.push(el.terms_sq));
+            boardList.forEach((el) => idArray.push(el.banner_sq));
             setCheckItems(idArray);
         } else {
             // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -138,7 +125,7 @@ const KmediTermsMng = (props) => {
     const detailBoard = (idx) => {
         setIsSpinner(true);
 
-        const url = apiPath.api_admin_kmedi_terms_detail + idx;
+        const url = apiPath.api_admin_kmedi_board_qna_detail + idx;
         const data = {};
 
         // 파라미터
@@ -174,21 +161,14 @@ const KmediTermsMng = (props) => {
 
     // 신규 등록 모달
     const regBoard = () => {
-        setModalTitle("약관 신규 등록");
+        setModalTitle("배너 신규 등록");
         setIsOpen(true);
     };
 
     // 상세보기 모달
     const modBoard = () => {
-        setModalTitle("약관 상세보기");
+        setModalTitle("배너 상세보기");
         setIsOpen(true);
-    };
-
-    // 페이지네이션 이동
-    const handleChange = (e, value) => {
-        getTermsList(value, 10, searchKeyword.current.value)
-
-        setPage(value)
     };
 
     // 선택 삭제
@@ -208,12 +188,12 @@ const KmediTermsMng = (props) => {
             });
     };
 
-    // 삭제 버튼
+    // 삭제
     const doRemoveBoard = async () => {
         let checkItemsStr = checkItems.join();
         setIsSpinner(true);
 
-        const url = `${apiPath.api_admin_kmedi_terms_remove}${checkItemsStr}`;
+        const url = `${apiPath.api_admin_kmedi_board_qna_remove}${checkItemsStr}`;
 
         const restParams = {
             method: "delete",
@@ -251,61 +231,80 @@ const KmediTermsMng = (props) => {
     // 컬럼 세팅
     const columns = useMemo(() => [
         {
-            accessorKey: "terms_sq",
+            accessorKey: "qna_sq",
             cell: (info) => (
-                <input
-                    type="checkbox"
-                    name={`termsSq_${info.getValue()}`}
+                <Checkbox
+                    size="small"
+                    name={`qna_sq_${info.getValue()}`}
                     id={info.getValue()}
                     value={info.getValue()}
                     onChange={(e) =>
                         handleSingleCheck(e.target.checked, info.getValue())
                     }
                     checked={
-                        checkItems.includes(info.getValue()) ? true : false
+                        checkItems.includes(info.getValue())
                     }
                 />
             ),
             header: () => (
-                <input
-                    type="checkbox"
+                <Checkbox
+                    size="small"
                     name="select-all"
                     onChange={(e) => handleAllCheck(e.target.checked)}
                     checked={
                         checkItems &&
                         boardList &&
                         checkItems.length === boardList.length
-                            ? true
-                            : false
                     }
                 />
             ),
             enableSorting: false,
         },
 
-        columnHelper.accessor((row) => row.terms_type_cd, {
-            id: "terms_type_cd",
+        columnHelper.accessor((row) => row.member_nm, {
+            id: "member_nm",
             cell: (info) => info.getValue(),
-            header: "구분",
+            header: "회원명",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.lang_cd, {
-            id: "lang_cd",
+        columnHelper.accessor((row) => row.member_type_cd_nm, {
+            id: "member_type_cd_nm",
             cell: (info) => info.getValue(),
-            header: "언어",
+            header: "회원구분명",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.terms_desc, {
-            id: "terms_desc",
+        columnHelper.accessor((row) => row.member_company_nm, {
+            id: "member_company_nm",
             cell: (info) => info.getValue(),
-            header: "내용",
+            header: "회원소속명",
             sortingFn: "alphanumericCaseSensitive",
         }),
 
-        columnHelper.accessor((row) => row.reg_dttm.split(" ")[0], {
-            id: "reg_dttm",
+        columnHelper.accessor((row) => row.qna_title, {
+            id: "qna_title",
+            cell: (info) => info.getValue(),
+            header: "제목",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.qna_desc, {
+            id: "qna_desc",
+            cell: (info) => info.getValue(),
+            header: "답변내용",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.is_complete === "Y" ? "완료" : row.is_complete === "N" ? "미완료" : "", {
+            id: "is_complete",
+            cell: (info) => info.getValue(),
+            header: "답변상태",
+            sortingFn: "alphanumericCaseSensitive",
+        }),
+
+        columnHelper.accessor((row) => row.insert_dt, {
+            id: "insert_dt",
             cell: (info) => info.getValue(),
             header: "등록일",
             sortingFn: "alphanumericCaseSensitive",
@@ -314,16 +313,17 @@ const KmediTermsMng = (props) => {
         columnHelper.accessor(
             (row) => (
                 <Link
+                    to=""
                     className="tablebtn"
-                    onClick={() => detailBoard(row.terms_sq)}
+                    onClick={() => detailBoard(row.qna_sq)}
                 >
-                    약관수정
+                    상세보기
                 </Link>
             ),
             {
                 id: "viewDetail",
                 cell: (info) => info.getValue(),
-                header: "약관수정",
+                header: "상세보기",
                 enableSorting: false,
             }
         ),
@@ -343,20 +343,23 @@ const KmediTermsMng = (props) => {
     });
 
     const colWidth = [
-            "2%",
-            "5%",
-            "5%",
-            "*",
-            "7%",
-            "5%"
-        ]
+        "2%",
+        "10%",
+        "5%",
+        "10%",
+        "15%",
+        "*",
+        "7%",
+        "10%",
+        "5%",
+    ]
 
     return (
         <>
             <CommonListComponent
-                templateTitle={"홈페이지 관리 - 약관 관리"}
-                modalComponent={"KmediTermsModalMain"}
-                modalWidth={"1400"}
+                templateTitle={"게시판 관리 - QNA"}
+                modalComponent={"KmediBannerModal"}
+                modalWidth={"800"}
                 boardList={boardList}
                 getBoardList={getBoardList}
                 modData={modData}
@@ -386,4 +389,4 @@ const KmediTermsMng = (props) => {
     );
 };
 
-export default KmediTermsMng;
+export default KmediQnaMng;

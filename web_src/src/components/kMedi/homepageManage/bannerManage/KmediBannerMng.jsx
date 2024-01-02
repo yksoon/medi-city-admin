@@ -25,7 +25,7 @@ const KmediBannerMng = (props) => {
     const [checkItems, setCheckItems] = useState([]);
     const [page, setPage] = useState(1);
 
-    // 약관 상세 데이터
+    // 상세 데이터
     const [modData, setModData] = useState({});
 
     // 모달
@@ -91,46 +91,6 @@ const KmediBannerMng = (props) => {
                 CommonConsole("log", res);
 
                 setIsSpinner(false);
-            }
-        };
-    };
-
-    // 삭제 버튼
-    const removeBoard = async () => {
-        let checkItemsStr = checkItems.join();
-        setIsSpinner(true);
-
-        const url = `${apiPath.api_admin_kmedi_banner_remove}${checkItemsStr}`;
-
-        const restParams = {
-            method: "delete",
-            url: url,
-            data: {},
-            err: err,
-            callback: (res) => responsLogic(res),
-        };
-
-        CommonRest(restParams);
-
-        const responsLogic = (res) => {
-            const result_code = res.headers.result_code;
-            if (result_code === successCode.success) {
-                setIsSpinner(false);
-
-                CommonNotify({
-                    type: "alert",
-                    hook: alert,
-                    message: "삭제가 완료 되었습니다",
-                    callback: () => handleNeedUpdate(),
-                });
-            } else {
-                setIsSpinner(false);
-
-                CommonNotify({
-                    type: "alert",
-                    hook: alert,
-                    message: "잠시 후 다시 시도해주세요",
-                });
             }
         };
     };
@@ -209,7 +169,64 @@ const KmediBannerMng = (props) => {
         setIsOpen(true);
     };
 
-    // // 컬럼 세팅
+    // 선택 삭제
+    const removeBoard = () => {
+        //선택여부 확인
+        checkItems.length === 0
+            ? CommonNotify({
+                type: "alert",
+                hook: alert,
+                message: "삭제할 목록을 선택해주세요",
+            })
+            : CommonNotify({
+                type: "confirm",
+                hook: confirm,
+                message: "선택된 목록을 삭제 하시겠습니까?",
+                callback: () => doRemoveBoard(),
+            });
+    };
+
+    // 삭제
+    const doRemoveBoard = async () => {
+        let checkItemsStr = checkItems.join();
+        setIsSpinner(true);
+
+        const url = `${apiPath.api_admin_kmedi_banner_remove}${checkItemsStr}`;
+
+        const restParams = {
+            method: "delete",
+            url: url,
+            data: {},
+            err: err,
+            callback: (res) => responsLogic(res),
+        };
+
+        CommonRest(restParams);
+
+        const responsLogic = (res) => {
+            const result_code = res.headers.result_code;
+            if (result_code === successCode.success) {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "삭제가 완료 되었습니다",
+                    callback: () => handleNeedUpdate(),
+                });
+            } else {
+                setIsSpinner(false);
+
+                CommonNotify({
+                    type: "alert",
+                    hook: alert,
+                    message: "잠시 후 다시 시도해주세요",
+                });
+            }
+        };
+    };
+
+    // 컬럼 세팅
     const columns = useMemo(() => [
         {
             accessorKey: "banner_sq",
@@ -334,8 +351,6 @@ const KmediBannerMng = (props) => {
                 setIsNeedUpdate={setIsNeedUpdate}
                 checkItems={checkItems}
                 setCheckItems={setCheckItems}
-                removeBoard={removeBoard}
-                regBoard={regBoard}
                 table={table}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
@@ -344,6 +359,11 @@ const KmediBannerMng = (props) => {
                 setPage={setPage}
                 handleNeedUpdate={handleNeedUpdate}
                 colWidth={colWidth}
+                /**
+                * 검색바 props
+                */
+                regBoard={regBoard}
+                removeBoard={removeBoard}
                 // downloadExcel={downloadExcel}
                 // uploadExcel={uploadExcel}
             />
