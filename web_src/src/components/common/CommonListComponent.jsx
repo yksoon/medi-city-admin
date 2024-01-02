@@ -72,23 +72,6 @@ const CommonListComponent = (props) => {
         setPage(value)
     };
 
-    // 선택 삭제
-    const clickRemove = () => {
-        //선택여부 확인
-        checkItems.length === 0
-            ? CommonNotify({
-                type: "alert",
-                hook: alert,
-                message: "삭제할 목록을 선택해주세요",
-            })
-            : CommonNotify({
-                type: "confirm",
-                hook: confirm,
-                message: "선택된 목록을 삭제 하시겠습니까?",
-                callback: () => removeBoard(),
-            });
-    };
-
     return (
         <>
             <div className="content">
@@ -104,7 +87,7 @@ const CommonListComponent = (props) => {
                         regBoard={regBoard}
                         downloadExcel={downloadExcel}
                         uploadExcel={uploadExcel}
-                        clickRemove={clickRemove}
+                        removeBoard={removeBoard}
                     />
 
                     {/* 총 건수 */}

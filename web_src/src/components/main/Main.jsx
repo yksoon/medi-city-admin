@@ -33,7 +33,7 @@ import KmediPaymentMng from "components/kMedi/paymentManage/KmediPaymentMng";
 import KmediContentsMng from "components/kMedi/contentsManage/KmediContentsMng";
 import KmediCalcMng from "components/kMedi/clacManage/KmediCalcMng";
 import KmediCategoryMng from "components/kMedi/categoryManage/KmediCategoryMng";
-import KmediOneToOneMng from "components/kMedi/boardManage/oneToOneManage/KmediOneToOneMng";
+import KmediQnaMng from "components/kMedi/boardManage/kmediQnaManage/KmediQnaMng";
 import KmediMedicalQnaMng from "components/kMedi/boardManage/medicalQnaManage/KmediMedicalQnaMng";
 
 const Main = () => {
@@ -227,10 +227,10 @@ const Main = () => {
                 return <KmediNoticeMng isRefresh={isRefresh} />;
 
             // K-MEDI - 게시판관리 - 1:1 문의
-            case "kmediOneToOneMng":
-                return <KmediOneToOneMng isRefresh={isRefresh} />;
+            case "kmediQnaMng":
+                return <KmediQnaMng isRefresh={isRefresh} />;
 
-            // K-MEDI - 게시판관리 - 의료 QNA
+            // K-MEDI - 컨텐츠관리 - 의료 QNA
             case "kmediMedicalQnaMng":
                 return <KmediMedicalQnaMng isRefresh={isRefresh} />;
 
