@@ -8,16 +8,20 @@ const isDeveloping = import.meta.env.VITE_ISDEVELOPING;
 // 호스트
 // 포트
 // 버전
-const protocol = "http://";
+// const protocol = "http://";
 
+let protocol;
 let host = "";
 if (isDeveloping === "local" || isDeveloping === "dev") {
+    protocol = "https://"
     host = "dev-api.medi-city.co.kr";
 } else if (isDeveloping === "prd") {
+    protocol = "http://"
     // host = "3.36.85.141";
     host = "api.medi-people.co.kr";
     // host = "localhost";
 } else {
+    protocol = "https://"
     host = "dev-api.medi-city.co.kr";
 }
 
