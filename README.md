@@ -5,7 +5,7 @@
 
 ## 특징
 - 한국의 Medi-City 서비스 및 인도네시아의 K-Medi 서비스의 관리를 하는 관리자 사이트이다.
-- 전반적으로 모든 실질적인 사이트의 관리를 수행 함.
+- 전반적으로 모든 medi-city 사이트의 관리를 수행 함.
 - erp 전산 관리 시스템.
 
 ## 개발 환경 및 사용 툴
@@ -13,7 +13,8 @@
 - 백엔드 프레임워크 : Springboot
 - 프론트엔드 : Javascript ES6
 - 프론트엔드 프레임워크 : ReactJS, Vite (컴파일러)
-- Server : Linux (CentOS), AWS EC2 + Apache + nginx
+- Server : Linux (CentOS)(dev), AWS EC2(product) + Apache(dev) + nginx(product)
+- 상태관리 라이브러리 : Recoil
 - 외부연동 : Kakao Map API Geolocation
 
 ## 작업기간
